@@ -1,5 +1,6 @@
 package dev.efekos.arn.resolver.impl;
 
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.handler.CommandHandlerMethod;
@@ -17,8 +18,6 @@ public class CommandHandlerMethodIntArgumentResolver implements CommandHandlerMe
 
     @Override
     public Integer resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
-        Integer i = context.getArgument(parameter.getName(), Integer.class);
-        if(i==null) return -1;
-        return i;
+        return IntegerArgumentType.getInteger(context,parameter.getName());
     }
 }

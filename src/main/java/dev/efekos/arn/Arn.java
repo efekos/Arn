@@ -14,6 +14,8 @@ import dev.efekos.arn.resolver.CommandArgumentResolver;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.resolver.impl.CommandHandlerMethodIntArgumentResolver;
 import dev.efekos.arn.resolver.impl.CommandHandlerMethodStringArgumentResolver;
+import dev.efekos.arn.resolver.impl.CommandIntArgumentResolver;
+import dev.efekos.arn.resolver.impl.CommandStringArgumentResolver;
 import net.minecraft.commands.CommandListenerWrapper;
 import net.minecraft.server.MinecraftServer;
 import org.bukkit.command.BlockCommandSender;
@@ -49,6 +51,9 @@ public final class Arn {
     private void configure(){
         handlerMethodArgumentResolvers.add(new CommandHandlerMethodIntArgumentResolver());
         handlerMethodArgumentResolvers.add(new CommandHandlerMethodStringArgumentResolver());
+
+        commandArgumentResolvers.add(new CommandIntArgumentResolver());
+        commandArgumentResolvers.add(new CommandStringArgumentResolver());
     }
 
     private void scanConfigurers(Class<?> mainClass) throws ArnConfigurerException {

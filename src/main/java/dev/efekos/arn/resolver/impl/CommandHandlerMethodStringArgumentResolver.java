@@ -1,5 +1,6 @@
 package dev.efekos.arn.resolver.impl;
 
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.handler.CommandHandlerMethod;
@@ -17,8 +18,6 @@ public class CommandHandlerMethodStringArgumentResolver implements CommandHandle
 
     @Override
     public String resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
-        String s = context.getArgument(parameter.getName(), String.class);
-        if(s==null) return "";
-        return s;
+        return StringArgumentType.getString(context,parameter.getName());
     }
 }
