@@ -4,22 +4,22 @@ import dev.efekos.arn.annotation.Command;
 import dev.efekos.arn.annotation.Container;
 import dev.efekos.arn.annotation.RestCommand;
 import dev.efekos.arn.config.ArnConfigurer;
+import dev.efekos.arn.exception.ArnCommandException;
 import dev.efekos.arn.exception.ArnConfigurerException;
+import dev.efekos.arn.handler.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public final class Arn {
 
     private static final Arn instance = new Arn();
     private final List<CommandArgumentResolver> resolvers = new ArrayList<>();
+    private final Map<String,CommandHandlerMethod> handlers = new HashMap<>();
 
     public static void run(Class<?> mainClass) {
         try {
@@ -57,7 +57,7 @@ public final class Arn {
         }
     }
 
-    private void scanCommands(Class<?> mainClass) {
+    private void scanCommands(Class<?> mainClass) throws ArnCommandException {
         Reflections reflections = new Reflections(mainClass.getPackage().getName());
 
         Set<Class<?>> containers = reflections.getTypesAnnotatedWith(Container.class);
@@ -85,12 +85,20 @@ public final class Arn {
         }
     }
 
-    private void restCommand(Command annotation, Method method, Class<?> restCommand) {
+    private void restCommand(Command annotation, Method method, Class<?> restCommand) throws ArnCommandException {
         //TODO
     }
 
-    private void command(Command annotation,Method method) {
-        //TODO
+    private void command(Command annotation,Method method) throws ArnCommandException{
+        if(handlers.containsKey(annotation.value())) throw new ArnCommandException("Duplicate command '" + annotation.value() + "'");
+
+        CommandHandlerMethod commandHandlerMethod = new CommandHandlerMethod();
+
+        commandHandlerMethod.setCommand(annotation.value());
+        commandHandlerMethod.setMethod(method);
+        commandHandlerMethod.setParameters(Arrays.asList(method.getParameters()));
+
+        handlers.put(annotation.value(), commandHandlerMethod);
     }
 
 }
