@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface RestCommand {
-    String value() default "";
+    String value();
     String description() default "";
     String permission() default "";
     String[] aliases() default {};
