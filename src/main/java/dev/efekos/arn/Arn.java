@@ -9,7 +9,9 @@ import dev.efekos.arn.config.ArnConfigurer;
 import dev.efekos.arn.exception.ArnCommandException;
 import dev.efekos.arn.exception.ArnConfigurerException;
 import dev.efekos.arn.handler.CommandHandlerMethod;
-import dev.efekos.arn.resolver.CommandArgumentResolver;
+import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.resolver.CommandHandlerMethodIntArgumentResolver;
+import dev.efekos.arn.resolver.CommandHandlerMethodStringArgumentResolver;
 import net.minecraft.commands.CommandListenerWrapper;
 import net.minecraft.server.MinecraftServer;
 import org.bukkit.command.BlockCommandSender;
@@ -27,7 +29,7 @@ import java.util.*;
 public final class Arn {
 
     private static final Arn instance = new Arn();
-    private final List<CommandArgumentResolver> resolvers = new ArrayList<>();
+    private final List<CommandHandlerMethodArgumentResolver> resolvers = new ArrayList<>();
     private final Map<String,CommandHandlerMethod> handlers = new HashMap<>();
 
     public static void run(Class<?> mainClass) {
@@ -42,7 +44,8 @@ public final class Arn {
     }
 
     private void configure(){
-
+        resolvers.add(new CommandHandlerMethodIntArgumentResolver());
+        resolvers.add(new CommandHandlerMethodStringArgumentResolver());
     }
 
     private void scanConfigurers(Class<?> mainClass) throws ArnConfigurerException {
@@ -57,7 +60,7 @@ public final class Arn {
                 Constructor<? extends ArnConfigurer> constructor = clazz.getConstructor();
                 constructor.setAccessible(true);
                 ArnConfigurer configurerInstance = constructor.newInstance();
-                ArrayList<CommandArgumentResolver> list = new ArrayList<>();
+                ArrayList<CommandHandlerMethodArgumentResolver> list = new ArrayList<>();
                 configurerInstance.addArgumentResolvers(list);
                 resolvers.addAll(list);
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
@@ -101,7 +104,7 @@ public final class Arn {
 
     private static final List<Class<? extends CommandSender>> REQUIRED_SENDER_CLASSES = Arrays.asList(CommandSender.class, Player.class, ConsoleCommandSender.class, BlockCommandSender.class);
 
-    private void command(Command annotation,Method method) throws ArnCommandException{
+    private void command(Command annotation,Method method) throws ArnCommandException {
         if(handlers.containsKey(annotation.value())) throw new ArnCommandException("Duplicate command '" + annotation.value() + "'");
         if(!method.getReturnType().equals(int.class)) throw new ArnCommandException("Handler method '"+ method.getName() + "' for command '" + annotation.value() + "' does not return 'int'");
         long count = Arrays.stream(method.getParameters()).filter(parameter -> REQUIRED_SENDER_CLASSES.contains(parameter.getType())).count();
