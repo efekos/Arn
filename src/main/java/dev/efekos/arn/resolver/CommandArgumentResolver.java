@@ -7,6 +7,6 @@ import java.lang.reflect.Parameter;
 public interface CommandArgumentResolver {
 
     boolean isApplicable(Parameter parameter);
-    Object resolve(Parameter parameter, CommandHandlerMethod method);
+    Object resolve(Parameter parameter, CommandHandlerMethod method, String arg);
 
 }
