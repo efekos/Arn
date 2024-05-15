@@ -10,8 +10,8 @@ import dev.efekos.arn.exception.ArnCommandException;
 import dev.efekos.arn.exception.ArnConfigurerException;
 import dev.efekos.arn.handler.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import dev.efekos.arn.resolver.CommandHandlerMethodIntArgumentResolver;
-import dev.efekos.arn.resolver.CommandHandlerMethodStringArgumentResolver;
+import dev.efekos.arn.resolver.impl.CommandHandlerMethodIntArgumentResolver;
+import dev.efekos.arn.resolver.impl.CommandHandlerMethodStringArgumentResolver;
 import net.minecraft.commands.CommandListenerWrapper;
 import net.minecraft.server.MinecraftServer;
 import org.bukkit.command.BlockCommandSender;
@@ -29,7 +29,7 @@ import java.util.*;
 public final class Arn {
 
     private static final Arn instance = new Arn();
-    private final List<CommandHandlerMethodArgumentResolver> resolvers = new ArrayList<>();
+    private final List<CommandHandlerMethodArgumentResolver> methodArgumentResolvers = new ArrayList<>();
     private final Map<String,CommandHandlerMethod> handlers = new HashMap<>();
 
     public static void run(Class<?> mainClass) {
@@ -44,8 +44,8 @@ public final class Arn {
     }
 
     private void configure(){
-        resolvers.add(new CommandHandlerMethodIntArgumentResolver());
-        resolvers.add(new CommandHandlerMethodStringArgumentResolver());
+        methodArgumentResolvers.add(new CommandHandlerMethodIntArgumentResolver());
+        methodArgumentResolvers.add(new CommandHandlerMethodStringArgumentResolver());
     }
 
     private void scanConfigurers(Class<?> mainClass) throws ArnConfigurerException {
@@ -62,7 +62,7 @@ public final class Arn {
                 ArnConfigurer configurerInstance = constructor.newInstance();
                 ArrayList<CommandHandlerMethodArgumentResolver> list = new ArrayList<>();
                 configurerInstance.addArgumentResolvers(list);
-                resolvers.addAll(list);
+                methodArgumentResolvers.addAll(list);
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
                      InvocationTargetException e) {
                 throw new ArnConfigurerException(e);
@@ -110,7 +110,7 @@ public final class Arn {
         long count = Arrays.stream(method.getParameters()).filter(parameter -> REQUIRED_SENDER_CLASSES.contains(parameter.getType())).count();
         if(count!=1) throw new ArnCommandException("Handler method '"+ method.getName() + "' for command '" + annotation.value() + "' must contain exactly one parameter that is a CommandSender.");
         for (Parameter parameter : method.getParameters()) {
-            if(resolvers.stream().noneMatch(car -> car.isApplicable(parameter))) throw new ArnCommandException("Handler method '"+ method.getName() + "' for command '" + annotation.value() + "' has a parameter '"+parameter.getName()+"' that isn't applicable for anything.");
+            if(methodArgumentResolvers.stream().noneMatch(car -> car.isApplicable(parameter))) throw new ArnCommandException("Handler method '"+ method.getName() + "' for command '" + annotation.value() + "' has a parameter '"+parameter.getName()+"' that isn't applicable for anything.");
         }
 
         CommandHandlerMethod commandHandlerMethod = createHandlerMethod(annotation, method);

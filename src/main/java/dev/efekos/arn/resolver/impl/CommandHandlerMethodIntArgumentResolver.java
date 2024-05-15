@@ -1,8 +1,9 @@
-package dev.efekos.arn.resolver;
+package dev.efekos.arn.resolver.impl;
 
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.handler.CommandHandlerMethod;
+import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import net.minecraft.commands.CommandListenerWrapper;
 
 import java.lang.reflect.Parameter;
