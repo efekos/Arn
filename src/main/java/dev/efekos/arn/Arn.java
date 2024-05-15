@@ -1,5 +1,6 @@
 package dev.efekos.arn;
 
+import com.mojang.brigadier.CommandDispatcher;
 import dev.efekos.arn.annotation.Command;
 import dev.efekos.arn.annotation.Container;
 import dev.efekos.arn.annotation.RestCommand;
@@ -8,6 +9,9 @@ import dev.efekos.arn.exception.ArnCommandException;
 import dev.efekos.arn.exception.ArnConfigurerException;
 import dev.efekos.arn.handler.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
+import net.minecraft.commands.CommandListenerWrapper;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.dedicated.DedicatedServer;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
@@ -26,6 +30,7 @@ public final class Arn {
             instance.configure();
             instance.scanConfigurers(mainClass);
             instance.scanCommands(mainClass);
+            instance.registerCommands();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -99,6 +104,12 @@ public final class Arn {
         commandHandlerMethod.setParameters(Arrays.asList(method.getParameters()));
 
         handlers.put(annotation.value(), commandHandlerMethod);
+    }
+
+    private void registerCommands(){
+        CommandDispatcher<CommandListenerWrapper> dispatcher = MinecraftServer.getServer().aE().a();
+
+        //TODO
     }
 
 }
