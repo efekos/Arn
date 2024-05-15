@@ -5,5 +5,4 @@ public @interface RestCommand {
     String description() default "";
     String permission() default "";
     String[] aliases() default {};
-    boolean allowConsole() default false;
 }

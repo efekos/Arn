@@ -5,5 +5,4 @@ public @interface Command {
     String description() default "";
     String permission() default "";
     String[] aliases() default {};
-    boolean allowConsole() default false;
 }
