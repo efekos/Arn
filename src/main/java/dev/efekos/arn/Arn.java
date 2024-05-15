@@ -11,7 +11,6 @@ import dev.efekos.arn.handler.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import net.minecraft.commands.CommandListenerWrapper;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
