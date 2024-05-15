@@ -78,15 +78,19 @@ public final class Arn {
 
             for (Method method : restCommand.getMethods()) {
 
-                if(method.isAnnotationPresent(Command.class)) instance.command(method.getAnnotation(Command.class),method);
+                if(method.isAnnotationPresent(Command.class)) instance.restCommand(method.getAnnotation(Command.class),method,restCommand);
 
             }
 
         }
     }
 
-    private void command(Command annotation,Method method) {
+    private void restCommand(Command annotation, Method method, Class<?> restCommand) {
+        //TODO
+    }
 
+    private void command(Command annotation,Method method) {
+        //TODO
     }
 
 }
