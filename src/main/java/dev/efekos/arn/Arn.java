@@ -1,6 +1,7 @@
 package dev.efekos.arn;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.efekos.arn.annotation.Command;
 import dev.efekos.arn.annotation.CommandAnnotationData;
 import dev.efekos.arn.annotation.Container;
@@ -9,6 +10,7 @@ import dev.efekos.arn.config.ArnConfigurer;
 import dev.efekos.arn.exception.ArnCommandException;
 import dev.efekos.arn.exception.ArnConfigurerException;
 import dev.efekos.arn.handler.CommandHandlerMethod;
+import dev.efekos.arn.resolver.CommandArgumentResolver;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.resolver.impl.CommandHandlerMethodIntArgumentResolver;
 import dev.efekos.arn.resolver.impl.CommandHandlerMethodStringArgumentResolver;
@@ -29,7 +31,8 @@ import java.util.*;
 public final class Arn {
 
     private static final Arn instance = new Arn();
-    private final List<CommandHandlerMethodArgumentResolver> methodArgumentResolvers = new ArrayList<>();
+    private final List<CommandHandlerMethodArgumentResolver> handlerMethodArgumentResolvers = new ArrayList<>();
+    private final List<CommandArgumentResolver> commandArgumentResolvers = new ArrayList<>();
     private final Map<String,CommandHandlerMethod> handlers = new HashMap<>();
 
     public static void run(Class<?> mainClass) {
@@ -44,8 +47,8 @@ public final class Arn {
     }
 
     private void configure(){
-        methodArgumentResolvers.add(new CommandHandlerMethodIntArgumentResolver());
-        methodArgumentResolvers.add(new CommandHandlerMethodStringArgumentResolver());
+        handlerMethodArgumentResolvers.add(new CommandHandlerMethodIntArgumentResolver());
+        handlerMethodArgumentResolvers.add(new CommandHandlerMethodStringArgumentResolver());
     }
 
     private void scanConfigurers(Class<?> mainClass) throws ArnConfigurerException {
@@ -61,8 +64,9 @@ public final class Arn {
                 constructor.setAccessible(true);
                 ArnConfigurer configurerInstance = constructor.newInstance();
                 ArrayList<CommandHandlerMethodArgumentResolver> list = new ArrayList<>();
-                configurerInstance.addArgumentResolvers(list);
-                methodArgumentResolvers.addAll(list);
+                configurerInstance.addHandlerMethodArgumentResolvers(list);
+                configurerInstance.addArgumentResolvers(commandArgumentResolvers);
+                handlerMethodArgumentResolvers.addAll(list);
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
                      InvocationTargetException e) {
                 throw new ArnConfigurerException(e);
@@ -110,7 +114,7 @@ public final class Arn {
         long count = Arrays.stream(method.getParameters()).filter(parameter -> REQUIRED_SENDER_CLASSES.contains(parameter.getType())).count();
         if(count!=1) throw new ArnCommandException("Handler method '"+ method.getName() + "' for command '" + annotation.value() + "' must contain exactly one parameter that is a CommandSender.");
         for (Parameter parameter : method.getParameters()) {
-            if(methodArgumentResolvers.stream().noneMatch(car -> car.isApplicable(parameter))) throw new ArnCommandException("Handler method '"+ method.getName() + "' for command '" + annotation.value() + "' has a parameter '"+parameter.getName()+"' that isn't applicable for anything.");
+            if(handlerMethodArgumentResolvers.stream().noneMatch(car -> car.isApplicable(parameter))) throw new ArnCommandException("Handler method '"+ method.getName() + "' for command '" + annotation.value() + "' has a parameter '"+parameter.getName()+"' that isn't applicable for anything.");
         }
 
         CommandHandlerMethod commandHandlerMethod = createHandlerMethod(annotation, method);
@@ -118,7 +122,7 @@ public final class Arn {
         handlers.put(annotation.value(), commandHandlerMethod);
     }
 
-    private static CommandHandlerMethod createHandlerMethod(Command annotation, Method method) {
+    private CommandHandlerMethod createHandlerMethod(Command annotation, Method method) {
         CommandHandlerMethod commandHandlerMethod = new CommandHandlerMethod();
 
         commandHandlerMethod.setCommand(annotation.value());
@@ -131,13 +135,54 @@ public final class Arn {
         if(baseAnnData.getPermission()==null) baseAnnData.setPermission("spigot.command."+ annotation.value());
 
         commandHandlerMethod.setAnnotationData(baseAnnData);
+
+        ArrayList<CommandArgumentResolver> argumentResolvers = new ArrayList<>();
+        ArrayList<CommandHandlerMethodArgumentResolver> handlerMethodResolvers = new ArrayList<>();
+        for (int i = 0; i < method.getParameters().length; i++) {
+            Parameter parameter = method.getParameters()[i];
+
+            argumentResolvers.add(this.commandArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().get());
+            handlerMethodResolvers.add(this.handlerMethodArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().get());
+        }
+
+        commandHandlerMethod.setArgumentResolvers(argumentResolvers);
+        commandHandlerMethod.setHandlerMethodResolvers(handlerMethodResolvers);
+
         return commandHandlerMethod;
     }
 
     private void registerCommands(){
         CommandDispatcher<CommandListenerWrapper> dispatcher = MinecraftServer.getServer().aE().a();
 
-        //TODO
+        for (CommandHandlerMethod method : handlers.values()) {
+            LiteralArgumentBuilder<CommandListenerWrapper> mainDispatcher = net.minecraft.commands.CommandDispatcher.a(method.getCommand());
+
+            for (int i = 0; i < method.getArgumentResolvers().size(); i++) {
+                CommandArgumentResolver resolver = method.getArgumentResolvers().get(i);
+                resolver.apply(mainDispatcher,method.getParameters().get(i));
+            }
+
+            dispatcher.register(mainDispatcher.executes(commandContext -> {
+
+                List<Object> objects = new ArrayList<>();
+
+                for (int i = 0; i < method.getHandlerMethodResolvers().size(); i++) {
+                    CommandHandlerMethodArgumentResolver resolver = method.getHandlerMethodResolvers().get(i);
+                    objects.add(resolver.resolve(method.getParameters().get(i),method,commandContext));
+                }
+
+                Method actualMethodToInvoke = method.getMethod();
+
+                try {
+                    actualMethodToInvoke.setAccessible(true);
+                    return (int) actualMethodToInvoke.invoke(objects.toArray());
+                } catch (Exception e){
+                    return 0;
+                }
+
+
+            }));
+        }
     }
 
 }
