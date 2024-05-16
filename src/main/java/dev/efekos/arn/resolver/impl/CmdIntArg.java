@@ -18,6 +18,6 @@ public class CmdIntArg implements CommandArgumentResolver {
     @Override
     public ArgumentBuilder apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return CommandDispatcher.a(s==null?parameter.getName():s, IntegerArgumentType.integer());
+        return CommandDispatcher.a(s.isEmpty() ?parameter.getName():s, IntegerArgumentType.integer());
     }
 }

@@ -19,6 +19,6 @@ public class HndStringArg implements CommandHandlerMethodArgumentResolver {
     @Override
     public String resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return StringArgumentType.getString(context,s==null?parameter.getName():s);
+        return StringArgumentType.getString(context, s.isEmpty() ?parameter.getName():s);
     }
 }

@@ -27,7 +27,7 @@ public class HndLocationArg implements CommandHandlerMethodArgumentResolver {
     @Override
     public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        BlockPosition position = ArgumentPosition.b(context, s == null ? parameter.getName() : s);
+        BlockPosition position = ArgumentPosition.b(context, s.isEmpty() ? parameter.getName() : s);
         int x = position.u();
         int y = position.v();
         int z = position.w();

@@ -19,6 +19,6 @@ public class HndLongArg implements CommandHandlerMethodArgumentResolver {
     @Override
     public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return LongArgumentType.getLong(context,s==null?parameter.getName():s);
+        return LongArgumentType.getLong(context, s.isEmpty() ?parameter.getName():s);
     }
 }

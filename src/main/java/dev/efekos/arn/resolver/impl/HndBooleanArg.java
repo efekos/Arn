@@ -19,7 +19,7 @@ public class HndBooleanArg implements CommandHandlerMethodArgumentResolver {
     @Override
     public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return BoolArgumentType.getBool(context,s==null?parameter.getName():s);
+        return BoolArgumentType.getBool(context, s.isEmpty() ?parameter.getName():s);
     }
 
 }

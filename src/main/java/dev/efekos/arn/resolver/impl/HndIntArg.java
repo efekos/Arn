@@ -19,6 +19,6 @@ public class HndIntArg implements CommandHandlerMethodArgumentResolver {
     @Override
     public Integer resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return IntegerArgumentType.getInteger(context,s==null?parameter.getName():s);
+        return IntegerArgumentType.getInteger(context, s.isEmpty() ?parameter.getName():s);
     }
 }

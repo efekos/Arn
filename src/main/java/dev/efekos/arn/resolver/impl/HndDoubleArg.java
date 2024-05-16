@@ -1,7 +1,6 @@
 package dev.efekos.arn.resolver.impl;
 
 import com.mojang.brigadier.arguments.DoubleArgumentType;
-import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.handler.CommandHandlerMethod;
@@ -20,6 +19,6 @@ public class HndDoubleArg implements CommandHandlerMethodArgumentResolver {
     @Override
     public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return DoubleArgumentType.getDouble(context,s==null?parameter.getName():s);
+        return DoubleArgumentType.getDouble(context, s.isEmpty() ?parameter.getName():s);
     }
 }

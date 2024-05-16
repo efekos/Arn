@@ -1,6 +1,5 @@
 package dev.efekos.arn.resolver.impl;
 
-import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.annotation.CommandArgument;
@@ -18,6 +17,6 @@ public class CmdLongArg implements CommandArgumentResolver {
     @Override
     public ArgumentBuilder apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return CommandDispatcher.a(s==null?parameter.getName():s, LongArgumentType.longArg());
+        return CommandDispatcher.a(s.isEmpty() ?parameter.getName():s, LongArgumentType.longArg());
     }
 }
