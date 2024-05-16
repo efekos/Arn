@@ -3,10 +3,7 @@ package dev.efekos.arn;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import dev.efekos.arn.annotation.Command;
-import dev.efekos.arn.annotation.CommandAnnotationData;
-import dev.efekos.arn.annotation.Container;
-import dev.efekos.arn.annotation.RestCommand;
+import dev.efekos.arn.annotation.*;
 import dev.efekos.arn.config.ArnConfigurer;
 import dev.efekos.arn.exception.ArnCommandException;
 import dev.efekos.arn.exception.ArnConfigurerException;
@@ -151,7 +148,7 @@ public final class Arn {
     private void command(Command annotation, Method method) throws ArnCommandException {
         if (!method.getReturnType().equals(int.class))
             throw new ArnCommandException("Handler method '" + method.getName() + "' for command '" + annotation.value() + "' does not return 'int'");
-        long count = Arrays.stream(method.getParameters()).filter(parameter -> REQUIRED_SENDER_CLASSES.contains(parameter.getType())).count();
+        long count = Arrays.stream(method.getParameters()).filter(parameter -> REQUIRED_SENDER_CLASSES.contains(parameter.getType())&&!parameter.isAnnotationPresent(CommandArgument.class)).count();
         if (count != 1)
             throw new ArnCommandException("Handler method '" + method.getName() + "' for command '" + annotation.value() + "' must contain exactly one parameter that is a CommandSender.");
         for (Parameter parameter : method.getParameters()) {
