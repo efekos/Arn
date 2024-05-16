@@ -164,11 +164,15 @@ public final class Arn {
 
         CommandHandlerMethod commandHandlerMethod = createHandlerMethod(annotation, method);
 
+        if(handlers.stream().anyMatch(method1 -> commandHandlerMethod.getSignature().equals(method1.getSignature()))) throw new ArnCommandException("Duplicate command '"+commandHandlerMethod.getSignature()+"'");
         handlers.add(commandHandlerMethod);
     }
 
     private CommandHandlerMethod createHandlerMethod(Command annotation, Method method) {
         CommandHandlerMethod commandHandlerMethod = new CommandHandlerMethod();
+        StringBuilder signatureBuilder = new StringBuilder();
+
+        signatureBuilder.append(annotation.value()).append(" ");
 
         commandHandlerMethod.setCommand(annotation.value());
         commandHandlerMethod.setMethod(method);
@@ -183,16 +187,21 @@ public final class Arn {
 
         ArrayList<CommandArgumentResolver> argumentResolvers = new ArrayList<>();
         ArrayList<CommandHandlerMethodArgumentResolver> handlerMethodResolvers = new ArrayList<>();
+        signatureBuilder.append("(");
         for (int i = 0; i < method.getParameters().length; i++) {
             Parameter parameter = method.getParameters()[i];
 
+            if(i!=0) signatureBuilder.append(",");
+            signatureBuilder.append(parameter.getType().getName());
             argumentResolvers.add(this.commandArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().get());
             handlerMethodResolvers.add(this.handlerMethodArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().get());
         }
+        signatureBuilder.append(")");
 
         commandHandlerMethod.setArgumentResolvers(argumentResolvers);
         commandHandlerMethod.setHandlerMethodResolvers(handlerMethodResolvers);
 
+        commandHandlerMethod.setSignature(signatureBuilder.toString());
         return commandHandlerMethod;
     }
 
