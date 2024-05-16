@@ -78,6 +78,7 @@ public final class Arn {
         handlerMethodArgumentResolvers.add(new HndEffectTypeArg());
         handlerMethodArgumentResolvers.add(new HndGameModeArg());
         handlerMethodArgumentResolvers.add(new HndPlayerArg());
+        handlerMethodArgumentResolvers.add(new HndMultiplePlayerArg());
 
         commandArgumentResolvers.add(new CmdBooleanArg());
         commandArgumentResolvers.add(new CmdDoubleArg());
@@ -90,6 +91,7 @@ public final class Arn {
         commandArgumentResolvers.add(new CmdEffectTypeArg());
         commandArgumentResolvers.add(new CmdGameModeArg());
         commandArgumentResolvers.add(new CmdPlayerArg());
+        commandArgumentResolvers.add(new CmdMultiplePlayerArg());
     }
 
     private void scanConfigurers(Reflections reflections) throws ArnConfigurerException {
