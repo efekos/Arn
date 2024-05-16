@@ -16,6 +16,7 @@ import dev.efekos.arn.resolver.CommandArgumentResolver;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.resolver.impl.*;
 import net.minecraft.commands.CommandListenerWrapper;
+import net.minecraft.commands.ICommandListener;
 import net.minecraft.network.chat.IChatBaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
@@ -36,7 +37,7 @@ public final class Arn {
     private static final Arn instance = new Arn();
     private final List<CommandHandlerMethodArgumentResolver> handlerMethodArgumentResolvers = new ArrayList<>();
     private final List<CommandArgumentResolver> commandArgumentResolvers = new ArrayList<>();
-    private final Map<String, CommandHandlerMethod> handlers = new HashMap<>();
+    private final List<CommandHandlerMethod> handlers = new ArrayList<>();
     private final Map<String, Object> containerInstanceMap = new HashMap<>();
 
     public static void run(Class<?> mainClass) {
@@ -76,6 +77,9 @@ public final class Arn {
         handlerMethodArgumentResolvers.add(new HndDoubleArg());
         handlerMethodArgumentResolvers.add(new HndLocationArg());
         handlerMethodArgumentResolvers.add(new HndLongArg());
+        handlerMethodArgumentResolvers.add(new HndTextArg());
+        handlerMethodArgumentResolvers.add(new HndEffectTypeArg());
+        handlerMethodArgumentResolvers.add(new HndGameModeArg());
 
         commandArgumentResolvers.add(new CmdBooleanArg());
         commandArgumentResolvers.add(new CmdDoubleArg());
@@ -84,6 +88,9 @@ public final class Arn {
         commandArgumentResolvers.add(new CmdIntArg());
         commandArgumentResolvers.add(new CmdStringArg());
         commandArgumentResolvers.add(new CmdSenderArg());
+        commandArgumentResolvers.add(new CmdTextArg());
+        commandArgumentResolvers.add(new CmdEffectTypeArg());
+        commandArgumentResolvers.add(new CmdGameModeArg());
     }
 
     private void scanConfigurers(Reflections reflections) throws ArnConfigurerException {
@@ -142,8 +149,6 @@ public final class Arn {
     private static final List<Class<? extends CommandSender>> REQUIRED_SENDER_CLASSES = Arrays.asList(CommandSender.class, Player.class, ConsoleCommandSender.class, BlockCommandSender.class);
 
     private void command(Command annotation, Method method) throws ArnCommandException {
-        if (handlers.containsKey(annotation.value()))
-            throw new ArnCommandException("Duplicate command '" + annotation.value() + "'");
         if (!method.getReturnType().equals(int.class))
             throw new ArnCommandException("Handler method '" + method.getName() + "' for command '" + annotation.value() + "' does not return 'int'");
         long count = Arrays.stream(method.getParameters()).filter(parameter -> REQUIRED_SENDER_CLASSES.contains(parameter.getType())).count();
@@ -158,7 +163,7 @@ public final class Arn {
 
         CommandHandlerMethod commandHandlerMethod = createHandlerMethod(annotation, method);
 
-        handlers.put(annotation.value(), commandHandlerMethod);
+        handlers.add(commandHandlerMethod);
     }
 
     private CommandHandlerMethod createHandlerMethod(Command annotation, Method method) {
@@ -194,22 +199,26 @@ public final class Arn {
         CommandDispatcher<CommandListenerWrapper> dispatcher = ((CraftServer) Bukkit.getServer()).getHandle().c().aE().a();
 
         System.out.println("sdrkgmdskfg");
-        dispatcher.register(net.minecraft.commands.CommandDispatcher.a("test").then(net.minecraft.commands.CommandDispatcher.a("cool").executes(commandContext -> {
+        System.out.println("test");
+        dispatcher.register(net.minecraft.commands.CommandDispatcher.a("hello").executes(commandContext -> {
+            commandContext.getSource().a(IChatBaseComponent.b("Hello"));
+            return 0;
+        }));
+
+        dispatcher.register(net.minecraft.commands.CommandDispatcher.a("hello").then(net.minecraft.commands.CommandDispatcher.a("terry").executes(commandContext -> {
             commandContext.getSource().a(IChatBaseComponent.b("Hello terry"));
             return 0;
         })));
 
-        for (CommandHandlerMethod method : handlers.values()) {
+        for (CommandHandlerMethod method : handlers) {
             List<ArgumentBuilder> nodes = new ArrayList<>();
-            nodes.add(net.minecraft.commands.CommandDispatcher.a(method.getCommand()));
+            nodes.add(net.minecraft.commands.CommandDispatcher.a(method.getCommand()).requires(s-> method.getAnnotationData().getPermission().isEmpty() || s.getBukkitSender().hasPermission(method.getAnnotationData().getPermission())));
 
             for (int i = 0; i < method.getArgumentResolvers().size(); i++) {
                 CommandArgumentResolver resolver = method.getArgumentResolvers().get(i);
                 ArgumentBuilder builder = resolver.apply(method.getParameters().get(i));
                 if (builder != null) nodes.add(builder);
             }
-
-            //TODO: find a way to connect nodes
 
             com.mojang.brigadier.Command<CommandListenerWrapper> lambda = commandContext -> {
 
@@ -242,8 +251,11 @@ public final class Arn {
 
     public static ArgumentBuilder<?, ?> chainArgumentBuilders(List<ArgumentBuilder> nodes, com.mojang.brigadier.Command<CommandListenerWrapper> executes, CommandAnnotationData data) {
         if (nodes.isEmpty()) return null;
+        System.out.println(nodes.size());
+        System.out.println(data);
+        if(nodes.size()==1) return nodes.get(0).executes(executes);
 
-        ArgumentBuilder chainedBuilder = nodes.get(nodes.size() - 1).requires(o -> ((CommandListenerWrapper) o).getBukkitSender().hasPermission(data.getPermission())).executes(executes);
+        ArgumentBuilder chainedBuilder = nodes.get(nodes.size() - 1).executes(executes);
 
         for (int i = nodes.size() - 2; i >= 0; i--) {
             chainedBuilder = nodes.get(i).then(chainedBuilder);
