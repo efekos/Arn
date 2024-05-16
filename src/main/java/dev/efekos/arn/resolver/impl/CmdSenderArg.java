@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Parameter;
 
-public class CommandSenderArgumentResolver implements CommandArgumentResolver {
+public class CmdSenderArg implements CommandArgumentResolver {
     @Override
     public boolean isApplicable(Parameter parameter) {
         return (parameter.getType().equals(Player.class)||parameter.getType().equals(CommandSender.class)||parameter.getType().equals(ConsoleCommandSender.class)||parameter.getType().equals(BlockCommandSender.class)) && !parameter.isAnnotationPresent(CommandArgument.class) && !parameter.isAnnotationPresent(FromSender.class);

@@ -69,13 +69,21 @@ public final class Arn {
     }
 
     private void configure() {
-        handlerMethodArgumentResolvers.add(new CommandHandlerMethodIntArgumentResolver());
-        handlerMethodArgumentResolvers.add(new CommandHandlerMethodStringArgumentResolver());
-        handlerMethodArgumentResolvers.add(new CommandHandlerMethodPlayerSenderResolver());
+        handlerMethodArgumentResolvers.add(new HndIntArg());
+        handlerMethodArgumentResolvers.add(new HndStringArg());
+        handlerMethodArgumentResolvers.add(new HndPlayerSender());
+        handlerMethodArgumentResolvers.add(new HndBooleanArg());
+        handlerMethodArgumentResolvers.add(new HndDoubleArg());
+        handlerMethodArgumentResolvers.add(new HndLocationArg());
+        handlerMethodArgumentResolvers.add(new HndLongArg());
 
-        commandArgumentResolvers.add(new CommandIntArgumentResolver());
-        commandArgumentResolvers.add(new CommandStringArgumentResolver());
-        commandArgumentResolvers.add(new CommandSenderArgumentResolver());
+        commandArgumentResolvers.add(new CmdBooleanArg());
+        commandArgumentResolvers.add(new CmdDoubleArg());
+        commandArgumentResolvers.add(new CmdLocationArg());
+        commandArgumentResolvers.add(new CmdLongArg());
+        commandArgumentResolvers.add(new CmdIntArg());
+        commandArgumentResolvers.add(new CmdStringArg());
+        commandArgumentResolvers.add(new CmdSenderArg());
     }
 
     private void scanConfigurers(Reflections reflections) throws ArnConfigurerException {
@@ -225,23 +233,18 @@ public final class Arn {
 
             };
 
-            LiteralArgumentBuilder<CommandListenerWrapper> builder = (LiteralArgumentBuilder<CommandListenerWrapper>) chainArgumentBuilders(nodes, lambda);
+            LiteralArgumentBuilder<CommandListenerWrapper> builder = (LiteralArgumentBuilder<CommandListenerWrapper>) chainArgumentBuilders(nodes, lambda, method.getAnnotationData());
 
             dispatcher.register(builder);
 
         }
     }
 
-    public static ArgumentBuilder<?, ?> chainArgumentBuilders(List<ArgumentBuilder> nodes, com.mojang.brigadier.Command<CommandListenerWrapper> executes) {
-        // Base case: If there are no nodes, return null
-        if (nodes.isEmpty()) {
-            return null;
-        }
+    public static ArgumentBuilder<?, ?> chainArgumentBuilders(List<ArgumentBuilder> nodes, com.mojang.brigadier.Command<CommandListenerWrapper> executes, CommandAnnotationData data) {
+        if (nodes.isEmpty()) return null;
 
-        // Start chaining from the last node
-        ArgumentBuilder chainedBuilder = nodes.get(nodes.size() - 1).executes(executes);
+        ArgumentBuilder chainedBuilder = nodes.get(nodes.size() - 1).requires(o -> ((CommandListenerWrapper) o).getBukkitSender().hasPermission(data.getPermission())).executes(executes);
 
-        // Chain the nodes in reverse order
         for (int i = nodes.size() - 2; i >= 0; i--) {
             chainedBuilder = nodes.get(i).then(chainedBuilder);
         }

@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Parameter;
 
-public class CommandHandlerMethodPlayerSenderResolver implements CommandHandlerMethodArgumentResolver {
+public class HndPlayerSender implements CommandHandlerMethodArgumentResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {

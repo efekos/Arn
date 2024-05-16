@@ -9,7 +9,7 @@ import net.minecraft.commands.CommandListenerWrapper;
 
 import java.lang.reflect.Parameter;
 
-public class CommandHandlerMethodStringArgumentResolver implements CommandHandlerMethodArgumentResolver {
+public class HndStringArg implements CommandHandlerMethodArgumentResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
@@ -18,6 +18,7 @@ public class CommandHandlerMethodStringArgumentResolver implements CommandHandle
 
     @Override
     public String resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
-        return StringArgumentType.getString(context,parameter.getName());
+        String s = parameter.getAnnotation(CommandArgument.class).value();
+        return StringArgumentType.getString(context,s==null?parameter.getName():s);
     }
 }
