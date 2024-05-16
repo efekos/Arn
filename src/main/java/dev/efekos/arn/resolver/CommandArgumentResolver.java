@@ -8,6 +8,6 @@ public interface CommandArgumentResolver {
 
     boolean isApplicable(Parameter parameter);
 
-    void apply(ArgumentBuilder dispatcher, Parameter parameter);
+    ArgumentBuilder apply(Parameter parameter);
 
 }

@@ -17,7 +17,7 @@ public class CommandStringArgumentResolver implements CommandArgumentResolver {
     }
 
     @Override
-    public void apply(ArgumentBuilder dispatcher, Parameter parameter) {
-        dispatcher = dispatcher.then(CommandDispatcher.a(parameter.getName(), StringArgumentType.string()));
+    public ArgumentBuilder apply(Parameter parameter) {
+        return CommandDispatcher.a(parameter.getName(), StringArgumentType.string());
     }
 }
