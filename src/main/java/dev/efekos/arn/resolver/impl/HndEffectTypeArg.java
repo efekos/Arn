@@ -26,7 +26,7 @@ public class HndEffectTypeArg implements CommandHandlerMethodArgumentResolver {
     @Override
     public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        Holder.c<MobEffectList> f = ResourceArgument.f(context, s);
+        Holder.c<MobEffectList> f = ResourceArgument.f(context, s.isEmpty()?parameter.getName():s);
         MobEffectList list = f.a();
         MinecraftKey key = BuiltInRegistries.d.b(list);
         NamespacedKey effectKey = new NamespacedKey(key.b(), key.a());
