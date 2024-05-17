@@ -5,8 +5,8 @@ import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import net.minecraft.commands.CommandDispatcher;
 import net.minecraft.commands.arguments.ArgumentEntity;
+import org.bukkit.entity.Entity;
 
-import javax.swing.text.html.parser.Entity;
 import java.lang.reflect.Parameter;
 
 public class CmdMultipleEntityArg implements CommandArgumentResolver {

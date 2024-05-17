@@ -6,7 +6,7 @@ import dev.efekos.arn.resolver.CommandArgumentResolver;
 import net.minecraft.commands.CommandDispatcher;
 import net.minecraft.commands.arguments.ArgumentEntity;
 
-import javax.swing.text.html.parser.Entity;
+import org.bukkit.entity.Entity;
 import java.lang.reflect.Parameter;
 
 public class CmdEntityArg implements CommandArgumentResolver {
