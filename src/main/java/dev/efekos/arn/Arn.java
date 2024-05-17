@@ -3,8 +3,13 @@ package dev.efekos.arn;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import dev.efekos.arn.annotation.*;
+import dev.efekos.arn.annotation.Command;
+import dev.efekos.arn.annotation.CommandArgument;
+import dev.efekos.arn.annotation.Container;
+import dev.efekos.arn.annotation.RestCommand;
 import dev.efekos.arn.config.ArnConfigurer;
+import dev.efekos.arn.data.CommandAnnotationData;
+import dev.efekos.arn.data.CommandAnnotationLiteral;
 import dev.efekos.arn.exception.ArnCommandException;
 import dev.efekos.arn.exception.ArnConfigurerException;
 import dev.efekos.arn.exception.ArnContainerException;
@@ -28,6 +33,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public final class Arn {
 
@@ -53,15 +59,15 @@ public final class Arn {
 
     private void createContainerInstances(Reflections reflections) throws ArnContainerException {
         for (Class<?> clazz : reflections.getTypesAnnotatedWith(Container.class)) {
-            if (clazz.isInterface()||clazz.isAnnotation()||clazz.isEnum()) return;
+            if (clazz.isInterface() || clazz.isAnnotation() || clazz.isEnum()) return;
 
             try {
                 Constructor<?> ctor = clazz.getConstructor();
                 ctor.setAccessible(true);
                 Object o = ctor.newInstance();
-                containerInstanceMap.put(clazz.getName(),o);
+                containerInstanceMap.put(clazz.getName(), o);
             } catch (Exception e) {
-                throw new ArnContainerException("There was an error while trying to instantiate "+clazz.getName()+".",e);
+                throw new ArnContainerException("There was an error while trying to instantiate " + clazz.getName() + ".", e);
             }
         }
     }
@@ -93,7 +99,6 @@ public final class Arn {
         commandArgumentResolvers.add(new CmdLongArg());
         commandArgumentResolvers.add(new CmdIntArg());
         commandArgumentResolvers.add(new CmdStringArg());
-        commandArgumentResolvers.add(new CmdSenderArg());
         commandArgumentResolvers.add(new CmdTextArg());
         commandArgumentResolvers.add(new CmdEffectTypeArg());
         commandArgumentResolvers.add(new CmdGameModeArg());
@@ -164,21 +169,23 @@ public final class Arn {
     private static final List<Class<? extends CommandSender>> REQUIRED_SENDER_CLASSES = Arrays.asList(CommandSender.class, Player.class, ConsoleCommandSender.class, BlockCommandSender.class);
 
     private void command(Command annotation, Method method) throws ArnCommandException {
+        // Errors
         if (!method.getReturnType().equals(int.class))
             throw new ArnCommandException("Handler method '" + method.getName() + "' for command '" + annotation.value() + "' does not return 'int'");
-        long count = Arrays.stream(method.getParameters()).filter(parameter -> REQUIRED_SENDER_CLASSES.contains(parameter.getType())&&!parameter.isAnnotationPresent(CommandArgument.class)).count();
+        long count = Arrays.stream(method.getParameters()).filter(parameter -> REQUIRED_SENDER_CLASSES.contains(parameter.getType()) && !parameter.isAnnotationPresent(CommandArgument.class)).count();
         if (count != 1)
             throw new ArnCommandException("Handler method '" + method.getName() + "' for command '" + annotation.value() + "' must contain exactly one parameter that is a CommandSender.");
         for (Parameter parameter : method.getParameters()) {
             if (handlerMethodArgumentResolvers.stream().noneMatch(car -> car.isApplicable(parameter)))
                 throw new ArnCommandException("Handler method '" + method.getName() + "' for command '" + annotation.value() + "' has a parameter '" + parameter.getName() + "' that isn't applicable for anything.");
-            if (commandArgumentResolvers.stream().noneMatch(car -> car.isApplicable(parameter)))
+            if (handlerMethodArgumentResolvers.stream().anyMatch(car -> car.isApplicable(parameter) && car.requireCommandArgument()) && commandArgumentResolvers.stream().noneMatch(car -> car.isApplicable(parameter)))
                 throw new ArnCommandException("Handler method '" + method.getName() + "' for command '" + annotation.value() + "' has a parameter '" + parameter.getName() + "' that isn't applicable for anything.");
         }
 
         CommandHandlerMethod commandHandlerMethod = createHandlerMethod(annotation, method);
 
-        if(handlers.stream().anyMatch(method1 -> commandHandlerMethod.getSignature().equals(method1.getSignature()))) throw new ArnCommandException("Duplicate command '"+commandHandlerMethod.getSignature()+"'");
+        if (handlers.stream().anyMatch(method1 -> commandHandlerMethod.getSignature().equals(method1.getSignature())))
+            throw new ArnCommandException("Duplicate command '" + commandHandlerMethod.getSignature() + "'");
         handlers.add(commandHandlerMethod);
     }
 
@@ -194,8 +201,13 @@ public final class Arn {
 
         CommandAnnotationData baseAnnData = new CommandAnnotationData(annotation);
 
-        if (baseAnnData.getDescription() == null) baseAnnData.setDescription("No description provided.");
-        if (baseAnnData.getPermission() == null) baseAnnData.setPermission("spigot.command." + annotation.value());
+        if (baseAnnData.getDescription().isEmpty()) baseAnnData.setDescription("No description provided.");
+
+        ArrayList<CommandAnnotationLiteral> literals = new ArrayList<>();
+        for (String s : annotation.value().split("\\" + CommandAnnotationLiteral.SEPARATOR_CHAR_STRING))
+            literals.add(CommandAnnotationLiteral.parse(s));
+
+        baseAnnData.setLiterals(literals);
 
         commandHandlerMethod.setAnnotationData(baseAnnData);
 
@@ -205,10 +217,15 @@ public final class Arn {
         for (int i = 0; i < method.getParameters().length; i++) {
             Parameter parameter = method.getParameters()[i];
 
-            if(i!=0) signatureBuilder.append(",");
+            if (i != 0) signatureBuilder.append(",");
             signatureBuilder.append(parameter.getType().getName());
-            argumentResolvers.add(this.commandArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().get());
-            handlerMethodResolvers.add(this.handlerMethodArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().get());
+            CommandHandlerMethodArgumentResolver handlerMethodArgumentResolver = this.handlerMethodArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().get();
+            handlerMethodResolvers.add(handlerMethodArgumentResolver);
+            System.out.println(handlerMethodArgumentResolver);
+            System.out.println(handlerMethodArgumentResolver.requireCommandArgument());
+            System.out.println(this.commandArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().orElse(null));
+            if (handlerMethodArgumentResolver.requireCommandArgument()) argumentResolvers.add(this.commandArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().get());
+            else argumentResolvers.add(null);
         }
         signatureBuilder.append(")");
 
@@ -222,25 +239,36 @@ public final class Arn {
     private void registerCommands() {
         CommandDispatcher<CommandListenerWrapper> dispatcher = ((CraftServer) Bukkit.getServer()).getHandle().c().aE().a();
 
-        System.out.println("sdrkgmdskfg");
-        System.out.println("test");
-        dispatcher.register(net.minecraft.commands.CommandDispatcher.a("hello").executes(commandContext -> {
-            commandContext.getSource().a(IChatBaseComponent.b("Hello"));
-            return 0;
-        }));
-
-        dispatcher.register(net.minecraft.commands.CommandDispatcher.a("hello").then(net.minecraft.commands.CommandDispatcher.a("terry").executes(commandContext -> {
-            commandContext.getSource().a(IChatBaseComponent.b("Hello terry"));
-            return 0;
-        })));
-
         for (CommandHandlerMethod method : handlers) {
             List<ArgumentBuilder> nodes = new ArrayList<>();
-            nodes.add(net.minecraft.commands.CommandDispatcher.a(method.getCommand()).requires(s-> method.getAnnotationData().getPermission().isEmpty() || s.getBukkitSender().hasPermission(method.getAnnotationData().getPermission())));
 
+            // initialize lists
+            List<CommandAnnotationLiteral> literals = method.getAnnotationData().getLiterals();
+            List<CommandArgumentResolver> nonnullResolvers = new ArrayList<>(method.getArgumentResolvers());
+            List<Parameter> parametersClone = new ArrayList<>(method.getParameters());
+
+
+            // iterate argument resolvers
             for (int i = 0; i < method.getArgumentResolvers().size(); i++) {
                 CommandArgumentResolver resolver = method.getArgumentResolvers().get(i);
-                ArgumentBuilder builder = resolver.apply(method.getParameters().get(i));
+                if(resolver==null){
+                    parametersClone.remove(i);
+                    nonnullResolvers.remove(i);
+                }
+            }
+
+            for (CommandAnnotationLiteral lit : literals) if(lit.getOffset()==0) nodes.add(net.minecraft.commands.CommandDispatcher.a(lit.getLiteral()));
+
+            System.out.println("iterate nonnull resolvers");
+            System.out.println(nonnullResolvers);
+            for (int i = 0; i < nonnullResolvers.size(); i++) {
+                CommandArgumentResolver resolver = nonnullResolvers.get(i);
+                System.out.println(resolver);
+
+                if(i!=0) for (CommandAnnotationLiteral lit : literals) if(lit.getOffset()==i) nodes.add(net.minecraft.commands.CommandDispatcher.a(lit.getLiteral()));
+
+                //FIXME filter out parameters that has a command argument resolver of null because filtering nulls out throws an error here.
+                ArgumentBuilder builder = resolver.apply(parametersClone.get(i));
                 if (builder != null) nodes.add(builder);
             }
 
@@ -257,10 +285,17 @@ public final class Arn {
 
                 try {
                     actualMethodToInvoke.setAccessible(true);
-                    return (int) actualMethodToInvoke.invoke(containerInstanceMap.get(method.getMethod().getDeclaringClass().getName()),objects.toArray());
+                    return (int) actualMethodToInvoke.invoke(containerInstanceMap.get(method.getMethod().getDeclaringClass().getName()), objects.toArray());
+                } catch (InvocationTargetException e) {
+                    if (e.getCause() != null) try { // this wrap exists so ArnCommandException can be thrown
+                        throw new ArnCommandException("Caused by " + e.getCause().getClass().getSimpleName() + ": " + e.getCause().getMessage(), e.getCause());
+                    } catch (ArnCommandException ex) {
+                        ex.printStackTrace();
+                    }
+                    return 1;
                 } catch (Exception e) {
                     e.printStackTrace();
-                    return 0;
+                    return 1;
                 }
 
 
@@ -277,7 +312,7 @@ public final class Arn {
         if (nodes.isEmpty()) return null;
         System.out.println(nodes.size());
         System.out.println(data);
-        if(nodes.size()==1) return nodes.get(0).executes(executes);
+        if (nodes.size() == 1) return nodes.get(0).executes(executes);
 
         ArgumentBuilder chainedBuilder = nodes.get(nodes.size() - 1).executes(executes);
 
