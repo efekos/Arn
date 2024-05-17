@@ -84,6 +84,7 @@ public final class Arn {
         handlerMethodArgumentResolvers.add(new HndMultipleEntityArg());
         handlerMethodArgumentResolvers.add(new HndFloatArg());
         handlerMethodArgumentResolvers.add(new HndEnchantmentArg());
+        handlerMethodArgumentResolvers.add(new HndItemArg());
 
         commandArgumentResolvers.add(new CmdBooleanArg());
         commandArgumentResolvers.add(new CmdDoubleArg());
@@ -102,6 +103,7 @@ public final class Arn {
         commandArgumentResolvers.add(new CmdMultipleEntityArg());
         commandArgumentResolvers.add(new CmdFloatArg());
         commandArgumentResolvers.add(new CmdEnchantmentArg());
+        commandArgumentResolvers.add(new CmdItemArg());
     }
 
     private void scanConfigurers(Reflections reflections) throws ArnConfigurerException {
