@@ -1,4 +1,6 @@
-package dev.efekos.arn.annotation;
+package dev.efekos.arn.data;
+
+import dev.efekos.arn.annotation.Command;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,13 +8,12 @@ import java.util.List;
 import java.util.Objects;
 
 public class CommandAnnotationData {
-    private String name;
     private List<String> aliases;
     private String description;
     private String permission;
+    private List<CommandAnnotationLiteral> literals;
 
     public CommandAnnotationData(Command ann) {
-        setName(ann.value());
         setDescription(ann.description());
         setPermission(ann.permission());
         setAliases(ann.aliases()!=null? Arrays.asList(ann.aliases())  :new ArrayList<>());
@@ -21,10 +22,10 @@ public class CommandAnnotationData {
     @Override
     public String toString() {
         return "CommandAnnotationData{" +
-                "name='" + name + '\'' +
-                ", aliases=" + aliases +
+                "aliases=" + aliases +
                 ", description='" + description + '\'' +
                 ", permission='" + permission + '\'' +
+                ", literals=" + literals +
                 '}';
     }
 
@@ -33,20 +34,20 @@ public class CommandAnnotationData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CommandAnnotationData that = (CommandAnnotationData) o;
-        return Objects.equals(name, that.name) && Objects.equals(aliases, that.aliases) && Objects.equals(description, that.description) && Objects.equals(permission, that.permission);
+        return Objects.equals(aliases, that.aliases) && Objects.equals(description, that.description) && Objects.equals(permission, that.permission) && Objects.equals(literals, that.literals);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, aliases, description, permission);
+        return Objects.hash(aliases, description, permission, literals);
     }
 
-    public String getName() {
-        return name;
+    public List<CommandAnnotationLiteral> getLiterals() {
+        return literals;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLiterals(List<CommandAnnotationLiteral> literals) {
+        this.literals = literals;
     }
 
     public List<String> getAliases() {

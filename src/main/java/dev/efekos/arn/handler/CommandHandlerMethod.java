@@ -1,6 +1,6 @@
 package dev.efekos.arn.handler;
 
-import dev.efekos.arn.annotation.CommandAnnotationData;
+import dev.efekos.arn.data.CommandAnnotationData;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 
