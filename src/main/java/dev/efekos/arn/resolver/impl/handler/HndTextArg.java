@@ -26,4 +26,9 @@ public class HndTextArg implements CommandHandlerMethodArgumentResolver {
         String json = IChatBaseComponent.ChatSerializer.a(component);
         return ComponentSerializer.deserialize(json);
     }
+
+    @Override
+    public boolean requireCommandArgument() {
+        return true;
+    }
 }

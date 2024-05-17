@@ -21,4 +21,9 @@ public class HndIntArg implements CommandHandlerMethodArgumentResolver {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         return IntegerArgumentType.getInteger(context, s.isEmpty() ?parameter.getName():s);
     }
+
+    @Override
+    public boolean requireCommandArgument() {
+        return true;
+    }
 }

@@ -26,4 +26,9 @@ public class HndGameModeArg implements CommandHandlerMethodArgumentResolver {
         EnumGamemode gamemode = GameModeArgument.a(context, s.isEmpty() ? parameter.getName() : s);
         return GameMode.valueOf(gamemode.c().toUpperCase(Locale.ENGLISH));
     }
+
+    @Override
+    public boolean requireCommandArgument() {
+        return true;
+    }
 }

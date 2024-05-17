@@ -28,4 +28,9 @@ public class HndEntityArg implements CommandHandlerMethodArgumentResolver {
         return CraftEntity.getEntity(((CraftServer) Bukkit.getServer()),entity);
     }
 
+    @Override
+    public boolean requireCommandArgument() {
+        return true;
+    }
+
 }

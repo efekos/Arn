@@ -10,6 +10,7 @@ import java.lang.reflect.Parameter;
 public interface CommandHandlerMethodArgumentResolver {
 
     boolean isApplicable(Parameter parameter);
+    boolean requireCommandArgument();
     Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException;
 
 }

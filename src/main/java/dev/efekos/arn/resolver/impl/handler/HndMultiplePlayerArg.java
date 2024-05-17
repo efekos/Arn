@@ -32,4 +32,9 @@ public class HndMultiplePlayerArg implements CommandHandlerMethodArgumentResolve
         Server server = Bukkit.getServer();
         return player.stream().map(entityPlayer -> new CraftPlayer(((CraftServer) server),entityPlayer)).toArray(CraftPlayer[]::new);
     }
+
+    @Override
+    public boolean requireCommandArgument() {
+        return true;
+    }
 }

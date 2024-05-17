@@ -35,4 +35,9 @@ public class HndBlockArg implements CommandHandlerMethodArgumentResolver {
         NamespacedKey blockKey = new NamespacedKey(key.b(), key.a());
         return Arrays.stream(Material.values()).filter(material -> material.getKey().equals(blockKey)).findFirst().orElse(null);
     }
+
+    @Override
+    public boolean requireCommandArgument() {
+        return true;
+    }
 }

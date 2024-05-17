@@ -43,4 +43,9 @@ public class HndLocationArg implements CommandHandlerMethodArgumentResolver {
         world = p.getWorld();
         return new Location(world, x, y, z);
     }
+
+    @Override
+    public boolean requireCommandArgument() {
+        return true;
+    }
 }

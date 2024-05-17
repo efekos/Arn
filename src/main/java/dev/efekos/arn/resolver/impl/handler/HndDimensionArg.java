@@ -25,4 +25,10 @@ public class HndDimensionArg implements CommandHandlerMethodArgumentResolver {
         WorldServer world = ArgumentDimension.a(context, s.isEmpty() ? parameter.getName() : s);
         return world.getWorld();
     }
+
+
+    @Override
+    public boolean requireCommandArgument() {
+        return true;
+    }
 }

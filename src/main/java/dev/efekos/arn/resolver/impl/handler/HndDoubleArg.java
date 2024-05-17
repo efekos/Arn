@@ -21,4 +21,10 @@ public class HndDoubleArg implements CommandHandlerMethodArgumentResolver {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         return DoubleArgumentType.getDouble(context, s.isEmpty() ?parameter.getName():s);
     }
+
+
+    @Override
+    public boolean requireCommandArgument() {
+        return true;
+    }
 }

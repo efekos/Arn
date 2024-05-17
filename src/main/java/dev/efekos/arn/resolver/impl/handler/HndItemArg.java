@@ -7,9 +7,10 @@ import dev.efekos.arn.annotation.material.Item;
 import dev.efekos.arn.handler.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import net.minecraft.commands.CommandListenerWrapper;
-import net.minecraft.commands.arguments.item.ArgumentItemStack;
-import net.minecraft.commands.arguments.item.ArgumentPredicateItemStack;
+import net.minecraft.commands.arguments.ResourceArgument;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.MinecraftKey;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -27,9 +28,14 @@ public class HndItemArg implements CommandHandlerMethodArgumentResolver {
     @Override
     public Material resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        ArgumentPredicateItemStack stack = ArgumentItemStack.a(context, s.isEmpty() ? parameter.getName() : s);
-        net.minecraft.world.item.Item item = stack.a();
+        Holder.c<net.minecraft.world.item.Item> itemc = ResourceArgument.a(context, s.isEmpty() ? parameter.getName() : s, Registries.F);
+        net.minecraft.world.item.Item item = itemc.a();
         MinecraftKey key = BuiltInRegistries.h.b(item);
         return Arrays.stream(Material.values()).filter(material -> material.getKey().equals(new NamespacedKey(key.b(),key.a()))).findFirst().orElse(null);
+    }
+
+    @Override
+    public boolean requireCommandArgument() {
+        return true;
     }
 }

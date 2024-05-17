@@ -21,4 +21,9 @@ public class HndFloatArg implements CommandHandlerMethodArgumentResolver {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         return FloatArgumentType.getFloat(context, s.isEmpty() ?parameter.getName():s);
     }
+
+    @Override
+    public boolean requireCommandArgument() {
+        return true;
+    }
 }

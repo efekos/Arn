@@ -32,4 +32,10 @@ public class HndEffectTypeArg implements CommandHandlerMethodArgumentResolver {
         NamespacedKey effectKey = new NamespacedKey(key.b(), key.a());
         return PotionEffectType.getByKey(effectKey);
     }
+
+
+    @Override
+    public boolean requireCommandArgument() {
+        return true;
+    }
 }

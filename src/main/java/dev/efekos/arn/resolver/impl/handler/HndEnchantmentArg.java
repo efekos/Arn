@@ -31,4 +31,10 @@ public class HndEnchantmentArg implements CommandHandlerMethodArgumentResolver {
         NamespacedKey effectKey = new NamespacedKey(key.b(), key.a());
         return Enchantment.getByKey(effectKey);
     }
+
+
+    @Override
+    public boolean requireCommandArgument() {
+        return true;
+    }
 }

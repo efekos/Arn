@@ -27,4 +27,9 @@ public class HndPlayerSender implements CommandHandlerMethodArgumentResolver {
         Server server = Bukkit.getServer();
         return new CraftPlayer(((CraftServer) server),player);
     }
+
+    @Override
+    public boolean requireCommandArgument() {
+        return false;
+    }
 }
