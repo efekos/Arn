@@ -6,8 +6,10 @@ import dev.efekos.arn.annotation.material.Item;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandDispatcher;
+import net.minecraft.commands.arguments.ResourceArgument;
 import net.minecraft.commands.arguments.item.ArgumentItemStack;
 import net.minecraft.core.IRegistryCustom;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.flag.FeatureFlags;
 import org.bukkit.Bukkit;
@@ -23,6 +25,7 @@ public class CmdItemArg implements CommandArgumentResolver {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Material.class) && parameter.isAnnotationPresent(Item.class);
     }
 
+
     private static CommandBuildContext context;
 
     private static void initializeContext(){
@@ -35,6 +38,6 @@ public class CmdItemArg implements CommandArgumentResolver {
     public ArgumentBuilder<?,?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         if(context==null) initializeContext();
-        return CommandDispatcher.a(s.isEmpty()?parameter.getName():s, ArgumentItemStack.a(context));
+        return CommandDispatcher.a(s.isEmpty()?parameter.getName():s, ResourceArgument.a(context, Registries.F));
     }
 }
