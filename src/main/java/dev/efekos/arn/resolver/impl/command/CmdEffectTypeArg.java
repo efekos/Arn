@@ -32,7 +32,7 @@ public class CmdEffectTypeArg implements CommandArgumentResolver {
     }
 
     @Override
-    public ArgumentBuilder apply(Parameter parameter) {
+    public ArgumentBuilder<?,?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         if(context==null) initializeContext();
         return CommandDispatcher.a(s.isEmpty()?parameter.getName():s, ResourceArgument.a(context, Registries.Q));

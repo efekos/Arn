@@ -16,7 +16,7 @@ public class CmdFloatArg implements CommandArgumentResolver {
     }
 
     @Override
-    public ArgumentBuilder apply(Parameter parameter) {
+    public ArgumentBuilder<?,?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         NumberLimitations limitations = parameter.getAnnotation(NumberLimitations.class);
         boolean b = limitations != null;

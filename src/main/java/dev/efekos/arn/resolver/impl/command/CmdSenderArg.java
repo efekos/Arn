@@ -18,7 +18,7 @@ public class CmdSenderArg implements CommandArgumentResolver {
     }
 
     @Override
-    public ArgumentBuilder apply(Parameter parameter) {
+    public ArgumentBuilder<?,?> apply(Parameter parameter) {
         return null;
     }
 }
