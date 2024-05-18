@@ -16,6 +16,9 @@ public class CommandHandlerMethod {
     private List<CommandArgumentResolver> argumentResolvers;
     private List<CommandHandlerMethodArgumentResolver> handlerMethodResolvers;
     private String signature;
+    private boolean blocksConsole;
+    private boolean blocksCommandBlock;
+    private boolean blocksPlayer;
 
 
     @Override
@@ -28,6 +31,9 @@ public class CommandHandlerMethod {
                 ", argumentResolvers=" + argumentResolvers +
                 ", handlerMethodResolvers=" + handlerMethodResolvers +
                 ", signature='" + signature + '\'' +
+                ", blocksConsole=" + blocksConsole +
+                ", blocksCommandBlock=" + blocksCommandBlock +
+                ", blocksPlayer=" + blocksPlayer +
                 '}';
     }
 
@@ -36,12 +42,36 @@ public class CommandHandlerMethod {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CommandHandlerMethod that = (CommandHandlerMethod) o;
-        return Objects.equals(command, that.command) && Objects.equals(method, that.method) && Objects.equals(annotationData, that.annotationData) && Objects.equals(parameters, that.parameters) && Objects.equals(argumentResolvers, that.argumentResolvers) && Objects.equals(handlerMethodResolvers, that.handlerMethodResolvers) && Objects.equals(signature, that.signature);
+        return blocksConsole == that.blocksConsole && blocksCommandBlock == that.blocksCommandBlock && blocksPlayer == that.blocksPlayer && Objects.equals(command, that.command) && Objects.equals(method, that.method) && Objects.equals(annotationData, that.annotationData) && Objects.equals(parameters, that.parameters) && Objects.equals(argumentResolvers, that.argumentResolvers) && Objects.equals(handlerMethodResolvers, that.handlerMethodResolvers) && Objects.equals(signature, that.signature);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(command, method, annotationData, parameters, argumentResolvers, handlerMethodResolvers, signature);
+        return Objects.hash(command, method, annotationData, parameters, argumentResolvers, handlerMethodResolvers, signature, blocksConsole, blocksCommandBlock, blocksPlayer);
+    }
+
+    public boolean isBlocksConsole() {
+        return blocksConsole;
+    }
+
+    public void setBlocksConsole(boolean blocksConsole) {
+        this.blocksConsole = blocksConsole;
+    }
+
+    public boolean isBlocksCommandBlock() {
+        return blocksCommandBlock;
+    }
+
+    public void setBlocksCommandBlock(boolean blocksCommandBlock) {
+        this.blocksCommandBlock = blocksCommandBlock;
+    }
+
+    public boolean isBlocksPlayer() {
+        return blocksPlayer;
+    }
+
+    public void setBlocksPlayer(boolean blocksPlayer) {
+        this.blocksPlayer = blocksPlayer;
     }
 
     public String getCommand() {

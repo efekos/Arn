@@ -3,19 +3,24 @@ package dev.efekos.arn;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import dev.efekos.arn.annotation.*;
+import dev.efekos.arn.annotation.block.BlockCommandBlock;
+import dev.efekos.arn.annotation.block.BlockConsole;
+import dev.efekos.arn.annotation.block.BlockPlayer;
 import dev.efekos.arn.config.ArnConfigurer;
 import dev.efekos.arn.data.CommandAnnotationData;
 import dev.efekos.arn.data.CommandAnnotationLiteral;
 import dev.efekos.arn.exception.ArnCommandException;
 import dev.efekos.arn.exception.ArnConfigurerException;
 import dev.efekos.arn.exception.ArnContainerException;
-import dev.efekos.arn.handler.CommandHandlerMethod;
+import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.resolver.impl.command.*;
 import dev.efekos.arn.resolver.impl.handler.*;
 import net.minecraft.commands.CommandListenerWrapper;
+import net.minecraft.network.chat.IChatBaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
@@ -37,6 +42,10 @@ public final class Arn {
     private final List<CommandArgumentResolver> commandArgumentResolvers = new ArrayList<>();
     private final List<CommandHandlerMethod> handlers = new ArrayList<>();
     private final Map<String, Object> containerInstanceMap = new HashMap<>();
+
+    public static final SimpleCommandExceptionType CONSOLE_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(IChatBaseComponent.b("This command can't be used by the console."));
+    public static final SimpleCommandExceptionType CM_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(IChatBaseComponent.b("This command can't be used by command blocks."));
+    public static final SimpleCommandExceptionType PLAYER_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(IChatBaseComponent.b("This command can't be used by players."));
 
     public static void run(Class<?> mainClass) {
         Reflections reflections = new Reflections(mainClass.getPackage().getName());
@@ -201,6 +210,9 @@ public final class Arn {
         commandHandlerMethod.setCommand(annotation.value());
         commandHandlerMethod.setMethod(method);
         commandHandlerMethod.setParameters(Arrays.asList(method.getParameters()));
+        commandHandlerMethod.setBlocksCommandBlock(method.isAnnotationPresent(BlockCommandBlock.class));
+        commandHandlerMethod.setBlocksConsole(method.isAnnotationPresent(BlockConsole.class));
+        commandHandlerMethod.setBlocksPlayer(method.isAnnotationPresent(BlockPlayer.class));
 
         CommandAnnotationData baseAnnData = new CommandAnnotationData(annotation);
 
@@ -277,6 +289,11 @@ public final class Arn {
 
               com.mojang.brigadier.Command<CommandListenerWrapper> lambda = commandContext -> {
 
+                  CommandSender sender = commandContext.getSource().getBukkitSender();
+                  if(method.isBlocksConsole()&&sender instanceof ConsoleCommandSender) throw CONSOLE_BLOCKED_EXCEPTION.create();
+                  if(method.isBlocksCommandBlock()&&sender instanceof BlockCommandSender) throw CM_BLOCKED_EXCEPTION.create();
+                  if(method.isBlocksPlayer()&&sender instanceof Player) throw PLAYER_BLOCKED_EXCEPTION.create();
+
                   List<Object> objects = new ArrayList<>();
 
                   for (int i = 0; i < method.getHandlerMethodResolvers().size(); i++) {
@@ -319,7 +336,6 @@ public final class Arn {
         if (nodes.isEmpty()) return null;
         System.out.println(nodes.size());
         System.out.println(data);
-        if (nodes.size() == 1) return nodes.get(0).executes(executes);
 
         ArgumentBuilder chainedBuilder = nodes.get(nodes.size() - 1).executes(executes);
 
