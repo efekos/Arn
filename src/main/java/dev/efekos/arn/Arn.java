@@ -176,8 +176,8 @@ public final class Arn {
         if (!method.getReturnType().equals(int.class))
             throw new ArnCommandException("Handler method '" + method.getName() + "' for command '" + annotation.value() + "' does not return 'int'");
         long count = Arrays.stream(method.getParameters()).filter(parameter -> REQUIRED_SENDER_CLASSES.contains(parameter.getType()) && !parameter.isAnnotationPresent(CommandArgument.class)).count();
-        if (count != 1)
-            throw new ArnCommandException("Handler method '" + method.getName() + "' for command '" + annotation.value() + "' must contain exactly one parameter that is a CommandSender.");
+        if (count > 1)
+            throw new ArnCommandException("Handler method '" + method.getName() + "' for command '" + annotation.value() + "' must contain maximum one parameter that is a CommandSender.");
         for (Parameter parameter : method.getParameters()) {
             if (handlerMethodArgumentResolvers.stream().noneMatch(car -> car.isApplicable(parameter)))
                 throw new ArnCommandException("Handler method '" + method.getName() + "' for command '" + annotation.value() + "' has a parameter '" + parameter.getName() + "' that isn't applicable for anything.");
