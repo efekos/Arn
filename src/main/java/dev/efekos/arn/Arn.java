@@ -3,13 +3,14 @@ package dev.efekos.arn;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import dev.efekos.arn.annotation.Command;
-import dev.efekos.arn.annotation.CommandArgument;
-import dev.efekos.arn.annotation.Container;
-import dev.efekos.arn.annotation.RestCommand;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import dev.efekos.arn.annotation.*;
+import dev.efekos.arn.argument.EnumArgumentType;
 import dev.efekos.arn.config.ArnConfigurer;
 import dev.efekos.arn.data.CommandAnnotationData;
 import dev.efekos.arn.data.CommandAnnotationLiteral;
+import dev.efekos.arn.exception.ArnArgumentException;
 import dev.efekos.arn.exception.ArnCommandException;
 import dev.efekos.arn.exception.ArnConfigurerException;
 import dev.efekos.arn.exception.ArnContainerException;
@@ -19,7 +20,8 @@ import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.resolver.impl.command.*;
 import dev.efekos.arn.resolver.impl.handler.*;
 import net.minecraft.commands.CommandListenerWrapper;
-import net.minecraft.network.chat.IChatBaseComponent;
+import net.minecraft.commands.synchronization.ArgumentTypeInfos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
@@ -33,7 +35,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public final class Arn {
 
@@ -49,12 +50,57 @@ public final class Arn {
         try {
             instance.configure();
             instance.scanConfigurers(reflections);
+
             instance.createContainerInstances(reflections);
+
+            instance.scanEnumArguments(reflections);
+
             instance.scanCommands(reflections);
             instance.registerCommands();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void scanEnumArguments(Reflections reflections) throws ArnArgumentException {
+
+        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(ArgumentType.class);
+
+        for (Class<?> aClass : annotated) {
+            if(!aClass.isEnum()) throw new ArnArgumentException(aClass.getName() + " is not an enum but is annotated with @ArgumentType");
+            Class<Enum<?>> anEnum = (Class<Enum<?>>) aClass;
+            commandArgumentResolvers.add(new CommandArgumentResolver() {
+                @Override
+                public boolean isApplicable(Parameter parameter) {
+                    return parameter.getType().equals(anEnum)&&parameter.isAnnotationPresent(CommandArgument.class);
+                }
+
+                @Override
+                public ArgumentBuilder apply(Parameter parameter) {
+                    String s = parameter.getAnnotation(CommandArgument.class).value();
+                    return net.minecraft.commands.CommandDispatcher.a(s.isEmpty()?parameter.getName():s, EnumArgumentType.enumArg(anEnum));
+                }
+            });
+
+            handlerMethodArgumentResolvers.add(new CommandHandlerMethodArgumentResolver() {
+                @Override
+                public boolean isApplicable(Parameter parameter) {
+                    return parameter.getType().equals(anEnum)&&parameter.isAnnotationPresent(CommandArgument.class);
+                }
+
+                @Override
+                public boolean requireCommandArgument() {
+                    return true;
+                }
+
+                @Override
+                public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
+                    String s = parameter.getAnnotation(CommandArgument.class).value();
+                    return EnumArgumentType.getEnum(context,s.isEmpty()?parameter.getName():s,anEnum);
+                }
+            });
+        }
+
     }
 
     private void createContainerInstances(Reflections reflections) throws ArnContainerException {
@@ -267,7 +313,6 @@ public final class Arn {
 
                 if(i!=0) for (CommandAnnotationLiteral lit : literals) if(lit.getOffset()==i) nodes.add(net.minecraft.commands.CommandDispatcher.a(lit.getLiteral()));
 
-                //FIXME filter out parameters that has a command argument resolver of null because filtering nulls out throws an error here.
                 ArgumentBuilder builder = resolver.apply(parametersClone.get(i));
                 if (builder != null) nodes.add(builder);
             }
