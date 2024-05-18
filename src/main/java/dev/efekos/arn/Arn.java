@@ -3,14 +3,10 @@ package dev.efekos.arn;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.annotation.*;
-import dev.efekos.arn.argument.EnumArgumentType;
 import dev.efekos.arn.config.ArnConfigurer;
 import dev.efekos.arn.data.CommandAnnotationData;
 import dev.efekos.arn.data.CommandAnnotationLiteral;
-import dev.efekos.arn.exception.ArnArgumentException;
 import dev.efekos.arn.exception.ArnCommandException;
 import dev.efekos.arn.exception.ArnConfigurerException;
 import dev.efekos.arn.exception.ArnContainerException;
@@ -20,8 +16,6 @@ import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.resolver.impl.command.*;
 import dev.efekos.arn.resolver.impl.handler.*;
 import net.minecraft.commands.CommandListenerWrapper;
-import net.minecraft.commands.synchronization.ArgumentTypeInfos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
@@ -52,55 +46,11 @@ public final class Arn {
             instance.scanConfigurers(reflections);
 
             instance.createContainerInstances(reflections);
-
-            instance.scanEnumArguments(reflections);
-
             instance.scanCommands(reflections);
             instance.registerCommands();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void scanEnumArguments(Reflections reflections) throws ArnArgumentException {
-
-        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(ArgumentType.class);
-
-        for (Class<?> aClass : annotated) {
-            if(!aClass.isEnum()) throw new ArnArgumentException(aClass.getName() + " is not an enum but is annotated with @ArgumentType");
-            Class<Enum<?>> anEnum = (Class<Enum<?>>) aClass;
-            commandArgumentResolvers.add(new CommandArgumentResolver() {
-                @Override
-                public boolean isApplicable(Parameter parameter) {
-                    return parameter.getType().equals(anEnum)&&parameter.isAnnotationPresent(CommandArgument.class);
-                }
-
-                @Override
-                public ArgumentBuilder apply(Parameter parameter) {
-                    String s = parameter.getAnnotation(CommandArgument.class).value();
-                    return net.minecraft.commands.CommandDispatcher.a(s.isEmpty()?parameter.getName():s, EnumArgumentType.enumArg(anEnum));
-                }
-            });
-
-            handlerMethodArgumentResolvers.add(new CommandHandlerMethodArgumentResolver() {
-                @Override
-                public boolean isApplicable(Parameter parameter) {
-                    return parameter.getType().equals(anEnum)&&parameter.isAnnotationPresent(CommandArgument.class);
-                }
-
-                @Override
-                public boolean requireCommandArgument() {
-                    return true;
-                }
-
-                @Override
-                public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
-                    String s = parameter.getAnnotation(CommandArgument.class).value();
-                    return EnumArgumentType.getEnum(context,s.isEmpty()?parameter.getName():s,anEnum);
-                }
-            });
-        }
-
     }
 
     private void createContainerInstances(Reflections reflections) throws ArnContainerException {
@@ -282,73 +232,78 @@ public final class Arn {
         return commandHandlerMethod;
     }
 
-    private void registerCommands() {
+    private void registerCommands() throws ArnCommandException{
         CommandDispatcher<CommandListenerWrapper> dispatcher = ((CraftServer) Bukkit.getServer()).getHandle().c().aE().a();
 
         for (CommandHandlerMethod method : handlers) {
-            List<ArgumentBuilder> nodes = new ArrayList<>();
+          try {
+              List<ArgumentBuilder> nodes = new ArrayList<>();
 
-            // initialize lists
-            List<CommandAnnotationLiteral> literals = method.getAnnotationData().getLiterals();
-            List<CommandArgumentResolver> nonnullResolvers = new ArrayList<>(method.getArgumentResolvers());
-            List<Parameter> parametersClone = new ArrayList<>(method.getParameters());
-
-
-            // iterate argument resolvers
-            for (int i = 0; i < method.getArgumentResolvers().size(); i++) {
-                CommandArgumentResolver resolver = method.getArgumentResolvers().get(i);
-                if(resolver==null){
-                    parametersClone.remove(i);
-                    nonnullResolvers.remove(i);
-                }
-            }
-
-            for (CommandAnnotationLiteral lit : literals) if(lit.getOffset()==0) nodes.add(net.minecraft.commands.CommandDispatcher.a(lit.getLiteral()));
-
-            System.out.println("iterate nonnull resolvers");
-            System.out.println(nonnullResolvers);
-            for (int i = 0; i < nonnullResolvers.size(); i++) {
-                CommandArgumentResolver resolver = nonnullResolvers.get(i);
-                System.out.println(resolver);
-
-                if(i!=0) for (CommandAnnotationLiteral lit : literals) if(lit.getOffset()==i) nodes.add(net.minecraft.commands.CommandDispatcher.a(lit.getLiteral()));
-
-                ArgumentBuilder builder = resolver.apply(parametersClone.get(i));
-                if (builder != null) nodes.add(builder);
-            }
-
-            com.mojang.brigadier.Command<CommandListenerWrapper> lambda = commandContext -> {
-
-                List<Object> objects = new ArrayList<>();
-
-                for (int i = 0; i < method.getHandlerMethodResolvers().size(); i++) {
-                    CommandHandlerMethodArgumentResolver resolver = method.getHandlerMethodResolvers().get(i);
-                    objects.add(resolver.resolve(method.getParameters().get(i), method, commandContext));
-                }
-
-                Method actualMethodToInvoke = method.getMethod();
-
-                try {
-                    actualMethodToInvoke.setAccessible(true);
-                    return (int) actualMethodToInvoke.invoke(containerInstanceMap.get(method.getMethod().getDeclaringClass().getName()), objects.toArray());
-                } catch (InvocationTargetException e) {
-                    if (e.getCause() != null) try { // this wrap exists so ArnCommandException can be thrown
-                        throw new ArnCommandException("Caused by " + e.getCause().getClass().getSimpleName() + ": " + e.getCause().getMessage(), e.getCause());
-                    } catch (ArnCommandException ex) {
-                        ex.printStackTrace();
-                    }
-                    return 1;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return 1;
-                }
+              // initialize lists
+              List<CommandAnnotationLiteral> literals = method.getAnnotationData().getLiterals();
+              List<CommandArgumentResolver> nonnullResolvers = new ArrayList<>(method.getArgumentResolvers());
+              List<Parameter> parametersClone = new ArrayList<>(method.getParameters());
 
 
-            };
+              // iterate argument resolvers
+              for (int i = 0; i < method.getArgumentResolvers().size(); i++) {
+                  CommandArgumentResolver resolver = method.getArgumentResolvers().get(i);
+                  if(resolver==null){
+                      parametersClone.remove(i);
+                      nonnullResolvers.remove(i);
+                  }
+              }
 
-            LiteralArgumentBuilder<CommandListenerWrapper> builder = (LiteralArgumentBuilder<CommandListenerWrapper>) chainArgumentBuilders(nodes, lambda, method.getAnnotationData());
+              for (CommandAnnotationLiteral lit : literals) if(lit.getOffset()==0) nodes.add(net.minecraft.commands.CommandDispatcher.a(lit.getLiteral()));
 
-            dispatcher.register(builder);
+              System.out.println("iterate nonnull resolvers");
+              System.out.println(nonnullResolvers);
+              for (int i = 0; i < nonnullResolvers.size(); i++) {
+                  CommandArgumentResolver resolver = nonnullResolvers.get(i);
+                  System.out.println(resolver);
+
+                  if(i!=0) for (CommandAnnotationLiteral lit : literals) if(lit.getOffset()==i) nodes.add(net.minecraft.commands.CommandDispatcher.a(lit.getLiteral()));
+
+                  ArgumentBuilder builder = resolver.apply(parametersClone.get(i));
+                  if (builder != null) nodes.add(builder);
+              }
+
+              com.mojang.brigadier.Command<CommandListenerWrapper> lambda = commandContext -> {
+
+                  List<Object> objects = new ArrayList<>();
+
+                  for (int i = 0; i < method.getHandlerMethodResolvers().size(); i++) {
+                      CommandHandlerMethodArgumentResolver resolver = method.getHandlerMethodResolvers().get(i);
+                      objects.add(resolver.resolve(method.getParameters().get(i), method, commandContext));
+                  }
+
+                  Method actualMethodToInvoke = method.getMethod();
+
+                  try {
+                      actualMethodToInvoke.setAccessible(true);
+                      return (int) actualMethodToInvoke.invoke(containerInstanceMap.get(method.getMethod().getDeclaringClass().getName()), objects.toArray());
+                  } catch (InvocationTargetException e) {
+                      if (e.getCause() != null) try { // this wrap exists so ArnCommandException can be thrown
+                          throw new ArnCommandException("Caused by " + e.getCause().getClass().getSimpleName() + ": " + e.getCause().getMessage(), e.getCause());
+                      } catch (ArnCommandException ex) {
+                          ex.printStackTrace();
+                      }
+                      return 1;
+                  } catch (Exception e) {
+                      e.printStackTrace();
+                      return 1;
+                  }
+
+
+              };
+
+              LiteralArgumentBuilder<CommandListenerWrapper> builder = (LiteralArgumentBuilder<CommandListenerWrapper>) chainArgumentBuilders(nodes, lambda, method.getAnnotationData());
+
+              dispatcher.register(builder);
+          } catch (Exception e){
+              System.out.println(method);
+              throw new ArnCommandException("Something went wrong with registering command '"+method.getCommand()+"'",e);
+          }
 
         }
     }
