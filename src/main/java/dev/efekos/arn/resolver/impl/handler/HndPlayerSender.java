@@ -8,6 +8,7 @@ import net.minecraft.commands.CommandListenerWrapper;
 import net.minecraft.server.level.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_20_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -23,10 +24,9 @@ public class HndPlayerSender implements CommandHandlerMethodArgumentResolver {
 
     @Override
     public Player resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
-        EntityPlayer player = context.getSource().i();
-        if(player==null) return null;
-        Server server = Bukkit.getServer();
-        return new CraftPlayer(((CraftServer) server),player);
+        CommandSender sender = context.getSource().getBukkitSender();
+        if(sender instanceof Player) return ((Player) sender);
+        return null;
     }
 
     @Override

@@ -90,6 +90,9 @@ public final class Arn {
         handlerMethodArgumentResolvers.add(new HndBlockArg());
         handlerMethodArgumentResolvers.add(new HndItemStackArg());
         handlerMethodArgumentResolvers.add(new HndBlockStateArg());
+        handlerMethodArgumentResolvers.add(new HndSender());
+        handlerMethodArgumentResolvers.add(new HndConsoleCommandSender());
+        handlerMethodArgumentResolvers.add(new HndBlockCommandSender());
 
         commandArgumentResolvers.add(new CmdBooleanArg());
         commandArgumentResolvers.add(new CmdDoubleArg());
