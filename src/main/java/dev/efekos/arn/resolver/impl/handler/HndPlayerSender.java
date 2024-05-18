@@ -1,6 +1,7 @@
 package dev.efekos.arn.resolver.impl.handler;
 
 import com.mojang.brigadier.context.CommandContext;
+import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.handler.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import net.minecraft.commands.CommandListenerWrapper;
@@ -17,7 +18,7 @@ public class HndPlayerSender implements CommandHandlerMethodArgumentResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.getType().equals(Player.class);
+        return parameter.getType().equals(Player.class) && !parameter.isAnnotationPresent(CommandArgument.class);
     }
 
     @Override
