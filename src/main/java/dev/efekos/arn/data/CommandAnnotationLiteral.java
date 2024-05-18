@@ -1,7 +1,5 @@
 package dev.efekos.arn.data;
 
-import org.checkerframework.checker.units.qual.C;
-
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

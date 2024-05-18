@@ -148,11 +148,9 @@ public final class Arn {
 
     private void scanCommands(Reflections reflections) throws ArnCommandException {
         Set<Class<?>> containers = reflections.getTypesAnnotatedWith(Container.class);
-        Set<Class<?>> restCommands = reflections.getTypesAnnotatedWith(RestCommand.class);
 
         for (Class<?> container : containers) {
 
-            if (container.isAnnotationPresent(RestCommand.class)) continue;
 
             for (Method method : container.getMethods()) {
 
@@ -162,21 +160,8 @@ public final class Arn {
             }
         }
 
-        for (Class<?> restCommand : restCommands) {
-
-            for (Method method : restCommand.getMethods()) {
-
-                if (method.isAnnotationPresent(Command.class))
-                    instance.restCommand(method.getAnnotation(Command.class), method, restCommand);
-
-            }
-
-        }
     }
 
-    private void restCommand(Command annotation, Method method, Class<?> restCommand) throws ArnCommandException {
-        //TODO
-    }
 
     private static final List<Class<? extends CommandSender>> REQUIRED_SENDER_CLASSES = Arrays.asList(CommandSender.class, Player.class, ConsoleCommandSender.class, BlockCommandSender.class);
 
