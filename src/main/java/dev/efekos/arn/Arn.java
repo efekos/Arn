@@ -453,7 +453,7 @@ public final class Arn {
      * @param nodes List of the nodes to chain.
      * @param executes execute function to handle the command. Added to the last argument in the chain.
      * @param data {@link CommandAnnotationData} associated with the nodes. If there is a permission required, it will
-     *             be applied to the last literal of the chain.
+     *             be applied to first literal of the chain.
      * @return {@code nodes[0]} with rest of the nodes attached to it.
      */
     private static ArgumentBuilder<?, ?> chainArgumentBuilders(List<ArgumentBuilder> nodes, com.mojang.brigadier.Command<CommandListenerWrapper> executes, CommandAnnotationData data) {
@@ -461,8 +461,7 @@ public final class Arn {
         System.out.println(nodes.size());
         System.out.println(data);
 
-        int last = findLastIndex(nodes, argumentBuilder -> argumentBuilder instanceof LiteralArgumentBuilder);
-        if(!data.getPermission().isEmpty()) nodes.set(last,nodes.get(last).requires(o -> ((CommandListenerWrapper) o).getBukkitSender().hasPermission(data.getPermission())));
+        if(!data.getPermission().isEmpty()) nodes.set(0,nodes.get(0).requires(o -> ((CommandListenerWrapper) o).getBukkitSender().hasPermission(data.getPermission())));
 
         ArgumentBuilder chainedBuilder = nodes.get(nodes.size() - 1).executes(executes);
 
@@ -479,6 +478,7 @@ public final class Arn {
      * @param condition A condition.
      * @return Last element that matches the given condition in the list.
      * @param <T> Type of the elements in the list.
+     *
      */
     private static <T> int findLastIndex(List<T> list, Predicate<T> condition) {
         for (int i = list.size() - 2; i >= 0; i--) {
