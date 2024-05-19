@@ -15,8 +15,16 @@ import org.bukkit.craftbukkit.v1_20_R3.CraftServer;
 
 import java.lang.reflect.Parameter;
 
-public class CmdBlockStateArg implements CommandArgumentResolver {
+/**
+ * An implementation of {@link CommandArgumentResolver}. Resolves {@link BlockData} arguments.
+ * @since 0.1
+ * @author efekos
+ */
+public class CmdBlockDataArg implements CommandArgumentResolver {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(BlockData.class);
@@ -29,7 +37,9 @@ public class CmdBlockStateArg implements CommandArgumentResolver {
         context = CommandBuildContext.a(holderlookup,flagSet);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArgumentBuilder apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();

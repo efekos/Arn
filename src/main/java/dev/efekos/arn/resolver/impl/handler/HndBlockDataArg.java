@@ -14,18 +14,32 @@ import org.bukkit.craftbukkit.v1_20_R3.block.data.CraftBlockData;
 
 import java.lang.reflect.Parameter;
 
-public class HndBlockStateArg implements CommandHandlerMethodArgumentResolver {
+/**
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link BlockData} arguments.
+ * @since 0.1
+ * @author efekos
+ */
+public class HndBlockDataArg implements CommandHandlerMethodArgumentResolver {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(BlockData.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean requireCommandArgument() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlockData resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
