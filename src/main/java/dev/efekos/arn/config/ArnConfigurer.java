@@ -14,8 +14,16 @@ import java.util.List;
  */
 public interface ArnConfigurer {
 
+    /**
+     * Adds extra {@link CommandHandlerMethodArgumentResolver}s to the given list.
+     * @param resolvers A list.
+     */
     void addHandlerMethodArgumentResolvers(List<CommandHandlerMethodArgumentResolver> resolvers);
 
+    /**
+     * Adds extra {@link CommandArgumentResolver}s to the given list.
+     * @param resolvers A list.
+     */
     void addArgumentResolvers(List<CommandArgumentResolver> resolvers);
 
 }

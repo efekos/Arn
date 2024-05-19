@@ -120,7 +120,7 @@ public final class Arn {
     }
 
     /**
-     * Scans for {@link Container} enums annotated with {@link CustomArgument}, and registers a {@link CmdEnumArg} &
+     * Scans for {@link Container} enums annotated with {@link CustomArgument}, and registers a {@link CmdEnumArg} &amp
      * {@link HndEnumArg} for them.
      * @param reflections Main reflections.
      * @throws ArnArgumentException If something about an enum found is invalid.
