@@ -26,6 +26,10 @@ public class HndEnumArg implements CommandHandlerMethodArgumentResolver {
      */
     private final Class<? extends Enum<?>> enumClass;
 
+    /**
+     * Creates a new instance of this resolver.
+     * @param enumClass Main {@link Enum} class this resolver will handle.
+     */
     public HndEnumArg(Class<? extends Enum<?>> enumClass) {
         this.enumClass = enumClass;
     }
