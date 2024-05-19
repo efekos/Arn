@@ -1,6 +1,9 @@
 package dev.efekos.arn.annotation;
 
 
+import dev.efekos.arn.annotation.modifier.Block;
+import dev.efekos.arn.annotation.modifier.Item;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -24,12 +27,15 @@ import java.lang.annotation.Target;
  *     <li>{@link org.bukkit.entity.Entity}[]</li>
  *     <li>{@link org.bukkit.GameMode}</li>
  *     <li>{@link org.bukkit.Location} (block position only)</li>
- *     <li>{@link org.bukkit.Material} (separated into blocks and items, see {@link dev.efekos.arn.annotation.material.Item} and {@link dev.efekos.arn.annotation.material.Block}.)</li>
+ *     <li>{@link org.bukkit.Material} (separated into blocks and items, see {@link Item} and {@link Block}.)</li>
  *     <li>{@link org.bukkit.World}</li>
  *     <li>{@link org.bukkit.entity.Player}</li>
  *     <li>{@link org.bukkit.entity.Player}[]</li>
  *     <li>{@link org.bukkit.potion.PotionEffectType}</li>
  *     <li>{@link net.md_5.bungee.api.chat.BaseComponent}</li>
+ *     <li>{@link org.bukkit.advancement.Advancement}</li>
+ *     <li>{@link org.bukkit.attribute.Attribute}</li>
+ *     <li>{@link Container} {@link Enum}s that are annotated with {@link CustomArgument}.</li>
  * </ul>
  * @since 0.1
  * @author efekos

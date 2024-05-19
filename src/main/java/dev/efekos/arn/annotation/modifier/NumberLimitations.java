@@ -1,4 +1,6 @@
-package dev.efekos.arn.annotation;
+package dev.efekos.arn.annotation.modifier;
+
+import dev.efekos.arn.annotation.CommandArgument;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

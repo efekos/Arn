@@ -2,7 +2,7 @@ package dev.efekos.arn.resolver.impl.command;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.annotation.CommandArgument;
-import dev.efekos.arn.annotation.material.Block;
+import dev.efekos.arn.annotation.modifier.Block;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandDispatcher;

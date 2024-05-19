@@ -3,7 +3,7 @@ package dev.efekos.arn.resolver.impl.handler;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.annotation.CommandArgument;
-import dev.efekos.arn.annotation.material.Block;
+import dev.efekos.arn.annotation.modifier.Block;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import net.minecraft.commands.CommandListenerWrapper;

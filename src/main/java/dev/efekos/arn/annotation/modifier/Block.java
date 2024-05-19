@@ -1,4 +1,4 @@
-package dev.efekos.arn.annotation.material;
+package dev.efekos.arn.annotation.modifier;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

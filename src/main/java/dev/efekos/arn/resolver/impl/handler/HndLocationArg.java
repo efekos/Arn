@@ -2,6 +2,7 @@ package dev.efekos.arn.resolver.impl.handler;
 
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.annotation.CommandArgument;
+import dev.efekos.arn.annotation.modifier.Vector;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import net.minecraft.commands.CommandListenerWrapper;
@@ -30,7 +31,7 @@ public final class HndLocationArg implements CommandHandlerMethodArgumentResolve
      */
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Location.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Location.class) && !parameter.isAnnotationPresent(Vector.class);
     }
 
     /**

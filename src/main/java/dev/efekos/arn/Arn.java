@@ -198,6 +198,8 @@ public final class Arn {
         handlerMethodArgumentResolvers.add(new HndBlockCommandSender());
         handlerMethodArgumentResolvers.add(new HndAdvancementArg());
         handlerMethodArgumentResolvers.add(new HndAttributeArg());
+        handlerMethodArgumentResolvers.add(new HndVectorArg());
+        handlerMethodArgumentResolvers.add(new HndInventorySlotArg());
 
         commandArgumentResolvers.add(new CmdBooleanArg());
         commandArgumentResolvers.add(new CmdDoubleArg());
@@ -221,6 +223,8 @@ public final class Arn {
         commandArgumentResolvers.add(new CmdBlockDataArg());
         commandArgumentResolvers.add(new CmdAdvancementArg());
         commandArgumentResolvers.add(new CmdAttributeArg());
+        commandArgumentResolvers.add(new CmdVectorArg());
+        commandArgumentResolvers.add(new CmdInventorySlotArg());
     }
 
     /**
