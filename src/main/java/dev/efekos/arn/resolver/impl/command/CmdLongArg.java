@@ -9,12 +9,24 @@ import net.minecraft.commands.CommandDispatcher;
 
 import java.lang.reflect.Parameter;
 
+/**
+ * An implementation of {@link CommandArgumentResolver}. Resolves {@link Long} and {@code long} arguments.
+ * @since 0.1
+ * @author efekos
+ */
 public class CmdLongArg implements CommandArgumentResolver {
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(long.class)||parameter.getType().equals(Long.class));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArgumentBuilder<?,?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();

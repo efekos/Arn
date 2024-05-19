@@ -13,13 +13,24 @@ import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
 
 import java.lang.reflect.Parameter;
 
+/**
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link ItemStack} arguments.
+ * @since 0.1
+ * @author efekos
+ */
 public class HndItemStackArg implements CommandHandlerMethodArgumentResolver {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(org.bukkit.inventory.ItemStack.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public org.bukkit.inventory.ItemStack resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
@@ -28,6 +39,9 @@ public class HndItemStackArg implements CommandHandlerMethodArgumentResolver {
         return CraftItemStack.asBukkitCopy(itemStack);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean requireCommandArgument() {
         return true;

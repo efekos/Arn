@@ -17,7 +17,16 @@ import org.bukkit.craftbukkit.v1_20_R3.CraftServer;
 
 import java.lang.reflect.Parameter;
 
+/**
+ * An implementation of {@link CommandArgumentResolver}. Resolves {@link Material} arguments that are a {@link Block}.
+ * @since 0.1
+ * @author efekos
+ */
 public class CmdBlockArg implements CommandArgumentResolver {
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Material.class) && parameter.isAnnotationPresent(Block.class);
@@ -25,12 +34,18 @@ public class CmdBlockArg implements CommandArgumentResolver {
 
     private static CommandBuildContext context;
 
+    /**
+     * {@inheritDoc}
+     */
     private static void initializeContext(){
         FeatureFlagSet flagSet = FeatureFlagSet.a(FeatureFlags.a);
         IRegistryCustom.Dimension holderlookup = ((CraftServer) Bukkit.getServer()).getHandle().c().aZ();
         context = CommandBuildContext.a(holderlookup,flagSet);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArgumentBuilder<?,?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();

@@ -16,8 +16,16 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.lang.reflect.Parameter;
 
+/**
+ * An implementation of {@link CommandArgumentResolver}. Resolves {@link PotionEffectType} arguments.
+ * @since 0.1
+ * @author efekos
+ */
 public class CmdEffectTypeArg implements CommandArgumentResolver {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(PotionEffectType.class);
@@ -31,6 +39,9 @@ public class CmdEffectTypeArg implements CommandArgumentResolver {
         context = CommandBuildContext.a(holderlookup,flagSet);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArgumentBuilder<?,?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();

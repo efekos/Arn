@@ -16,8 +16,16 @@ import org.bukkit.enchantments.Enchantment;
 
 import java.lang.reflect.Parameter;
 
+/**
+ * An implementation of {@link CommandArgumentResolver}. Resolves {@link Enchantment} arguments.
+ * @since 0.1
+ * @author efekos
+ */
 public class CmdEnchantmentArg implements CommandArgumentResolver {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Enchantment.class);
@@ -31,7 +39,9 @@ public class CmdEnchantmentArg implements CommandArgumentResolver {
         context = CommandBuildContext.a(holderlookup,flagSet);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArgumentBuilder<?,?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();

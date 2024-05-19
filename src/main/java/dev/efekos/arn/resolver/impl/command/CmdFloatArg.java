@@ -9,12 +9,24 @@ import net.minecraft.commands.CommandDispatcher;
 
 import java.lang.reflect.Parameter;
 
+/**
+ * An implementation of {@link CommandArgumentResolver}. Resolves {@link Float} and {@code float} arguments.
+ * @since 0.1
+ * @author efekos
+ */
 public class CmdFloatArg implements CommandArgumentResolver {
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(float.class)||parameter.getType().equals(Float.class));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArgumentBuilder<?,?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();

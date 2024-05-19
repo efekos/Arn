@@ -17,7 +17,16 @@ import org.bukkit.craftbukkit.v1_20_R3.CraftServer;
 
 import java.lang.reflect.Parameter;
 
+/**
+ * An implementation of {@link CommandArgumentResolver}. Resolves {@link Material} arguments that is an {@link Item}.
+ * @since 0.1
+ * @author efekos
+ */
 public class CmdItemArg implements CommandArgumentResolver {
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Material.class) && parameter.isAnnotationPresent(Item.class);
@@ -31,6 +40,9 @@ public class CmdItemArg implements CommandArgumentResolver {
         context = CommandBuildContext.a(holderlookup,flagSet);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArgumentBuilder<?,?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();

@@ -18,13 +18,24 @@ import org.bukkit.entity.Player;
 import java.lang.reflect.Parameter;
 import java.util.Collection;
 
+/**
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Entity}[] arguments.
+ * @since 0.1
+ * @author efekos
+ */
 public class HndMultipleEntityArg implements CommandHandlerMethodArgumentResolver {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Entity[].class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entity[] resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
@@ -41,6 +52,9 @@ public class HndMultipleEntityArg implements CommandHandlerMethodArgumentResolve
         return array;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean requireCommandArgument() {
         return true;

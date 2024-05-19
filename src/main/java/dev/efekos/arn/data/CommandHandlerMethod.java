@@ -1,5 +1,6 @@
 package dev.efekos.arn.data;
 
+import dev.efekos.arn.annotation.Command;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 
@@ -8,16 +9,74 @@ import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Represents a {@link Method} that is annotated with {@link dev.efekos.arn.annotation.Command}. Used to store data about
+ * a command handler methods and register commands using those data. See {@link dev.efekos.arn.Arn#handlers} for more
+ * information about how this class is used by {@link dev.efekos.arn.Arn}.
+ * @author efekos
+ * @version 0.1
+ */
 public class CommandHandlerMethod {
+
+    /**
+     * Value of the {@link Command#value()} on {@link #method}.
+     */
     private String command;
+
+    /**
+     * Main method from Java Reflection API.
+     */
     private Method method;
+
+    /**
+     * An annotation data created from the {@link Command} annotation on {@link #method}.
+     */
     private CommandAnnotationData annotationData;
+
+    /**
+     * {@link Method#getParameters()} of {@link #method} converted into an {@link java.util.ArrayList}.
+     */
     private List<Parameter> parameters;
+
+    /**
+     * A list of {@link CommandArgumentResolver}s found and used by {@link dev.efekos.arn.Arn}.
+     */
     private List<CommandArgumentResolver> argumentResolvers;
+
+    /**
+     * A list of {@link CommandHandlerMethodArgumentResolver}s found and used by {@link dev.efekos.arn.Arn}.
+     */
     private List<CommandHandlerMethodArgumentResolver> handlerMethodResolvers;
+
+    /**
+     * A signature string that represents what this command is. Unlike a method signature, this signature starts with
+     * {@link Command#value()} of {@link #method} instead of the actual method game gathered through {@link Method#getName()}.
+     * This signature is generated and used by {@link dev.efekos.arn.Arn} to detect multiple commands, and throw a
+     * {@link dev.efekos.arn.exception.ArnCommandException} when found.
+     */
     private String signature;
+
+    /**
+     * Determines is this command blocked to console. When a command is blocked to console, the console will receive an
+     * error message while trying to execute the command. {@link dev.efekos.arn.Arn} makes this value {@code true} if
+     * {@link #method} has a {@link dev.efekos.arn.annotation.block.BlockConsole} annotation.
+     */
     private boolean blocksConsole;
+
+
+    /**
+     * Determines is this command blocked to command blocks. When a command is blocked to command blocks, a command block
+     * will receive an error message while trying to execute the command. {@link dev.efekos.arn.Arn} makes this value
+     * {@code true} if {@link #method} has a {@link dev.efekos.arn.annotation.block.BlockCommandBlock} annotation.
+     */
     private boolean blocksCommandBlock;
+
+
+    /**
+     * Determines is this command blocked to players. When a command is blocked to players, a player will receive an
+     * error message while trying to execute the command. {@link dev.efekos.arn.Arn} makes this value {@code true} if
+     * {@link #method} has a {@link dev.efekos.arn.annotation.block.BlockPlayer} annotation.
+     */
     private boolean blocksPlayer;
 
 
@@ -50,82 +109,163 @@ public class CommandHandlerMethod {
         return Objects.hash(command, method, annotationData, parameters, argumentResolvers, handlerMethodResolvers, signature, blocksConsole, blocksCommandBlock, blocksPlayer);
     }
 
+    /**
+     * Getter for {@link #blocksConsole}.
+     * @return Whether is this command blocked to the console.
+     */
     public boolean isBlocksConsole() {
         return blocksConsole;
     }
 
+    /**
+     * Setter for {@link #blocksConsole}.
+     * @param blocksConsole New value.
+     */
     public void setBlocksConsole(boolean blocksConsole) {
         this.blocksConsole = blocksConsole;
     }
 
+    /**
+     * Getter for {@link #blocksCommandBlock}.
+     * @return Whether is this command blocked to command blocks.
+     */
     public boolean isBlocksCommandBlock() {
         return blocksCommandBlock;
     }
 
+    /**
+     * Setter for {@link #blocksCommandBlock}.
+     * @param blocksCommandBlock New value.
+     */
     public void setBlocksCommandBlock(boolean blocksCommandBlock) {
         this.blocksCommandBlock = blocksCommandBlock;
     }
 
+    /**
+     * Getter for {@link #blocksPlayer}.
+     * @return Whether is this command blocked to players.
+     */
     public boolean isBlocksPlayer() {
         return blocksPlayer;
     }
 
+    /**
+     * Setter for {@link #blocksPlayer}.
+     * @param blocksPlayer New value.
+     */
     public void setBlocksPlayer(boolean blocksPlayer) {
         this.blocksPlayer = blocksPlayer;
     }
 
+    /**
+     * Getter for {@link #command}.
+     * @return {@link Command#value()} of {@link #method}.
+     */
     public String getCommand() {
         return command;
     }
 
+    /**
+     * Setter for {@link #command}.
+     * @param command New value.
+     */
     public void setCommand(String command) {
         this.command = command;
     }
 
+    /**
+     * Getter for {@link #method}.
+     * @return Method from Java Reflection API associated with this CommandHandlerMethod.
+     */
     public Method getMethod() {
         return method;
     }
 
+    /**
+     * Setter for {@link #method}.
+     * @param method New value.
+     */
     public void setMethod(Method method) {
         this.method = method;
     }
 
+    /**
+     * Getter for {@link #annotationData}.
+     * @return Changeable version of {@link Command} on {@link #method}.
+     */
     public CommandAnnotationData getAnnotationData() {
         return annotationData;
     }
 
+    /**
+     * Setter for {@link #annotationData}.
+     * @param annotationData New value.
+     */
     public void setAnnotationData(CommandAnnotationData annotationData) {
         this.annotationData = annotationData;
     }
 
+    /**
+     * Getter for {@link #parameters}.
+     * @return Parameter list of {@link #method}.
+     */
     public List<Parameter> getParameters() {
         return parameters;
     }
 
+    /**
+     * Setter for {@link #parameters}.
+     * @param parameters New value.
+     */
     public void setParameters(List<Parameter> parameters) {
         this.parameters = parameters;
     }
 
+    /**
+     * Getter for {@link #argumentResolvers}.
+     * @return List of {@link CommandArgumentResolver}s found by {@link dev.efekos.arn.Arn}.
+     */
     public List<CommandArgumentResolver> getArgumentResolvers() {
         return argumentResolvers;
     }
 
+    /**
+     * Setter for {@link #argumentResolvers}.
+     * @param argumentResolvers New value.
+     */
     public void setArgumentResolvers(List<CommandArgumentResolver> argumentResolvers) {
         this.argumentResolvers = argumentResolvers;
     }
 
+
+    /**
+     * Getter for {@link #argumentResolvers}.
+     * @return List of {@link CommandHandlerMethodArgumentResolver}s found by {@link dev.efekos.arn.Arn}.
+     */
     public List<CommandHandlerMethodArgumentResolver> getHandlerMethodResolvers() {
         return handlerMethodResolvers;
     }
 
+    /**
+     * Setter for {@link #handlerMethodResolvers}.
+     * @param handlerMethodResolvers New value.
+     */
     public void setHandlerMethodResolvers(List<CommandHandlerMethodArgumentResolver> handlerMethodResolvers) {
         this.handlerMethodResolvers = handlerMethodResolvers;
     }
 
+    /**
+     * Getter for {@link #signature}.
+     * @return Signature unique this command.
+     */
     public String getSignature() {
         return signature;
     }
 
+    /**
+     * Setter for {@link #signature}.
+     * @param signature New value.
+     */
     public void setSignature(String signature) {
         this.signature = signature;
     }

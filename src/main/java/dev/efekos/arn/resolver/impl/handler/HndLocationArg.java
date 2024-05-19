@@ -17,13 +17,25 @@ import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
 
 import java.lang.reflect.Parameter;
 
+/**
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Location} arguments using block
+ * position.
+ * @since 0.1
+ * @author efekos
+ */
 public class HndLocationArg implements CommandHandlerMethodArgumentResolver {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Location.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
@@ -44,6 +56,9 @@ public class HndLocationArg implements CommandHandlerMethodArgumentResolver {
         return new Location(world, x, y, z);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean requireCommandArgument() {
         return true;

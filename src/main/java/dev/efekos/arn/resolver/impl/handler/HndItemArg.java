@@ -18,13 +18,25 @@ import org.bukkit.NamespacedKey;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 
+/**
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Material} arguments that is an
+ * {@link Item}.
+ * @since 0.1
+ * @author efekos
+ */
 public class HndItemArg implements CommandHandlerMethodArgumentResolver {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Material.class) && parameter.isAnnotationPresent(Item.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Material resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
@@ -34,6 +46,9 @@ public class HndItemArg implements CommandHandlerMethodArgumentResolver {
         return Arrays.stream(Material.values()).filter(material -> material.getKey().equals(new NamespacedKey(key.b(),key.a()))).findFirst().orElse(null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean requireCommandArgument() {
         return true;

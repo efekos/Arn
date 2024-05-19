@@ -12,13 +12,24 @@ import net.minecraft.network.chat.IChatBaseComponent;
 
 import java.lang.reflect.Parameter;
 
+/**
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link BaseComponent} arguments.
+ * @since 0.1
+ * @author efekos
+ */
 public class HndTextArg implements CommandHandlerMethodArgumentResolver {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(BaseComponent.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BaseComponent resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
@@ -27,6 +38,9 @@ public class HndTextArg implements CommandHandlerMethodArgumentResolver {
         return ComponentSerializer.deserialize(json);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean requireCommandArgument() {
         return true;
