@@ -23,7 +23,7 @@ import java.util.Collection;
  * @since 0.1
  * @author efekos
  */
-public class HndMultipleEntityArg implements CommandHandlerMethodArgumentResolver {
+public final class HndMultipleEntityArg implements CommandHandlerMethodArgumentResolver {
 
     /**
      * {@inheritDoc}

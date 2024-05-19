@@ -14,7 +14,7 @@ import java.lang.reflect.Parameter;
  * @since 0.1
  * @author efekos
  */
-public class CmdMultipleEntityArg implements CommandArgumentResolver {
+public final class CmdMultipleEntityArg implements CommandArgumentResolver {
 
     /**
      * {@inheritDoc}

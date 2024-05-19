@@ -14,7 +14,7 @@ import java.lang.reflect.Parameter;
  * @since 0.1
  * @author efekos
  */
-public class CmdFloatArg implements CommandArgumentResolver {
+public final class CmdFloatArg implements CommandArgumentResolver {
 
     /**
      * {@inheritDoc}

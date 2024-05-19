@@ -24,7 +24,7 @@ import java.util.Arrays;
  * @since 0.1
  * @author efekos
  */
-public class HndItemArg implements CommandHandlerMethodArgumentResolver {
+public final class HndItemArg implements CommandHandlerMethodArgumentResolver {
 
     /**
      * {@inheritDoc}

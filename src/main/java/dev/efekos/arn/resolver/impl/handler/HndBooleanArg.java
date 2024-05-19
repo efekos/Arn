@@ -15,7 +15,7 @@ import java.lang.reflect.Parameter;
  * @since 0.1
  * @author efekos
  */
-public class HndBooleanArg implements CommandHandlerMethodArgumentResolver {
+public final class HndBooleanArg implements CommandHandlerMethodArgumentResolver {
 
     /**
      * {@inheritDoc}

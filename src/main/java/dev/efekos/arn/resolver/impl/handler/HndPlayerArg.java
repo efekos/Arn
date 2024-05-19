@@ -21,7 +21,7 @@ import java.lang.reflect.Parameter;
  * @since 0.1
  * @author efekos
  */
-public class HndPlayerArg implements CommandHandlerMethodArgumentResolver {
+public final class HndPlayerArg implements CommandHandlerMethodArgumentResolver {
 
     /**
      * {@inheritDoc}

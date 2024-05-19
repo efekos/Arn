@@ -14,7 +14,7 @@ import java.lang.reflect.Parameter;
  * @since 0.1
  * @author efekos
  */
-public class CmdMultiplePlayerArg implements CommandArgumentResolver {
+public final class CmdMultiplePlayerArg implements CommandArgumentResolver {
 
     /**
      * {@inheritDoc}

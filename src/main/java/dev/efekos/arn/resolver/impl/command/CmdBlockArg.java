@@ -22,7 +22,7 @@ import java.lang.reflect.Parameter;
  * @since 0.1
  * @author efekos
  */
-public class CmdBlockArg implements CommandArgumentResolver {
+public final class CmdBlockArg implements CommandArgumentResolver {
 
     /**
      * {@inheritDoc}

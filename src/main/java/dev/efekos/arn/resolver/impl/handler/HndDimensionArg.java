@@ -20,7 +20,7 @@ import java.lang.reflect.Parameter;
  * @since 0.1
  * @author efekos
  */
-public class HndDimensionArg implements CommandHandlerMethodArgumentResolver {
+public final class HndDimensionArg implements CommandHandlerMethodArgumentResolver {
 
     /**
      * {@inheritDoc}

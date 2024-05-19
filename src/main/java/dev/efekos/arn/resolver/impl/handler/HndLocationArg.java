@@ -23,7 +23,7 @@ import java.lang.reflect.Parameter;
  * @since 0.1
  * @author efekos
  */
-public class HndLocationArg implements CommandHandlerMethodArgumentResolver {
+public final class HndLocationArg implements CommandHandlerMethodArgumentResolver {
 
     /**
      * {@inheritDoc}

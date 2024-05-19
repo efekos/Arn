@@ -18,7 +18,7 @@ import java.util.Locale;
  * @since 0.1
  * @author efekos
  */
-public class HndGameModeArg implements CommandHandlerMethodArgumentResolver {
+public final class HndGameModeArg implements CommandHandlerMethodArgumentResolver {
 
     /**
      * {@inheritDoc}

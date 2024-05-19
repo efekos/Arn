@@ -22,7 +22,7 @@ import java.util.Collection;
  * @since 0.1
  * @author efekos
  */
-public class HndMultiplePlayerArg implements CommandHandlerMethodArgumentResolver {
+public final class HndMultiplePlayerArg implements CommandHandlerMethodArgumentResolver {
 
     /**
      * {@inheritDoc}

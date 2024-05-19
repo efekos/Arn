@@ -20,7 +20,7 @@ import java.lang.reflect.Parameter;
  * @since 0.1
  * @author efekos
  */
-public class HndEnchantmentArg implements CommandHandlerMethodArgumentResolver {
+public final class HndEnchantmentArg implements CommandHandlerMethodArgumentResolver {
 
     /**
      * {@inheritDoc}

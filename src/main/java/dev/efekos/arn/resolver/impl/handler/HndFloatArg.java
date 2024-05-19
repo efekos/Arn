@@ -14,7 +14,7 @@ import java.lang.reflect.Parameter;
  * @since 0.1
  * @author efekos
  */
-public class HndFloatArg implements CommandHandlerMethodArgumentResolver {
+public final class HndFloatArg implements CommandHandlerMethodArgumentResolver {
 
     /**
      * {@inheritDoc}

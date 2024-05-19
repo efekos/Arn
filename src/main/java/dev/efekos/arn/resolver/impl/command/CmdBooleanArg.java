@@ -13,7 +13,7 @@ import java.lang.reflect.Parameter;
  * @since 0.1
  * @author efekos
  */
-public class CmdBooleanArg implements CommandArgumentResolver {
+public final class CmdBooleanArg implements CommandArgumentResolver {
 
     /**
      * {@inheritDoc}

@@ -23,7 +23,7 @@ import java.util.Arrays;
  * @since 0.1
  * @author efekos
  */
-public class HndBlockArg implements CommandHandlerMethodArgumentResolver {
+public final class HndBlockArg implements CommandHandlerMethodArgumentResolver {
 
     /**
      * {@inheritDoc}

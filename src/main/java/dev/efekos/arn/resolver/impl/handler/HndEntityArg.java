@@ -19,7 +19,7 @@ import java.lang.reflect.Parameter;
  * @since 0.1
  * @author efekos
  */
-public class HndEntityArg implements CommandHandlerMethodArgumentResolver {
+public final class HndEntityArg implements CommandHandlerMethodArgumentResolver {
 
     /**
      * {@inheritDoc}

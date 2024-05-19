@@ -20,7 +20,7 @@ import java.lang.reflect.Parameter;
  * @since 0.1
  * @author efekos
  */
-public class CmdItemStackArg implements CommandArgumentResolver {
+public final class CmdItemStackArg implements CommandArgumentResolver {
 
     /**
      * {@inheritDoc}
