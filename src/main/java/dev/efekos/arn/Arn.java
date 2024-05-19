@@ -7,6 +7,7 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import dev.efekos.arn.annotation.Command;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.annotation.Container;
+import dev.efekos.arn.annotation.CustomArgument;
 import dev.efekos.arn.annotation.block.BlockCommandBlock;
 import dev.efekos.arn.annotation.block.BlockConsole;
 import dev.efekos.arn.annotation.block.BlockPlayer;
@@ -14,6 +15,7 @@ import dev.efekos.arn.config.ArnConfigurer;
 import dev.efekos.arn.data.CommandAnnotationData;
 import dev.efekos.arn.data.CommandAnnotationLiteral;
 import dev.efekos.arn.data.CommandHandlerMethod;
+import dev.efekos.arn.exception.ArnArgumentException;
 import dev.efekos.arn.exception.ArnCommandException;
 import dev.efekos.arn.exception.ArnContainerException;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
@@ -23,6 +25,7 @@ import dev.efekos.arn.resolver.impl.handler.*;
 import net.minecraft.commands.CommandListenerWrapper;
 import net.minecraft.network.chat.IChatBaseComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -36,6 +39,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Main class of Arn, used to run command scanning and registration. Handles scanning {@link Container}s, applying
@@ -104,12 +108,42 @@ public final class Arn {
         try {
             instance.configure();
             instance.scanConfigurers(reflections);
+            instance.scanEnumArguments(reflections);
+
 
             instance.createContainerInstances(reflections);
             instance.scanCommands(reflections);
             instance.registerCommands();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Scans for {@link Container} enums annotated with {@link CustomArgument}, and registers a {@link CmdEnumArg} &
+     * {@link HndEnumArg} for them.
+     * @param reflections Main reflections.
+     * @throws ArnArgumentException If something about an enum found is invalid.
+     */
+    private void scanEnumArguments(Reflections reflections) throws ArnArgumentException {
+        List<Class<?>> classes = reflections.getTypesAnnotatedWith(Container.class).stream().filter(aClass -> aClass.isAnnotationPresent(CustomArgument.class)).collect(Collectors.toList());
+        for (Class<?> aClass : classes) {
+            if(!aClass.isEnum()) throw new ArnArgumentException(aClass.getName() + " is not an enum but is annotated with CustomArgument.");
+            Class<? extends Enum<?>> enumClazz = (Class<? extends Enum<?>>) aClass;
+
+            CustomArgument customArgument = enumClazz.getAnnotation(CustomArgument.class);
+            try {
+                NamespacedKey.fromString(customArgument.value());
+            } catch (Exception e){
+                throw new ArnArgumentException("CustomArgument value of "+aClass.getName() + " is not a valid namespaced key.");
+            }
+
+            if(enumClazz.getEnumConstants().length==0) throw new ArnArgumentException(enumClazz.getName() + " must have at least one constant to be a CustomArgument");
+            if(Arrays.stream(enumClazz.getEnumConstants()).anyMatch(constant->!constant.name().toUpperCase(Locale.ENGLISH).equals(constant.name())))
+                throw new ArnArgumentException(enumClazz.getName() + " has a constant with lower-case letters. CustomArguments can't do that.");
+
+            handlerMethodArgumentResolvers.add(new HndEnumArg(enumClazz));
+            commandArgumentResolvers.add(new CmdEnumArg(enumClazz));
         }
     }
 
@@ -121,7 +155,7 @@ public final class Arn {
      */
     private void createContainerInstances(Reflections reflections) throws ArnContainerException {
         for (Class<?> clazz : reflections.getTypesAnnotatedWith(Container.class)) {
-            if (clazz.isInterface() || clazz.isAnnotation() || clazz.isEnum()) return;
+            if (clazz.isInterface() || clazz.isAnnotation() || clazz.isEnum()) continue;
 
             try {
                 Constructor<?> ctor = clazz.getConstructor();
@@ -378,6 +412,8 @@ public final class Arn {
 
                     try {
                         actualMethodToInvoke.setAccessible(true);
+                        System.out.println(containerInstanceMap.get(method.getMethod().getDeclaringClass().getName()));
+                        System.out.println(objects);
                         return (int) actualMethodToInvoke.invoke(containerInstanceMap.get(method.getMethod().getDeclaringClass().getName()), objects.toArray());
                     } catch (InvocationTargetException e) {
                         if (e.getCause() != null) try { // this wrap exists so ArnCommandException can be thrown
