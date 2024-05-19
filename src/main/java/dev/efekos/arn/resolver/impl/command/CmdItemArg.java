@@ -32,8 +32,10 @@ public class CmdItemArg implements CommandArgumentResolver {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Material.class) && parameter.isAnnotationPresent(Item.class);
     }
 
+    /***/
     private static CommandBuildContext context;
 
+    /***/
     private static void initializeContext(){
         FeatureFlagSet flagSet = FeatureFlagSet.a(FeatureFlags.a);
         IRegistryCustom.Dimension holderlookup = ((CraftServer) Bukkit.getServer()).getHandle().c().aZ();

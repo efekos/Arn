@@ -15,6 +15,16 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 public @interface NumberLimitations {
+
+    /**
+     * Minimum value of the number argument.
+     * @return Minimum value.
+     */
     long min() default Integer.MIN_VALUE;
+
+    /**
+     * Maximum value of the number argument.
+     * @return Maximum value.
+     */
     long max() default Integer.MAX_VALUE;
 }

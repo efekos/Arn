@@ -31,8 +31,10 @@ public class CmdItemStackArg implements CommandArgumentResolver {
     }
 
 
+    /***/
     private static CommandBuildContext context;
 
+    /***/
     private static void initializeContext(){
         FeatureFlagSet flagSet = FeatureFlagSet.a(FeatureFlags.a);
         IRegistryCustom.Dimension holderlookup = ((CraftServer) Bukkit.getServer()).getHandle().c().aZ();
