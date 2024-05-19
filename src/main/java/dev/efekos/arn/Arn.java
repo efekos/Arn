@@ -39,6 +39,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -460,6 +461,9 @@ public final class Arn {
         System.out.println(nodes.size());
         System.out.println(data);
 
+        int last = findLastIndex(nodes, argumentBuilder -> argumentBuilder instanceof LiteralArgumentBuilder);
+        if(!data.getPermission().isEmpty()) nodes.set(last,nodes.get(last).requires(o -> ((CommandListenerWrapper) o).getBukkitSender().hasPermission(data.getPermission())));
+
         ArgumentBuilder chainedBuilder = nodes.get(nodes.size() - 1).executes(executes);
 
         for (int i = nodes.size() - 2; i >= 0; i--) {
@@ -467,6 +471,22 @@ public final class Arn {
         }
 
         return chainedBuilder;
+    }
+
+    /**
+     * Finds last element that matches the given condition.
+     * @param list Any list.
+     * @param condition A condition.
+     * @return Last element that matches the given condition in the list.
+     * @param <T> Type of the elements in the list.
+     */
+    private static <T> int findLastIndex(List<T> list, Predicate<T> condition) {
+        for (int i = list.size() - 2; i >= 0; i--) {
+            if (condition.test(list.get(i))) {
+                return i;
+            }
+        }
+        return -1; // Return null if no match is found
     }
 
 }
