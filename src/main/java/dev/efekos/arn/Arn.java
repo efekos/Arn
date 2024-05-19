@@ -197,6 +197,7 @@ public final class Arn {
         handlerMethodArgumentResolvers.add(new HndConsoleCommandSender());
         handlerMethodArgumentResolvers.add(new HndBlockCommandSender());
         handlerMethodArgumentResolvers.add(new HndAdvancementArg());
+        handlerMethodArgumentResolvers.add(new HndAttributeArg());
 
         commandArgumentResolvers.add(new CmdBooleanArg());
         commandArgumentResolvers.add(new CmdDoubleArg());
@@ -219,6 +220,7 @@ public final class Arn {
         commandArgumentResolvers.add(new CmdItemStackArg());
         commandArgumentResolvers.add(new CmdBlockDataArg());
         commandArgumentResolvers.add(new CmdAdvancementArg());
+        commandArgumentResolvers.add(new CmdAttributeArg());
     }
 
     /**
