@@ -31,12 +31,12 @@ Add this dependency:
 
 Add this repository:
 ```gradle
-maven { url 'https://jitpack.io' }
+maven { url 'https://efekos.dev/maven' }
 ```
 
 Add this dependency:
 ```gradle
-implementation 'com.github.efekos:Simpler:1.7.1'
+implementation 'dev.efekos:Arn:0.1.0'
 ```
 
 ## Usage
