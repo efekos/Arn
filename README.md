@@ -94,44 +94,44 @@ method is now the equivalent of `/helloworld <name>`, `<name>` being a `String` 
 strings. You can use following combinations of annotations and types by default (all of them requires
 [`CommandArgument`](https://efekos.dev/javadoc/arn/0.1/dev/efekos/arn/annotation/CommandArgument.html).):
 
-* `Advancement`
-* `Attribute`
-* `@Block` `Material`
-* `BlockData`
+* [`Advancement`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/advancement/Advancement.html)
+* [`Attribute`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/attribute/Attribute.html)
+* [`@Block`](https://efekos.dev/javadoc/arn/0.1/dev/efekos/arn/annotation/modifier/Block.html) [`Material`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html)
+* [`BlockData`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/data/BlockData.html)
 * `Boolean`
 * `boolean`
-* `World`
+* [`World`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/World.html)
 * `Double`
 * `double`
-* `PotionEffectType`
-* `Enchantment`
-* `Entity`
+* [`PotionEffectType`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionEffectType.html)
+* [`Enchantment`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html)
+* [`Entity`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Entity.html)
 * `Float`
 * `float`
-* `GameMode`
+* [`GameMode`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/GameMode.html)
 * `Integer`
 * `int`
-* `@InventorySlot` `Integer`
-* `@InventorySlot` `int`
-* `@Item` `Material`
-* `ItemStack`
-* `Location`
+* [`@InventorySlot`](https://efekos.dev/javadoc/arn/0.1/dev/efekos/arn/annotation/modifier/NumberLimitations.html) `Integer`
+* [`@InventorySlot`](https://efekos.dev/javadoc/arn/0.1/dev/efekos/arn/annotation/modifier/NumberLimitations.html) `int`
+* [`@Item`](https://efekos.dev/javadoc/arn/0.1/dev/efekos/arn/annotation/modifier/Item.html) [`Material`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html)
+* [`ItemStack`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/ItemStack.html)
+* [`Location`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Location.html)
 * `Long`
 * `long`
-* `Entity`[]
-* `Player`[]
-* `Player`
+* [`Entity`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Entity.html)\[]
+* [`Player`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Player.html)\[]
+* [`Player`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Player.html)
 * `String`
-* `BaseComponent`
-* `@Vector Location`
+* [`BaseComponent`](https://javadoc.io/doc/net.md-5/bungeecord-chat/latest/net/md_5/bungee/api/chat/BaseComponent.html)
+* [`@Vector`](https://efekos.dev/javadoc/arn/0.1/dev/efekos/arn/annotation/modifier/Vector.html) [`Location`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Location.html)
 
 These don't require a [`CommandArgument`](https://efekos.dev/javadoc/arn/0.1/dev/efekos/arn/annotation/CommandArgument.html)
 annotation.
 
-* `BlockCommandSender`
-* `CommandSender`
-* `ConsoleCommandSender`
-* `Player`
+* [`BlockCommandSender`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/command/BlockCommandSender.html)
+* [`CommandSender`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/command/CommandSender.html)
+* [`ConsoleCommandSender`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/command/ConsoleCommandSender.html)
+* [`Player`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Player.html)
 
 By default, name of an argument is same with name of the parameter. If you want, you can explicitly specify argument
 names like this.
