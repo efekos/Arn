@@ -97,6 +97,10 @@ public final class Arn {
      */
     public static final SimpleCommandExceptionType PLAYER_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(IChatBaseComponent.b("This command can't be used by players."));
 
+    /**
+     * Whether was {@link #configure()} called or not. Used to prevent {@link #configure()} from being called more than
+     * once.
+     */
     private boolean configured;
 
     /**
