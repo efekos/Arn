@@ -97,6 +97,8 @@ public final class Arn {
      */
     public static final SimpleCommandExceptionType PLAYER_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(IChatBaseComponent.b("This command can't be used by players."));
 
+    private boolean configured;
+
     /**
      * Main method used to run Arn. Scans every class under the package of {@code mainClass}, applies {@link ArnConfigurer}s
      * to base configuration, and registers found {@link CommandHandlerMethod}s.
@@ -107,7 +109,7 @@ public final class Arn {
         Reflections reflections = new Reflections(mainClass.getPackage().getName());
 
         try {
-            instance.configure();
+            if(!instance.configured) instance.configure();
             instance.scanConfigurers(reflections);
             instance.scanEnumArguments(reflections);
 
@@ -226,6 +228,8 @@ public final class Arn {
         commandArgumentResolvers.add(new CmdAttributeArg());
         commandArgumentResolvers.add(new CmdVectorArg());
         commandArgumentResolvers.add(new CmdInventorySlotArg());
+
+        configured = true;
     }
 
     /**
