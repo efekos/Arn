@@ -276,3 +276,7 @@ public class MyPlugin extends JavaPlugin {
 
 }
 ````
+
+## License
+
+This repository is licensed under [MIT License](https://github.com/efekos/Arn/blob/master/LICENSE).
