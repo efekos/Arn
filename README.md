@@ -1,6 +1,33 @@
 ![](./assets/logo.svg)
 # Arn
 
+![](https://badgen.net/github/license/efekos/Arn)
+![](https://badgen.net/github/stars/efekos/Arn)
+![](https://badgen.net/github/release/efekos/Arn)
+![](https://badgen.net/github/releases/efekos/Arn)
+![](https://badgen.net/github/merged-prs/efekos/Arn)
+![](https://badgen.net/github/issues/efekos/Arn)
+[![Discord](https://badgen.net/discord/members/8PPgcmYNf4)](https://efekos.dev/discord)
+[![Patreon](https://badgen.net/static/Support/Patreon/orange?icon=patreon)](https://efekos.dev/patreon)
+[![Buy me a coffee](https://badgen.net/static/Support/Buy%20Me%20A%20Coffee/yellow?icon=buymeacoffee)](https://efekos.dev/bmac)
+
+<!-- TOC -->
+* [Arn](#arn)
+  * [Installation](#installation)
+    * [for Maven](#for-maven)
+    * [for Gradle:](#for-gradle)
+  * [Usage](#usage)
+    * [Creating commands](#creating-commands)
+    * [Using parameter names as argument names](#using-parameter-names-as-argument-names)
+    * [Advanced literals](#advanced-literals)
+    * [Custom arguments](#custom-arguments)
+    * [Blocking access](#blocking-access)
+    * [Limits](#limits)
+    * [Configurations](#configurations)
+    * [Running](#running)
+  * [License](#license)
+<!-- TOC -->
+
 Arn is an annotation-based command library inspired by Spring boot that helps spigot plugins with creating, handling and
 registering commands. This library uses Brigaider commands that Minecraft uses, so you can use most kinds of arguments
 you see in the commands of the original game. Plus, you can turn any enumerator to a custom argument, all it takes is
