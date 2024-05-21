@@ -231,6 +231,8 @@ public final class Arn {
         handlerMethodArgumentResolvers.add(new HndAttributeArg());
         handlerMethodArgumentResolvers.add(new HndVectorArg());
         handlerMethodArgumentResolvers.add(new HndInventorySlotArg());
+        handlerMethodArgumentResolvers.add(new HndSenderInv());
+        handlerMethodArgumentResolvers.add(new HndSenderLoc());
 
         commandArgumentResolvers.add(new CmdBooleanArg());
         commandArgumentResolvers.add(new CmdDoubleArg());

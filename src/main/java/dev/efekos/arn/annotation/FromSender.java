@@ -36,4 +36,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 public @interface FromSender {
+
+    int MAIN_HAND_ITEM = 0;
+    int OFF_HAND_ITEM = 1;
+    int HELMET = 2;
+    int CHESTPLATE = 3;
+    int LEGGINGS = 4;
+    int BOOTS = 5;
+
+    int value() default -1;
+
 }
