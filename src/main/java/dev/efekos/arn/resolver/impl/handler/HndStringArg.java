@@ -35,8 +35,9 @@ import java.lang.reflect.Parameter;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link String} arguments.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class HndStringArg implements CommandHandlerMethodArgumentResolver {
 
@@ -54,7 +55,7 @@ public final class HndStringArg implements CommandHandlerMethodArgumentResolver 
     @Override
     public String resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return StringArgumentType.getString(context, s.isEmpty() ?parameter.getName():s);
+        return StringArgumentType.getString(context, s.isEmpty() ? parameter.getName() : s);
     }
 
     /**

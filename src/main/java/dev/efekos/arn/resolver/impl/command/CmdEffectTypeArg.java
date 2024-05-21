@@ -42,8 +42,9 @@ import java.lang.reflect.Parameter;
 
 /**
  * An implementation of {@link CommandArgumentResolver}. Resolves {@link PotionEffectType} arguments.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class CmdEffectTypeArg implements CommandArgumentResolver {
 
@@ -59,20 +60,20 @@ public final class CmdEffectTypeArg implements CommandArgumentResolver {
     private static CommandBuildContext context;
 
     /***/
-    private static void initializeContext(){
+    private static void initializeContext() {
         FeatureFlagSet flagSet = FeatureFlagSet.a(FeatureFlags.a);
         IRegistryCustom.Dimension holderlookup = ((CraftServer) Bukkit.getServer()).getHandle().c().aZ();
-        context = CommandBuildContext.a(holderlookup,flagSet);
+        context = CommandBuildContext.a(holderlookup, flagSet);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ArgumentBuilder<?,?> apply(Parameter parameter) {
+    public ArgumentBuilder<?, ?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        if(context==null) initializeContext();
-        return CommandDispatcher.a(s.isEmpty()?parameter.getName():s, ResourceArgument.a(context, Registries.Q));
+        if (context == null) initializeContext();
+        return CommandDispatcher.a(s.isEmpty() ? parameter.getName() : s, ResourceArgument.a(context, Registries.Q));
     }
 
 }

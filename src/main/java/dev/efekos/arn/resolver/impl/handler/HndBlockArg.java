@@ -44,8 +44,9 @@ import java.util.Arrays;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Material} arguments that is a {@link Block}.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class HndBlockArg implements CommandHandlerMethodArgumentResolver {
 

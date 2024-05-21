@@ -36,8 +36,9 @@ import java.lang.reflect.Parameter;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Player} senders.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class HndPlayerSender implements CommandHandlerMethodArgumentResolver {
 
@@ -55,7 +56,7 @@ public final class HndPlayerSender implements CommandHandlerMethodArgumentResolv
     @Override
     public Player resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
         CommandSender sender = context.getSource().getBukkitSender();
-        if(sender instanceof Player) return ((Player) sender);
+        if (sender instanceof Player) return ((Player) sender);
         return null;
     }
 

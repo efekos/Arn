@@ -45,8 +45,9 @@ import java.lang.reflect.Parameter;
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Location} arguments using block
  * position.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class HndLocationArg implements CommandHandlerMethodArgumentResolver {
 
@@ -71,7 +72,7 @@ public final class HndLocationArg implements CommandHandlerMethodArgumentResolve
         World world;
 
         EntityPlayer player = context.getSource().i();
-        if(player==null) {
+        if (player == null) {
             world = Bukkit.getWorld("overworld");
             return new Location(world, x, y, z);
         }

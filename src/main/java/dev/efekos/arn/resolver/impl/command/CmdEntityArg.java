@@ -29,14 +29,15 @@ import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import net.minecraft.commands.CommandDispatcher;
 import net.minecraft.commands.arguments.ArgumentEntity;
-
 import org.bukkit.entity.Entity;
+
 import java.lang.reflect.Parameter;
 
 /**
  * An implementation of {@link CommandArgumentResolver}. Resolves {@link Entity} arguments.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class CmdEntityArg implements CommandArgumentResolver {
 
@@ -52,9 +53,9 @@ public final class CmdEntityArg implements CommandArgumentResolver {
      * {@inheritDoc}
      */
     @Override
-    public ArgumentBuilder<?,?> apply(Parameter parameter) {
+    public ArgumentBuilder<?, ?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return CommandDispatcher.a(s.isEmpty()?parameter.getName():s, ArgumentEntity.a());
+        return CommandDispatcher.a(s.isEmpty() ? parameter.getName() : s, ArgumentEntity.a());
     }
 
 }

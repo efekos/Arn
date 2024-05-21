@@ -42,28 +42,32 @@ import java.lang.reflect.Parameter;
 
 public class CmdAttributeArg implements CommandArgumentResolver {
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(Attribute.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Attribute.class);
     }
 
     /***/
     private static CommandBuildContext context;
 
     /***/
-    private static void initializeContext(){
+    private static void initializeContext() {
         FeatureFlagSet flagSet = FeatureFlagSet.a(FeatureFlags.a);
         IRegistryCustom.Dimension holderlookup = ((CraftServer) Bukkit.getServer()).getHandle().c().aZ();
-        context = CommandBuildContext.a(holderlookup,flagSet);
+        context = CommandBuildContext.a(holderlookup, flagSet);
     }
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArgumentBuilder apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        if(context==null) initializeContext();
-        return CommandDispatcher.a(s.isEmpty()?parameter.getName():s, ResourceArgument.a(context, Registries.c));
+        if (context == null) initializeContext();
+        return CommandDispatcher.a(s.isEmpty() ? parameter.getName() : s, ResourceArgument.a(context, Registries.c));
     }
 
 }

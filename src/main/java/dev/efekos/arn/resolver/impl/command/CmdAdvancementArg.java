@@ -41,12 +41,15 @@ import java.util.Collection;
 
 /**
  * An implementation of {@link CommandArgumentResolver}. Resolves {@link org.bukkit.advancement.Advancement} arguments.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class CmdAdvancementArg implements CommandArgumentResolver {
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Advancement.class);
@@ -58,11 +61,13 @@ public final class CmdAdvancementArg implements CommandArgumentResolver {
         return ICompletionProvider.a(var2.stream().map(AdvancementHolder::a), var1);
     };
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArgumentBuilder apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return CommandDispatcher.a(s.isEmpty()?parameter.getName():s, ArgumentMinecraftKeyRegistered.a()).suggests(c);
+        return CommandDispatcher.a(s.isEmpty() ? parameter.getName() : s, ArgumentMinecraftKeyRegistered.a()).suggests(c);
     }
 
 }

@@ -61,8 +61,9 @@ import java.lang.annotation.Target;
  *     <li>{@link org.bukkit.attribute.Attribute}</li>
  *     <li>{@link Container} {@link Enum}s that are annotated with {@link CustomArgument}.</li>
  * </ul>
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
@@ -71,6 +72,7 @@ public @interface CommandArgument {
      * Name of the command argument that will be shown to user. Defaults to name of the parameter. If the plugin isn't
      * compiled with {@code -parameters}, then the parameter name will be arg<i>N</i>, where <i>N</i> is the index of
      * the parameter in the descriptor of the method which declares the parameter.
+     *
      * @return Name of this argument.
      */
     String value() default "";

@@ -39,38 +39,51 @@ import java.lang.reflect.Parameter;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves equipment of {@link Player} senders.
- * @since 0.1.1
+ *
  * @author efekos
+ * @since 0.1.1
  */
 public class HndSenderInv implements CommandHandlerMethodArgumentResolver {
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(FromSender.class) && parameter.getType().equals(ItemStack.class);
     }
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean requireCommandArgument() {
         return false;
     }
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ItemStack resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         CommandSender sender = context.getSource().getBukkitSender();
-        if(!(sender instanceof Player))return null;
+        if (!(sender instanceof Player)) return null;
         Player player = (Player) sender;
         FromSender ann = parameter.getAnnotation(FromSender.class);
 
-        switch(ann.value()) {
-            case 1: return player.getInventory().getItemInOffHand();
-            case 2: return player.getInventory().getHelmet();
-            case 3: return player.getInventory().getChestplate();
-            case 4: return player.getInventory().getLeggings();
-            case 5: return player.getInventory().getBoots();
-            default: return player.getInventory().getItemInMainHand();
+        switch (ann.value()) {
+            case 1:
+                return player.getInventory().getItemInOffHand();
+            case 2:
+                return player.getInventory().getHelmet();
+            case 3:
+                return player.getInventory().getChestplate();
+            case 4:
+                return player.getInventory().getLeggings();
+            case 5:
+                return player.getInventory().getBoots();
+            default:
+                return player.getInventory().getItemInMainHand();
         }
     }
 }

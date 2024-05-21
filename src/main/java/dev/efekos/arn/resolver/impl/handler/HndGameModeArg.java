@@ -39,8 +39,9 @@ import java.util.Locale;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link GameMode} arguments.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class HndGameModeArg implements CommandHandlerMethodArgumentResolver {
 

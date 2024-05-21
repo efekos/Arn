@@ -43,8 +43,9 @@ import java.util.Collection;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Player}[] arguments.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class HndMultiplePlayerArg implements CommandHandlerMethodArgumentResolver {
 
@@ -63,9 +64,9 @@ public final class HndMultiplePlayerArg implements CommandHandlerMethodArgumentR
     public Player[] resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         Collection<EntityPlayer> player = ArgumentEntity.d(context, s.isEmpty() ? parameter.getName() : s);
-        if(player==null) return null;
+        if (player == null) return null;
         Server server = Bukkit.getServer();
-        return player.stream().map(entityPlayer -> new CraftPlayer(((CraftServer) server),entityPlayer)).toArray(CraftPlayer[]::new);
+        return player.stream().map(entityPlayer -> new CraftPlayer(((CraftServer) server), entityPlayer)).toArray(CraftPlayer[]::new);
     }
 
     /**

@@ -36,8 +36,9 @@ import java.lang.reflect.Parameter;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link BlockCommandSender}s.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class HndBlockCommandSender implements CommandHandlerMethodArgumentResolver {
 
@@ -63,7 +64,7 @@ public final class HndBlockCommandSender implements CommandHandlerMethodArgument
     @Override
     public CommandSender resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         CommandSender sender = context.getSource().getBukkitSender();
-        if(sender instanceof BlockCommandSender) return sender;
+        if (sender instanceof BlockCommandSender) return sender;
         return null;
     }
 }

@@ -37,6 +37,7 @@ import java.util.Objects;
  * Represents a {@link Method} that is annotated with {@link dev.efekos.arn.annotation.Command}. Used to store data about
  * a command handler methods and register commands using those data. See {@link dev.efekos.arn.Arn#handlers} for more
  * information about how this class is used by {@link dev.efekos.arn.Arn}.
+ *
  * @author efekos
  * @version 0.1
  */
@@ -135,6 +136,7 @@ public class CommandHandlerMethod {
 
     /**
      * Getter for {@link #blocksConsole}.
+     *
      * @return Whether is this command blocked to the console.
      */
     public boolean isBlocksConsole() {
@@ -143,6 +145,7 @@ public class CommandHandlerMethod {
 
     /**
      * Setter for {@link #blocksConsole}.
+     *
      * @param blocksConsole New value.
      */
     public void setBlocksConsole(boolean blocksConsole) {
@@ -151,6 +154,7 @@ public class CommandHandlerMethod {
 
     /**
      * Getter for {@link #blocksCommandBlock}.
+     *
      * @return Whether is this command blocked to command blocks.
      */
     public boolean isBlocksCommandBlock() {
@@ -159,6 +163,7 @@ public class CommandHandlerMethod {
 
     /**
      * Setter for {@link #blocksCommandBlock}.
+     *
      * @param blocksCommandBlock New value.
      */
     public void setBlocksCommandBlock(boolean blocksCommandBlock) {
@@ -167,6 +172,7 @@ public class CommandHandlerMethod {
 
     /**
      * Getter for {@link #blocksPlayer}.
+     *
      * @return Whether is this command blocked to players.
      */
     public boolean isBlocksPlayer() {
@@ -175,6 +181,7 @@ public class CommandHandlerMethod {
 
     /**
      * Setter for {@link #blocksPlayer}.
+     *
      * @param blocksPlayer New value.
      */
     public void setBlocksPlayer(boolean blocksPlayer) {
@@ -183,6 +190,7 @@ public class CommandHandlerMethod {
 
     /**
      * Getter for {@link #command}.
+     *
      * @return {@link Command#value()} of {@link #method}.
      */
     public String getCommand() {
@@ -191,6 +199,7 @@ public class CommandHandlerMethod {
 
     /**
      * Setter for {@link #command}.
+     *
      * @param command New value.
      */
     public void setCommand(String command) {
@@ -199,6 +208,7 @@ public class CommandHandlerMethod {
 
     /**
      * Getter for {@link #method}.
+     *
      * @return Method from Java Reflection API associated with this CommandHandlerMethod.
      */
     public Method getMethod() {
@@ -207,6 +217,7 @@ public class CommandHandlerMethod {
 
     /**
      * Setter for {@link #method}.
+     *
      * @param method New value.
      */
     public void setMethod(Method method) {
@@ -215,6 +226,7 @@ public class CommandHandlerMethod {
 
     /**
      * Getter for {@link #annotationData}.
+     *
      * @return Changeable version of {@link Command} on {@link #method}.
      */
     public CommandAnnotationData getAnnotationData() {
@@ -223,6 +235,7 @@ public class CommandHandlerMethod {
 
     /**
      * Setter for {@link #annotationData}.
+     *
      * @param annotationData New value.
      */
     public void setAnnotationData(CommandAnnotationData annotationData) {
@@ -231,6 +244,7 @@ public class CommandHandlerMethod {
 
     /**
      * Getter for {@link #parameters}.
+     *
      * @return Parameter list of {@link #method}.
      */
     public List<Parameter> getParameters() {
@@ -239,6 +253,7 @@ public class CommandHandlerMethod {
 
     /**
      * Setter for {@link #parameters}.
+     *
      * @param parameters New value.
      */
     public void setParameters(List<Parameter> parameters) {
@@ -247,6 +262,7 @@ public class CommandHandlerMethod {
 
     /**
      * Getter for {@link #argumentResolvers}.
+     *
      * @return List of {@link CommandArgumentResolver}s found by {@link dev.efekos.arn.Arn}.
      */
     public List<CommandArgumentResolver> getArgumentResolvers() {
@@ -255,6 +271,7 @@ public class CommandHandlerMethod {
 
     /**
      * Setter for {@link #argumentResolvers}.
+     *
      * @param argumentResolvers New value.
      */
     public void setArgumentResolvers(List<CommandArgumentResolver> argumentResolvers) {
@@ -264,6 +281,7 @@ public class CommandHandlerMethod {
 
     /**
      * Getter for {@link #argumentResolvers}.
+     *
      * @return List of {@link CommandHandlerMethodArgumentResolver}s found by {@link dev.efekos.arn.Arn}.
      */
     public List<CommandHandlerMethodArgumentResolver> getHandlerMethodResolvers() {
@@ -272,6 +290,7 @@ public class CommandHandlerMethod {
 
     /**
      * Setter for {@link #handlerMethodResolvers}.
+     *
      * @param handlerMethodResolvers New value.
      */
     public void setHandlerMethodResolvers(List<CommandHandlerMethodArgumentResolver> handlerMethodResolvers) {
@@ -280,6 +299,7 @@ public class CommandHandlerMethod {
 
     /**
      * Getter for {@link #signature}.
+     *
      * @return Signature unique this command.
      */
     public String getSignature() {
@@ -288,6 +308,7 @@ public class CommandHandlerMethod {
 
     /**
      * Setter for {@link #signature}.
+     *
      * @param signature New value.
      */
     public void setSignature(String signature) {

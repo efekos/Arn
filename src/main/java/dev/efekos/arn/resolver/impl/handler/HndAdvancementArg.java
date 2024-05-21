@@ -41,24 +41,31 @@ import java.lang.reflect.Parameter;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link BlockData} arguments.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class HndAdvancementArg implements CommandHandlerMethodArgumentResolver {
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Advancement.class);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean requireCommandArgument() {
         return true;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Advancement resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();

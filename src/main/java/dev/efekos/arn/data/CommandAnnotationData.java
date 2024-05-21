@@ -32,8 +32,9 @@ import java.util.Objects;
 
 /**
  * Wrapper class for {@link dev.efekos.arn.annotation.Command}, used to change data and parse literals into {@link CommandAnnotationLiteral}s.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public class CommandAnnotationData {
 
@@ -56,6 +57,7 @@ public class CommandAnnotationData {
 
     /**
      * Creates a new annotation data using the {@link Command} annotation given.
+     *
      * @param ann Any {@link Command} annotation to get description and permission from.
      */
     public CommandAnnotationData(Command ann) {
@@ -87,6 +89,7 @@ public class CommandAnnotationData {
 
     /**
      * Getter for {@link #literals}.
+     *
      * @return The literal list.
      */
     public List<CommandAnnotationLiteral> getLiterals() {
@@ -95,6 +98,7 @@ public class CommandAnnotationData {
 
     /**
      * Setter for {@link #literals}
+     *
      * @param literals New literal list.
      */
     public void setLiterals(List<CommandAnnotationLiteral> literals) {
@@ -103,6 +107,7 @@ public class CommandAnnotationData {
 
     /**
      * Getter for {@link #description}
+     *
      * @return The description.
      */
     public String getDescription() {
@@ -111,6 +116,7 @@ public class CommandAnnotationData {
 
     /**
      * Setter for {@link #description}
+     *
      * @param description New description.
      */
     public void setDescription(String description) {
@@ -119,6 +125,7 @@ public class CommandAnnotationData {
 
     /**
      * Getter for {@link #permission}
+     *
      * @return The permission.
      */
     public String getPermission() {
@@ -127,6 +134,7 @@ public class CommandAnnotationData {
 
     /**
      * Setter for {@link #permission}.
+     *
      * @param permission New permission.
      */
     public void setPermission(String permission) {

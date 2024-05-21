@@ -42,8 +42,9 @@ import java.lang.reflect.Parameter;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Player} arguments.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class HndPlayerArg implements CommandHandlerMethodArgumentResolver {
 
@@ -62,9 +63,9 @@ public final class HndPlayerArg implements CommandHandlerMethodArgumentResolver 
     public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         EntityPlayer player = ArgumentEntity.e(context, s.isEmpty() ? parameter.getName() : s);
-        if(player==null) return null;
+        if (player == null) return null;
         Server server = Bukkit.getServer();
-        return new CraftPlayer(((CraftServer) server),player);
+        return new CraftPlayer(((CraftServer) server), player);
     }
 
     /**

@@ -35,8 +35,9 @@ import java.lang.reflect.Parameter;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link CommandSender}s.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class HndSender implements CommandHandlerMethodArgumentResolver {
 

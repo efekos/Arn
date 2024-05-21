@@ -41,8 +41,9 @@ import java.lang.reflect.Parameter;
  * <strong>Since this implementation uses {@link ArgumentDimension}, which was only made for to dimensions of one world,
  * there isn't any conclusion that this resolver will work with different worlds, such as ones made by Multiverse plugin.
  * </strong>
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class HndDimensionArg implements CommandHandlerMethodArgumentResolver {
 

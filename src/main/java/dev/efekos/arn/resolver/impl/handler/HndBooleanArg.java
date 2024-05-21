@@ -36,8 +36,9 @@ import java.lang.reflect.Parameter;
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Boolean} and {@code boolean}
  * arguments.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class HndBooleanArg implements CommandHandlerMethodArgumentResolver {
 
@@ -46,7 +47,7 @@ public final class HndBooleanArg implements CommandHandlerMethodArgumentResolver
      */
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(boolean.class)||parameter.getType().equals(Boolean.class));
+        return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(boolean.class) || parameter.getType().equals(Boolean.class));
     }
 
     /**
@@ -55,7 +56,7 @@ public final class HndBooleanArg implements CommandHandlerMethodArgumentResolver
     @Override
     public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return BoolArgumentType.getBool(context, s.isEmpty() ?parameter.getName():s);
+        return BoolArgumentType.getBool(context, s.isEmpty() ? parameter.getName() : s);
     }
 
     /**

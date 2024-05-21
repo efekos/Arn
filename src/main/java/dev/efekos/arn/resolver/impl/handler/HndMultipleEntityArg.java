@@ -45,8 +45,9 @@ import java.util.Collection;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Entity}[] arguments.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class HndMultipleEntityArg implements CommandHandlerMethodArgumentResolver {
 
@@ -67,7 +68,7 @@ public final class HndMultipleEntityArg implements CommandHandlerMethodArgumentR
         Collection<? extends net.minecraft.world.entity.Entity> entities = ArgumentEntity.b(context, s.isEmpty() ? parameter.getName() : s);
         CommandSender sender = context.getSource().getBukkitSender();
         World w;
-        if(sender instanceof Player) w = ((Player) sender).getWorld();
+        if (sender instanceof Player) w = ((Player) sender).getWorld();
         else w = Bukkit.getWorld("overworld");
         CraftEntity[] array = entities.stream().map(entity -> CraftEntity.getEntity(((CraftServer) Bukkit.getServer()), entity)).filter(craftEntity -> craftEntity.getWorld().equals(w)).toArray(CraftEntity[]::new);
         System.out.println(Arrays.toString(array));

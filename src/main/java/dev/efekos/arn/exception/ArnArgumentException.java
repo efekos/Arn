@@ -27,8 +27,9 @@ package dev.efekos.arn.exception;
 /**
  * An exception type thrown by {@link dev.efekos.arn.Arn} if there is something wrong with
  * {@link dev.efekos.arn.annotation.Container}s annotated with {@link dev.efekos.arn.annotation.CustomArgument}.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public class ArnArgumentException extends Exception {
 

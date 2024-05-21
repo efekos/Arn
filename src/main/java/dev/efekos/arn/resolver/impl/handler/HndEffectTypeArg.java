@@ -42,8 +42,9 @@ import java.lang.reflect.Parameter;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link PotionEffectType} arguments.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class HndEffectTypeArg implements CommandHandlerMethodArgumentResolver {
 
@@ -52,7 +53,7 @@ public final class HndEffectTypeArg implements CommandHandlerMethodArgumentResol
      */
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)  && parameter.getType().equals(PotionEffectType.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(PotionEffectType.class);
     }
 
     /**
@@ -61,7 +62,7 @@ public final class HndEffectTypeArg implements CommandHandlerMethodArgumentResol
     @Override
     public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        Holder.c<MobEffectList> f = ResourceArgument.f(context, s.isEmpty()?parameter.getName():s);
+        Holder.c<MobEffectList> f = ResourceArgument.f(context, s.isEmpty() ? parameter.getName() : s);
         MobEffectList list = f.a();
         MinecraftKey key = BuiltInRegistries.d.b(list);
         NamespacedKey effectKey = new NamespacedKey(key.b(), key.a());

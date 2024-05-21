@@ -46,8 +46,9 @@ import java.util.Arrays;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Material} arguments that is a {@link Block}.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class HndAttributeArg implements CommandHandlerMethodArgumentResolver {
 
@@ -67,7 +68,7 @@ public final class HndAttributeArg implements CommandHandlerMethodArgumentResolv
         String s = parameter.getAnnotation(CommandArgument.class).value();
         Holder.c<AttributeBase> a = ResourceArgument.a(context, s.isEmpty() ? parameter.getName() : s, Registries.c);
         MinecraftKey key = BuiltInRegistries.u.b(a.a());
-        return Arrays.stream(Attribute.values()).filter(attribute -> attribute.getKey().equals(new NamespacedKey(key.b(),key.a()))).findFirst().orElse(null);
+        return Arrays.stream(Attribute.values()).filter(attribute -> attribute.getKey().equals(new NamespacedKey(key.b(), key.a()))).findFirst().orElse(null);
     }
 
     /**

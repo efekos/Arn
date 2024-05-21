@@ -137,7 +137,7 @@ public final class Arn {
         Reflections reflections = new Reflections(mainClass.getPackage().getName());
 
         try {
-            if(!instance.configured) instance.configure();
+            if (!instance.configured) instance.configure();
             instance.scanConfigurers(reflections);
             instance.scanEnumArguments(reflections);
 
@@ -153,24 +153,27 @@ public final class Arn {
     /**
      * Scans for {@link Container} enums annotated with {@link CustomArgument}, and registers a {@link CmdEnumArg} &amp;
      * {@link HndEnumArg} for them.
+     *
      * @param reflections Main reflections.
      * @throws ArnArgumentException If something about an enum found is invalid.
      */
     private void scanEnumArguments(Reflections reflections) throws ArnArgumentException {
         List<Class<?>> classes = reflections.getTypesAnnotatedWith(Container.class).stream().filter(aClass -> aClass.isAnnotationPresent(CustomArgument.class)).collect(Collectors.toList());
         for (Class<?> aClass : classes) {
-            if(!aClass.isEnum()) throw new ArnArgumentException(aClass.getName() + " is not an enum but is annotated with CustomArgument.");
+            if (!aClass.isEnum())
+                throw new ArnArgumentException(aClass.getName() + " is not an enum but is annotated with CustomArgument.");
             Class<? extends Enum<?>> enumClazz = (Class<? extends Enum<?>>) aClass;
 
             CustomArgument customArgument = enumClazz.getAnnotation(CustomArgument.class);
             try {
                 NamespacedKey.fromString(customArgument.value());
-            } catch (Exception e){
-                throw new ArnArgumentException("CustomArgument value of "+aClass.getName() + " is not a valid namespaced key.");
+            } catch (Exception e) {
+                throw new ArnArgumentException("CustomArgument value of " + aClass.getName() + " is not a valid namespaced key.");
             }
 
-            if(enumClazz.getEnumConstants().length==0) throw new ArnArgumentException(enumClazz.getName() + " must have at least one constant to be a CustomArgument");
-            if(Arrays.stream(enumClazz.getEnumConstants()).anyMatch(constant->!constant.name().toUpperCase(Locale.ENGLISH).equals(constant.name())))
+            if (enumClazz.getEnumConstants().length == 0)
+                throw new ArnArgumentException(enumClazz.getName() + " must have at least one constant to be a CustomArgument");
+            if (Arrays.stream(enumClazz.getEnumConstants()).anyMatch(constant -> !constant.name().toUpperCase(Locale.ENGLISH).equals(constant.name())))
                 throw new ArnArgumentException(enumClazz.getName() + " has a constant with lower-case letters. CustomArguments can't do that.");
 
             handlerMethodArgumentResolvers.add(new HndEnumArg(enumClazz));
@@ -281,6 +284,7 @@ public final class Arn {
 
     /**
      * Scans every {@link Container} for {@link Command}s using {@code reflections}.
+     *
      * @param reflections A {@link Reflections} object to use finding {@link Command}s.
      * @throws ArnCommandException If a {@link Command} is invalid.
      */
@@ -289,7 +293,8 @@ public final class Arn {
 
         for (Class<?> container : containers)
             for (Method method : container.getMethods())
-                if (method.isAnnotationPresent(Command.class)) instance.command(method.getAnnotation(Command.class), method);
+                if (method.isAnnotationPresent(Command.class))
+                    instance.command(method.getAnnotation(Command.class), method);
 
     }
 
@@ -302,8 +307,9 @@ public final class Arn {
 
     /**
      * Checks errors to ensure the command is valid.
+     *
      * @param annotation The {@link Command} annotation of {@code method}.
-     * @param method A {@link Method} that is annotated with {@code annotation}.
+     * @param method     A {@link Method} that is annotated with {@code annotation}.
      * @throws ArnCommandException If something about {@code method} or created {@link CommandHandlerMethod} doesn't seem right.
      */
     private void command(Command annotation, Method method) throws ArnCommandException {
@@ -326,8 +332,10 @@ public final class Arn {
             throw new ArnCommandException("Duplicate command '" + commandHandlerMethod.getSignature() + "'");
         for (CommandAnnotationLiteral literal : commandHandlerMethod.getAnnotationData().getLiterals()) {
 
-            if(literal.getOffset()<0) throw new ArnCommandException("Command '"+annotation.value()+"' has a literal with a negative offset value.");
-            if(!literal.getLiteral().matches("^[a-z]+$")) throw new ArnCommandException("Literal '"+literal.getLiteral()+"' of command '"+annotation.value()+" has an illegal character.");
+            if (literal.getOffset() < 0)
+                throw new ArnCommandException("Command '" + annotation.value() + "' has a literal with a negative offset value.");
+            if (!literal.getLiteral().matches("^[a-z]+$"))
+                throw new ArnCommandException("Literal '" + literal.getLiteral() + "' of command '" + annotation.value() + " has an illegal character.");
 
         }
         handlers.add(commandHandlerMethod);
@@ -335,8 +343,9 @@ public final class Arn {
 
     /**
      * Creates a {@link CommandHandlerMethod} using {@code annotation} and {@code method}.
+     *
      * @param annotation The {@link Command} annotation of {@code method}.
-     * @param method A {@link Method} that is annotated with {@code annotation}.
+     * @param method     A {@link Method} that is annotated with {@code annotation}.
      * @return Created {@link CommandHandlerMethod}.
      */
     private CommandHandlerMethod createHandlerMethod(Command annotation, Method method) {
@@ -392,6 +401,7 @@ public final class Arn {
 
     /**
      * Registers every {@link CommandHandlerMethod} in {@link #handlers}.
+     *
      * @throws ArnCommandException As a wrapper of an actual exception when encountered.
      */
     private void registerCommands() throws ArnCommandException {
@@ -484,10 +494,11 @@ public final class Arn {
 
     /**
      * Chains given argument builders into one {@link ArgumentBuilder} that can be used to register the command.
-     * @param nodes List of the nodes to chain.
+     *
+     * @param nodes    List of the nodes to chain.
      * @param executes execute function to handle the command. Added to the last argument in the chain.
-     * @param data {@link CommandAnnotationData} associated with the nodes. If there is a permission required, it will
-     *             be applied to first literal of the chain.
+     * @param data     {@link CommandAnnotationData} associated with the nodes. If there is a permission required, it will
+     *                 be applied to first literal of the chain.
      * @return {@code nodes[0]} with rest of the nodes attached to it.
      */
     private static ArgumentBuilder<?, ?> chainArgumentBuilders(List<ArgumentBuilder> nodes, com.mojang.brigadier.Command<CommandListenerWrapper> executes, CommandAnnotationData data) {
@@ -495,7 +506,8 @@ public final class Arn {
         System.out.println(nodes.size());
         System.out.println(data);
 
-        if(!data.getPermission().isEmpty()) nodes.set(0,nodes.get(0).requires(o -> ((CommandListenerWrapper) o).getBukkitSender().hasPermission(data.getPermission())));
+        if (!data.getPermission().isEmpty())
+            nodes.set(0, nodes.get(0).requires(o -> ((CommandListenerWrapper) o).getBukkitSender().hasPermission(data.getPermission())));
 
         ArgumentBuilder chainedBuilder = nodes.get(nodes.size() - 1).executes(executes);
 
@@ -508,11 +520,11 @@ public final class Arn {
 
     /**
      * Finds last element that matches the given condition.
-     * @param list Any list.
-     * @param condition A condition.
-     * @return Last element that matches the given condition in the list.
-     * @param <T> Type of the elements in the list.
      *
+     * @param list      Any list.
+     * @param condition A condition.
+     * @param <T>       Type of the elements in the list.
+     * @return Last element that matches the given condition in the list.
      */
     private static <T> int findLastIndex(List<T> list, Predicate<T> condition) {
         for (int i = list.size() - 2; i >= 0; i--) {

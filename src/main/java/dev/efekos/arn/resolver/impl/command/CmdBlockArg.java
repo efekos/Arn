@@ -43,8 +43,9 @@ import java.lang.reflect.Parameter;
 
 /**
  * An implementation of {@link CommandArgumentResolver}. Resolves {@link Material} arguments that are a {@link Block}.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class CmdBlockArg implements CommandArgumentResolver {
 
@@ -60,19 +61,19 @@ public final class CmdBlockArg implements CommandArgumentResolver {
     private static CommandBuildContext context;
 
     /***/
-    private static void initializeContext(){
+    private static void initializeContext() {
         FeatureFlagSet flagSet = FeatureFlagSet.a(FeatureFlags.a);
         IRegistryCustom.Dimension holderlookup = ((CraftServer) Bukkit.getServer()).getHandle().c().aZ();
-        context = CommandBuildContext.a(holderlookup,flagSet);
+        context = CommandBuildContext.a(holderlookup, flagSet);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ArgumentBuilder<?,?> apply(Parameter parameter) {
+    public ArgumentBuilder<?, ?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        if(context==null) initializeContext();
-        return CommandDispatcher.a(s.isEmpty()?parameter.getName():s, ResourceArgument.a(context, Registries.f));
+        if (context == null) initializeContext();
+        return CommandDispatcher.a(s.isEmpty() ? parameter.getName() : s, ResourceArgument.a(context, Registries.f));
     }
 }

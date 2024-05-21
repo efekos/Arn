@@ -41,8 +41,9 @@ import java.lang.reflect.Parameter;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Enchantment} arguments.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class HndEnchantmentArg implements CommandHandlerMethodArgumentResolver {
 
@@ -51,7 +52,7 @@ public final class HndEnchantmentArg implements CommandHandlerMethodArgumentReso
      */
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)  && parameter.getType().equals(Enchantment.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Enchantment.class);
     }
 
     /**

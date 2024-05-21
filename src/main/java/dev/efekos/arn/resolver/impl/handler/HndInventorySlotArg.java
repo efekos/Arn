@@ -37,8 +37,9 @@ import java.lang.reflect.Parameter;
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Integer} arguments that are an
  * {@link InventorySlot}.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class HndInventorySlotArg implements CommandHandlerMethodArgumentResolver {
 
@@ -47,7 +48,7 @@ public final class HndInventorySlotArg implements CommandHandlerMethodArgumentRe
      */
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(Integer.class)||parameter.getType().equals(int.class)) && parameter.isAnnotationPresent(InventorySlot.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(Integer.class) || parameter.getType().equals(int.class)) && parameter.isAnnotationPresent(InventorySlot.class);
     }
 
     /**
@@ -56,7 +57,7 @@ public final class HndInventorySlotArg implements CommandHandlerMethodArgumentRe
     @Override
     public Integer resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return ArgumentInventorySlot.a(context, s.isEmpty() ?parameter.getName():s);
+        return ArgumentInventorySlot.a(context, s.isEmpty() ? parameter.getName() : s);
     }
 
     /**

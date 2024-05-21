@@ -35,8 +35,9 @@ import java.lang.reflect.Parameter;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Float} and {@code float} arguments.
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class HndFloatArg implements CommandHandlerMethodArgumentResolver {
 
@@ -45,7 +46,7 @@ public final class HndFloatArg implements CommandHandlerMethodArgumentResolver {
      */
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(float.class)||parameter.getType().equals(Float.class));
+        return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(float.class) || parameter.getType().equals(Float.class));
     }
 
     /**
@@ -54,7 +55,7 @@ public final class HndFloatArg implements CommandHandlerMethodArgumentResolver {
     @Override
     public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return FloatArgumentType.getFloat(context, s.isEmpty() ?parameter.getName():s);
+        return FloatArgumentType.getFloat(context, s.isEmpty() ? parameter.getName() : s);
     }
 
     /**

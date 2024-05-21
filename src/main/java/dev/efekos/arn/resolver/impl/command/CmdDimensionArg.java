@@ -38,8 +38,9 @@ import java.lang.reflect.Parameter;
  * <strong>Since this implementation uses {@link ArgumentDimension}, which was only made for dimensions of one world,
  * there isn't any conclusion that this resolver will work with different worlds, such as ones made by Multiverse plugin.
  * </strong>
- * @since 0.1
+ *
  * @author efekos
+ * @since 0.1
  */
 public final class CmdDimensionArg implements CommandArgumentResolver {
 
@@ -55,8 +56,8 @@ public final class CmdDimensionArg implements CommandArgumentResolver {
      * {@inheritDoc}
      */
     @Override
-    public ArgumentBuilder<?,?> apply(Parameter parameter) {
+    public ArgumentBuilder<?, ?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return CommandDispatcher.a(s.isEmpty()?parameter.getName():s, ArgumentDimension.a());
+        return CommandDispatcher.a(s.isEmpty() ? parameter.getName() : s, ArgumentDimension.a());
     }
 }
