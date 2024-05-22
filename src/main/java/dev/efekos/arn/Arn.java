@@ -49,6 +49,7 @@ import dev.efekos.arn.resolver.impl.handler.*;
 import net.minecraft.commands.CommandListenerWrapper;
 import net.minecraft.network.chat.IChatBaseComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
@@ -65,6 +66,7 @@ import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Main class of Arn, used to run command scanning and registration. Handles scanning {@link Container}s, applying
@@ -236,6 +238,7 @@ public final class Arn {
         handlerMethodArgumentResolvers.add(new HndInventorySlotArg());
         handlerMethodArgumentResolvers.add(new HndSenderInv());
         handlerMethodArgumentResolvers.add(new HndSenderLoc());
+        handlerMethodArgumentResolvers.add(new HndSenderId());
 
         commandArgumentResolvers.add(new CmdBooleanArg());
         commandArgumentResolvers.add(new CmdDoubleArg());
@@ -413,25 +416,26 @@ public final class Arn {
 
                 // initialize lists
                 List<CommandAnnotationLiteral> literals = method.getAnnotationData().getLiterals();
-                List<CommandArgumentResolver> nonnullResolvers = new ArrayList<>(method.getArgumentResolvers());
-                List<Parameter> parametersClone = new ArrayList<>(method.getParameters());
 
+                List<Integer> indexesToDelete = new ArrayList<>();
 
-                // iterate argument resolvers
-                for (int i = 0; i < method.getArgumentResolvers().size(); i++) {
-                    CommandArgumentResolver resolver = method.getArgumentResolvers().get(i);
-                    if (resolver == null) {
-                        parametersClone.remove(i);
-                        nonnullResolvers.remove(i);
-                    }
-                }
+                for (int i = 0; i < method.getArgumentResolvers().size(); i++) if(method.getArgumentResolvers().get(i)==null) indexesToDelete.add(i);
+
+                List<CommandArgumentResolver> nonnullResolvers = IntStream.range(0, method.getArgumentResolvers().size())
+                        .filter(i -> !indexesToDelete.contains(i))
+                        .mapToObj(method.getArgumentResolvers()::get)
+                        .collect(Collectors.toList());
+                List<Parameter> parametersClone = IntStream.range(0, method.getArgumentResolvers().size())
+                        .filter(i -> !indexesToDelete.contains(i))
+                        .mapToObj(method.getParameters()::get)
+                        .collect(Collectors.toList());
 
                 for (CommandAnnotationLiteral lit : literals)
                     if (lit.getOffset() == 0) nodes.add(net.minecraft.commands.CommandDispatcher.a(lit.getLiteral()));
 
                 System.out.println("iterate nonnull resolvers");
                 System.out.println(nonnullResolvers);
-                for (int i = 0; i < nonnullResolvers.size(); i++) {
+                for (int i = 0; i < nonnullResolvers.size()-1; i++) {
                     CommandArgumentResolver resolver = nonnullResolvers.get(i);
                     System.out.println(resolver);
 
