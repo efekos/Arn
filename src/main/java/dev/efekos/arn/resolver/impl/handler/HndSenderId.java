@@ -40,7 +40,7 @@ import java.util.UUID;
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link java.util.UUID}s of {@link CommandSender}s.
  *
  * @author efekos
- * @since 0.1.1
+ * @since 0.2
  */
 public class HndSenderId implements CommandHandlerMethodArgumentResolver {
 

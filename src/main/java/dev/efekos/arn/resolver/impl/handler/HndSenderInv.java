@@ -41,7 +41,7 @@ import java.lang.reflect.Parameter;
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves equipment of {@link Player} senders.
  *
  * @author efekos
- * @since 0.1.1
+ * @since 0.2
  */
 public class HndSenderInv implements CommandHandlerMethodArgumentResolver {
 

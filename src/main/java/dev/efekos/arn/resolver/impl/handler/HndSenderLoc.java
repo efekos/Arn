@@ -40,7 +40,7 @@ import java.lang.reflect.Parameter;
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves location of {@link Player} senders.
  *
  * @author efekos
- * @since 0.1.1
+ * @since 0.2
  */
 public class HndSenderLoc implements CommandHandlerMethodArgumentResolver {
 
@@ -66,8 +66,8 @@ public class HndSenderLoc implements CommandHandlerMethodArgumentResolver {
     @Override
     public Location resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         CommandSender sender = context.getSource().getBukkitSender();
-        if (sender instanceof Player) return ((Player) sender).getLocation();
-        else return null;
+        if (!(sender instanceof Player)) return null;
+        return ((Player) sender).getLocation();
     }
 
 }
