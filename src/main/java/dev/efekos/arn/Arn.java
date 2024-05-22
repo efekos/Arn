@@ -49,7 +49,6 @@ import dev.efekos.arn.resolver.impl.handler.*;
 import net.minecraft.commands.CommandListenerWrapper;
 import net.minecraft.network.chat.IChatBaseComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
@@ -236,9 +235,10 @@ public final class Arn {
         handlerMethodArgumentResolvers.add(new HndAttributeArg());
         handlerMethodArgumentResolvers.add(new HndVectorArg());
         handlerMethodArgumentResolvers.add(new HndInventorySlotArg());
+        handlerMethodArgumentResolvers.add(new HndSenderEqu());
         handlerMethodArgumentResolvers.add(new HndSenderInv());
-        handlerMethodArgumentResolvers.add(new HndSenderLoc());
         handlerMethodArgumentResolvers.add(new HndSenderId());
+        handlerMethodArgumentResolvers.add(new HndSenderInv());
 
         commandArgumentResolvers.add(new CmdBooleanArg());
         commandArgumentResolvers.add(new CmdDoubleArg());

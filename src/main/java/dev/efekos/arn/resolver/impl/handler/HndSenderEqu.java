@@ -30,26 +30,27 @@ import dev.efekos.arn.annotation.FromSender;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import net.minecraft.commands.CommandListenerWrapper;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Parameter;
 
+
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves location of {@link Player} senders.
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves equipment of {@link Player} senders.
  *
  * @author efekos
  * @since 0.2
  */
-public class HndSenderLoc implements CommandHandlerMethodArgumentResolver {
+public class HndSenderEqu implements CommandHandlerMethodArgumentResolver {
 
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(FromSender.class) && parameter.getType().equals(Location.class);
+        return parameter.isAnnotationPresent(FromSender.class) && parameter.getType().equals(ItemStack.class);
     }
 
     /**
@@ -64,10 +65,25 @@ public class HndSenderLoc implements CommandHandlerMethodArgumentResolver {
      * {@inheritDoc}
      */
     @Override
-    public Location resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
+    public ItemStack resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         CommandSender sender = context.getSource().getBukkitSender();
         if (!(sender instanceof Player)) return null;
-        return ((Player) sender).getLocation();
-    }
+        Player player = (Player) sender;
+        FromSender ann = parameter.getAnnotation(FromSender.class);
 
+        switch (ann.value()) {
+            case 1:
+                return player.getInventory().getItemInOffHand();
+            case 2:
+                return player.getInventory().getHelmet();
+            case 3:
+                return player.getInventory().getChestplate();
+            case 4:
+                return player.getInventory().getLeggings();
+            case 5:
+                return player.getInventory().getBoots();
+            default:
+                return player.getInventory().getItemInMainHand();
+        }
+    }
 }
