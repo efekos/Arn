@@ -43,7 +43,7 @@ import java.lang.reflect.Parameter;
  * @author efekos
  * @since 0.2
  */
-public class HndSenderInv implements CommandHandlerMethodArgumentResolver {
+public final class HndSenderInv implements CommandHandlerMethodArgumentResolver {
 
     /**
      * {@inheritDoc}

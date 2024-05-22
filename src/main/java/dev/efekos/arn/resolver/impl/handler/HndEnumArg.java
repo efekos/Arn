@@ -45,7 +45,7 @@ import java.util.Locale;
  * @author efekos
  * @since 0.1
  */
-public class HndEnumArg implements CommandHandlerMethodArgumentResolver {
+public final class HndEnumArg implements CommandHandlerMethodArgumentResolver {
     /**
      * Main {@link Enum} class this resolver will handle.
      */

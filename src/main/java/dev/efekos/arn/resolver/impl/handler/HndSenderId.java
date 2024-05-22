@@ -42,7 +42,7 @@ import java.util.UUID;
  * @author efekos
  * @since 0.2
  */
-public class HndSenderId implements CommandHandlerMethodArgumentResolver {
+public final class HndSenderId implements CommandHandlerMethodArgumentResolver {
 
     /**{@inheritDoc}*/
     @Override
