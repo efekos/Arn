@@ -27,6 +27,7 @@ package dev.efekos.arn.resolver.impl.handler;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.annotation.FromSender;
+import dev.efekos.arn.annotation.modifier.sender.*;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import net.minecraft.commands.CommandListenerWrapper;
@@ -69,21 +70,12 @@ public final class HndSenderEqu implements CommandHandlerMethodArgumentResolver 
         CommandSender sender = context.getSource().getBukkitSender();
         if (!(sender instanceof Player)) return null;
         Player player = (Player) sender;
-        FromSender ann = parameter.getAnnotation(FromSender.class);
 
-        switch (ann.value()) {
-            case 1:
-                return player.getInventory().getItemInOffHand();
-            case 2:
-                return player.getInventory().getHelmet();
-            case 3:
-                return player.getInventory().getChestplate();
-            case 4:
-                return player.getInventory().getLeggings();
-            case 5:
-                return player.getInventory().getBoots();
-            default:
-                return player.getInventory().getItemInMainHand();
-        }
+        if(parameter.isAnnotationPresent(OffHand.class)) return player.getInventory().getItemInOffHand();
+        if(parameter.isAnnotationPresent(Helmet.class)) return player.getInventory().getHelmet();
+        if(parameter.isAnnotationPresent(Chestplate.class)) return player.getInventory().getChestplate();
+        if(parameter.isAnnotationPresent(Leggings.class)) return player.getInventory().getLeggings();
+        if(parameter.isAnnotationPresent(Boots.class)) return player.getInventory().getBoots();
+        return player.getInventory().getItemInMainHand();
     }
 }
