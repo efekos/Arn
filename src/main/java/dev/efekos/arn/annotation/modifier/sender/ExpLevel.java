@@ -29,6 +29,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
+/**
+ * Specifies that a number argument annotated with {@link dev.efekos.arn.annotation.FromSender} should be exp level of
+ * the sender. Exp level is an {@link Integer}, but the parameter can also be a {@link Double} or a {@link Float}, the
+ * value will be cast accordingly.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 public @interface ExpLevel {

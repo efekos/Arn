@@ -29,6 +29,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
+/**
+ * Specifies that a number argument annotated with {@link dev.efekos.arn.annotation.FromSender} should be experience
+ * points of the sender. Experience points value is a {@link Float}, but the parameter can also be an {@link Integer}
+ * or a {@link Double}, the value will be cast accordingly.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 public @interface Experience {

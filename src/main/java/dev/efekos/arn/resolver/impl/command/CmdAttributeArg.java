@@ -40,6 +40,12 @@ import org.bukkit.craftbukkit.v1_20_R3.CraftServer;
 
 import java.lang.reflect.Parameter;
 
+/**
+ * An implementation of {@link CommandArgumentResolver}. Resolves {@link Attribute} arguments.
+ *
+ * @author efekos
+ * @since 0.1
+ */
 public class CmdAttributeArg implements CommandArgumentResolver {
 
     /**

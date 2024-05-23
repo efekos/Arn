@@ -30,6 +30,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
+/**
+ * Specifies that an {@link org.bukkit.inventory.ItemStack} argument annotated with
+ * {@link dev.efekos.arn.annotation.FromSender} should get the item in the chestplate slot of sender's equipment.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 public @interface Chestplate {

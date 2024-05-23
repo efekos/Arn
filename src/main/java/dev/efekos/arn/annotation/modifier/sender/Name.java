@@ -29,6 +29,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
+/**
+ * Specifies the a {@link String} argument annotated with {@link dev.efekos.arn.annotation.FromSender} should get the
+ * name of the sender. This annotation is implicitly applied if the parameter name ends with {@code "name"}, ignoring
+ * case.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 public @interface Name {
