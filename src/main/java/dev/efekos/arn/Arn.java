@@ -375,10 +375,6 @@ public final class Arn {
                         .mapToObj(method.getParameters()::get)
                         .collect(Collectors.toList());
 
-                Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + indexesToDelete.toString());
-                Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + nonnullResolvers.toString());
-                Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + parametersClone.toString());
-
                 for (CommandAnnotationLiteral lit : literals)
                     if (lit.getOffset() == 0) nodes.add(net.minecraft.commands.CommandDispatcher.a(lit.getLiteral()));
 
