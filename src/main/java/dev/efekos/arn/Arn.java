@@ -36,6 +36,7 @@ import dev.efekos.arn.annotation.block.BlockCommandBlock;
 import dev.efekos.arn.annotation.block.BlockConsole;
 import dev.efekos.arn.annotation.block.BlockPlayer;
 import dev.efekos.arn.config.ArnConfigurer;
+import dev.efekos.arn.config.BaseArnConfigurer;
 import dev.efekos.arn.data.CommandAnnotationData;
 import dev.efekos.arn.data.CommandAnnotationLiteral;
 import dev.efekos.arn.data.CommandHandlerMethod;
@@ -208,65 +209,9 @@ public final class Arn {
      * Default configuration of {@link Arn}.
      */
     private void configure() {
-        handlerMethodArgumentResolvers.add(new HndIntArg());
-        handlerMethodArgumentResolvers.add(new HndStringArg());
-        handlerMethodArgumentResolvers.add(new HndPlayerSender());
-        handlerMethodArgumentResolvers.add(new HndBooleanArg());
-        handlerMethodArgumentResolvers.add(new HndDoubleArg());
-        handlerMethodArgumentResolvers.add(new HndLocationArg());
-        handlerMethodArgumentResolvers.add(new HndLongArg());
-        handlerMethodArgumentResolvers.add(new HndTextArg());
-        handlerMethodArgumentResolvers.add(new HndEffectTypeArg());
-        handlerMethodArgumentResolvers.add(new HndGameModeArg());
-        handlerMethodArgumentResolvers.add(new HndPlayerArg());
-        handlerMethodArgumentResolvers.add(new HndMultiplePlayerArg());
-        handlerMethodArgumentResolvers.add(new HndDimensionArg());
-        handlerMethodArgumentResolvers.add(new HndEntityArg());
-        handlerMethodArgumentResolvers.add(new HndMultipleEntityArg());
-        handlerMethodArgumentResolvers.add(new HndFloatArg());
-        handlerMethodArgumentResolvers.add(new HndEnchantmentArg());
-        handlerMethodArgumentResolvers.add(new HndItemArg());
-        handlerMethodArgumentResolvers.add(new HndBlockArg());
-        handlerMethodArgumentResolvers.add(new HndItemStackArg());
-        handlerMethodArgumentResolvers.add(new HndBlockDataArg());
-        handlerMethodArgumentResolvers.add(new HndSender());
-        handlerMethodArgumentResolvers.add(new HndConsoleCommandSender());
-        handlerMethodArgumentResolvers.add(new HndBlockCommandSender());
-        handlerMethodArgumentResolvers.add(new HndAdvancementArg());
-        handlerMethodArgumentResolvers.add(new HndAttributeArg());
-        handlerMethodArgumentResolvers.add(new HndVectorArg());
-        handlerMethodArgumentResolvers.add(new HndInventorySlotArg());
-        handlerMethodArgumentResolvers.add(new HndSenderEqu());
-        handlerMethodArgumentResolvers.add(new HndSenderInv());
-        handlerMethodArgumentResolvers.add(new HndSenderId());
-        handlerMethodArgumentResolvers.add(new HndSenderInv());
-        handlerMethodArgumentResolvers.add(new HndSenderStat());
-
-        commandArgumentResolvers.add(new CmdBooleanArg());
-        commandArgumentResolvers.add(new CmdDoubleArg());
-        commandArgumentResolvers.add(new CmdLocationArg());
-        commandArgumentResolvers.add(new CmdLongArg());
-        commandArgumentResolvers.add(new CmdIntArg());
-        commandArgumentResolvers.add(new CmdStringArg());
-        commandArgumentResolvers.add(new CmdTextArg());
-        commandArgumentResolvers.add(new CmdEffectTypeArg());
-        commandArgumentResolvers.add(new CmdGameModeArg());
-        commandArgumentResolvers.add(new CmdPlayerArg());
-        commandArgumentResolvers.add(new CmdMultiplePlayerArg());
-        commandArgumentResolvers.add(new CmdDimensionArg());
-        commandArgumentResolvers.add(new CmdEntityArg());
-        commandArgumentResolvers.add(new CmdMultipleEntityArg());
-        commandArgumentResolvers.add(new CmdFloatArg());
-        commandArgumentResolvers.add(new CmdEnchantmentArg());
-        commandArgumentResolvers.add(new CmdItemArg());
-        commandArgumentResolvers.add(new CmdBlockArg());
-        commandArgumentResolvers.add(new CmdItemStackArg());
-        commandArgumentResolvers.add(new CmdBlockDataArg());
-        commandArgumentResolvers.add(new CmdAdvancementArg());
-        commandArgumentResolvers.add(new CmdAttributeArg());
-        commandArgumentResolvers.add(new CmdVectorArg());
-        commandArgumentResolvers.add(new CmdInventorySlotArg());
-
+        BaseArnConfigurer configurer = new BaseArnConfigurer();
+        configurer.addArgumentResolvers(commandArgumentResolvers);
+        configurer.addHandlerMethodArgumentResolvers(handlerMethodArgumentResolvers);
         configured = true;
     }
 
