@@ -40,17 +40,17 @@ literally two annotations. Then, let's get started!
 Add this repository:
 ```xml
 <repository>
-    <id>efekosdev</id>
-    <url>https://efekos.dev/maven</url>
+  <id>efekosdev</id>
+  <url>https://efekos.dev/maven</url>
 </repository>
 ```
 
 Add this dependency:
 ```xml
 <dependency>
-    <groupId>dev.efekos</groupId>
-    <artifactId>Arn</artifactId>
-    <version>0.1.0</version>
+  <groupId>dev.efekos</groupId>
+  <artifactId>Arn</artifactId>
+  <version>0.1.0</version>
 </dependency>
 ```
 
@@ -69,8 +69,8 @@ implementation 'dev.efekos:Arn:0.1.0'
 ## Usage
 
 Arn uses Java Reflection API to scan through your plugin, detect needed classes and use them. Because of this, you have
-to add a [`Container`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/annotation/Container.html) annotation to
-**every** class that must be scanned by [`Arn`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/Arn.html).
+to add a [`Container`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/annotation/Container.html) annotation to
+**every** class that must be scanned by [`Arn`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/Arn.html).
 
 ### Creating commands
 
@@ -116,14 +116,14 @@ public int helloWorld(CommandSender sender, @CommandArgument String name /*strin
 ````
 
 All we have to do is add a parameter with
-[`CommandArgument`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/annotation/CommandArgument.html) annotation. This
+[`CommandArgument`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/annotation/CommandArgument.html) annotation. This
 method is now the equivalent of `/helloworld <name>`, `<name>` being a `String` that can have whitespaces using quoted
 strings. You can use following combinations of annotations and types by default (all of them requires
-[`CommandArgument`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/annotation/CommandArgument.html).):
+[`CommandArgument`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/annotation/CommandArgument.html).):
 
 * [`Advancement`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/advancement/Advancement.html)
 * [`Attribute`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/attribute/Attribute.html)
-* [`@Block`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/annotation/modifier/Block.html) [`Material`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html)
+* [`@Block`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/annotation/modifier/Block.html) [`Material`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html)
 * [`BlockData`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/data/BlockData.html)
 * `Boolean`
 * `boolean`
@@ -138,9 +138,9 @@ strings. You can use following combinations of annotations and types by default 
 * [`GameMode`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/GameMode.html)
 * `Integer`
 * `int`
-* [`@InventorySlot`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/annotation/modifier/NumberLimitations.html) `Integer`
-* [`@InventorySlot`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/annotation/modifier/NumberLimitations.html) `int`
-* [`@Item`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/annotation/modifier/Item.html) [`Material`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html)
+* [`@InventorySlot`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/annotation/modifier/NumberLimitations.html) `Integer`
+* [`@InventorySlot`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/annotation/modifier/NumberLimitations.html) `int`
+* [`@Item`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/annotation/modifier/Item.html) [`Material`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html)
 * [`ItemStack`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/ItemStack.html)
 * [`Location`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Location.html)
 * `Long`
@@ -150,9 +150,9 @@ strings. You can use following combinations of annotations and types by default 
 * [`Player`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Player.html)
 * `String`
 * [`BaseComponent`](https://javadoc.io/doc/net.md-5/bungeecord-chat/latest/net/md_5/bungee/api/chat/BaseComponent.html)
-* [`@Vector`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/annotation/modifier/Vector.html) [`Location`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Location.html)
+* [`@Vector`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/annotation/modifier/Vector.html) [`Location`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Location.html)
 
-These don't require a [`CommandArgument`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/annotation/CommandArgument.html)
+These don't require a [`CommandArgument`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/annotation/CommandArgument.html)
 annotation.
 
 * [`BlockCommandSender`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/command/BlockCommandSender.html)
@@ -189,7 +189,7 @@ with a bit of research.
 ### Advanced literals
 
 I only showed you how to make base commands. There is more than base commands in Arn. If you want to use two or more
-literals, you can simply separate them with `.` in your [`CommandArgument`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/annotation/CommandArgument.html)
+literals, you can simply separate them with `.` in your [`CommandArgument`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/annotation/CommandArgument.html)
 annotation. But in this way, arguments will be placed after all the literals. If you want to place literals between
 arguments, you can follow this syntax: `[ab]:[0-9]+:[a-z]+`. First group of a letter determines will this literal be placed before
 or after the argument with the given index. Second group of a number is the index of an argument. Finally, last group of
@@ -204,7 +204,7 @@ the literal would be placed after the 1st argument.
 ### Custom arguments
 
 If you want to make a custom argument, you can, using Enum classes! All you have to do is annotate an enum class with both
-[`Container`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/annotation/Container.html) and [`CustomArgument`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/annotation/CustomArgument.html),
+[`Container`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/annotation/Container.html) and [`CustomArgument`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/annotation/CustomArgument.html),
 and you'll be able to use that enum class as a command argument.
 
 ````java
@@ -243,7 +243,7 @@ public class Commands {
 ### Blocking access
 
 You can block access by using a permission or annotations. All you have to do is add the permission node to the
-[`Command`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/annotation/Command.html) like this:
+[`Command`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/annotation/Command.html) like this:
 
 ````java
 import dev.efekos.arn.annotation.Command;
@@ -260,7 +260,7 @@ public int method(/*...*/);
 
 ### Limits
 
-You can apply [`NumberLimitations`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/annotation/modifier/NumberLimitations.html)
+You can apply [`NumberLimitations`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/annotation/modifier/NumberLimitations.html)
 to any command argument with a number type.
 
 ````java
@@ -277,17 +277,17 @@ public int setTimeout(@CommandArgument @NumberLimitations(min = 0,max = 30) Inte
 ### Configurations
 
 If you want to go even more crazy, you can implement your own command parameter types. You have to make an implementation
-of [`CommandHandlerMethodArgumentResolver`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/resolver/CommandHandlerMethodArgumentResolver.html)
+of [`CommandHandlerMethodArgumentResolver`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/resolver/CommandHandlerMethodArgumentResolver.html)
 first. If you want to add an argument to the command structure to resolver a parameter, you might also need to make an
-implementation of a [`CommandArgumentResolver`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/resolver/CommandArgumentResolver.html).
-After that, simply make a [`Container`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/annotation/Container.html) that
-implements [`ArnConfigurer`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/config/ArnConfigurer.html), and add your
+implementation of a [`CommandArgumentResolver`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/resolver/CommandArgumentResolver.html).
+After that, simply make a [`Container`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/annotation/Container.html) that
+implements [`ArnConfigurer`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/config/ArnConfigurer.html), and add your
 resolvers using that configurer.
 
 ### Running
 
 After all of your command and configurations are done, call
-[`Arn`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/Arn.html)[`#run`](https://efekos.dev/javadoc/arn/0.1.1/dev/efekos/arn/Arn.html#run(java.lang.Class))
+[`Arn`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/Arn.html)[`#run`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/Arn.html#run(java.lang.Class))
 from your plugin.
 
 ````java
@@ -296,10 +296,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class MyPlugin extends JavaPlugin {
 
-    @Override
-    public void onEnable() {
-        Arn.run(MyPlugin.class); // classes under the package of this class will be scanned.
-    }
+  @Override
+  public void onEnable() {
+    Arn.run(MyPlugin.class); // classes under the package of this class will be scanned.
+  }
 
 }
 ````
