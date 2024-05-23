@@ -50,7 +50,7 @@ public final class HndSenderInv implements CommandHandlerMethodArgumentResolver 
      */
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(FromSender.class) && parameter.getType().equals(Location.class);
+        return parameter.isAnnotationPresent(FromSender.class) && parameter.getType().equals(Inventory.class);
     }
 
     /**
