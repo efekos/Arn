@@ -49,6 +49,7 @@ import dev.efekos.arn.resolver.impl.handler.*;
 import net.minecraft.commands.CommandListenerWrapper;
 import net.minecraft.network.chat.IChatBaseComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
@@ -419,7 +420,8 @@ public final class Arn {
 
                 List<Integer> indexesToDelete = new ArrayList<>();
 
-                for (int i = 0; i < method.getArgumentResolvers().size(); i++) if(method.getArgumentResolvers().get(i)==null) indexesToDelete.add(i);
+                for (int i = 0; i < method.getArgumentResolvers().size(); i++)
+                    if (method.getArgumentResolvers().get(i) == null) indexesToDelete.add(i);
 
                 List<CommandArgumentResolver> nonnullResolvers = IntStream.range(0, method.getArgumentResolvers().size())
                         .filter(i -> !indexesToDelete.contains(i))
@@ -430,12 +432,16 @@ public final class Arn {
                         .mapToObj(method.getParameters()::get)
                         .collect(Collectors.toList());
 
+                Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + indexesToDelete.toString());
+                Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + nonnullResolvers.toString());
+                Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + parametersClone.toString());
+
                 for (CommandAnnotationLiteral lit : literals)
                     if (lit.getOffset() == 0) nodes.add(net.minecraft.commands.CommandDispatcher.a(lit.getLiteral()));
 
                 System.out.println("iterate nonnull resolvers");
                 System.out.println(nonnullResolvers);
-                for (int i = 0; i < nonnullResolvers.size()-1; i++) {
+                for (int i = 0; i < nonnullResolvers.size(); i++) {
                     CommandArgumentResolver resolver = nonnullResolvers.get(i);
                     System.out.println(resolver);
 
@@ -454,7 +460,8 @@ public final class Arn {
                         throw CONSOLE_BLOCKED_EXCEPTION.create();
                     if (method.isBlocksCommandBlock() && sender instanceof BlockCommandSender)
                         throw CM_BLOCKED_EXCEPTION.create();
-                    if (method.isBlocksPlayer() && sender instanceof Player) throw PLAYER_BLOCKED_EXCEPTION.create();
+                    if (method.isBlocksPlayer() && sender instanceof Player)
+                        throw PLAYER_BLOCKED_EXCEPTION.create();
 
                     List<Object> objects = new ArrayList<>();
 
@@ -482,10 +489,12 @@ public final class Arn {
                         return 1;
                     }
 
-
                 };
 
                 LiteralArgumentBuilder<CommandListenerWrapper> builder = (LiteralArgumentBuilder<CommandListenerWrapper>) chainArgumentBuilders(nodes, lambda, method.getAnnotationData());
+
+                System.out.println("NODENODES");
+                System.out.println(nodes);
 
                 dispatcher.register(builder);
             } catch (Exception e) {
@@ -531,7 +540,7 @@ public final class Arn {
      * @return Last element that matches the given condition in the list.
      */
     private static <T> int findLastIndex(List<T> list, Predicate<T> condition) {
-        for (int i = list.size() - 2; i >= 0; i--) {
+        for (int i = list.size() - 1; i >= 0; i--) {
             if (condition.test(list.get(i))) {
                 return i;
             }
