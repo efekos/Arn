@@ -75,6 +75,7 @@ public final class BaseArnConfigurer implements ArnConfigurer {
         resolvers.add(new HndSenderInv());
         resolvers.add(new HndSenderStat());
         resolvers.add(new HndSenderName());
+        resolvers.add(new HndSenderLoc());
     }
 
     /**{@inheritDoc}*/
