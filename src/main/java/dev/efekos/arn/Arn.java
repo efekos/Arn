@@ -240,6 +240,7 @@ public final class Arn {
         handlerMethodArgumentResolvers.add(new HndSenderInv());
         handlerMethodArgumentResolvers.add(new HndSenderId());
         handlerMethodArgumentResolvers.add(new HndSenderInv());
+        handlerMethodArgumentResolvers.add(new HndSenderStat());
 
         commandArgumentResolvers.add(new CmdBooleanArg());
         commandArgumentResolvers.add(new CmdDoubleArg());
