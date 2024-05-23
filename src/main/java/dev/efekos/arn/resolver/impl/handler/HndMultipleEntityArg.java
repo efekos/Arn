@@ -70,12 +70,7 @@ public final class HndMultipleEntityArg implements CommandHandlerMethodArgumentR
         World w;
         if (sender instanceof Player) w = ((Player) sender).getWorld();
         else w = Bukkit.getWorld("overworld");
-        CraftEntity[] array = entities.stream().map(entity -> CraftEntity.getEntity(((CraftServer) Bukkit.getServer()), entity)).filter(craftEntity -> craftEntity.getWorld().equals(w)).toArray(CraftEntity[]::new);
-        System.out.println(Arrays.toString(array));
-        for (CraftEntity entity : array) {
-            System.out.println(entity);
-        }
-        return array;
+        return entities.stream().map(entity -> CraftEntity.getEntity(((CraftServer) Bukkit.getServer()), entity)).filter(craftEntity -> craftEntity.getWorld().equals(w)).toArray(CraftEntity[]::new);
     }
 
     /**

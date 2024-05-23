@@ -34,6 +34,8 @@ import dev.efekos.arn.exception.ArnCommandException;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import net.minecraft.commands.CommandListenerWrapper;
 import net.minecraft.commands.arguments.ResourceArgument;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 import java.lang.reflect.Parameter;
 import java.util.Locale;
@@ -89,10 +91,10 @@ public final class HndEnumArg implements CommandHandlerMethodArgumentResolver {
         } catch (IllegalArgumentException e) {
             throw ResourceArgument.a.create(string, enumClass.getAnnotation(CustomArgument.class).value());
         } catch (NullPointerException e) {
-            System.out.println("ARN-ERROR");
-            System.out.println(enumClass);
-            System.out.println(s);
-            System.out.println(string);
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"ARN-ERROR");
+            Bukkit.getConsoleSender().sendMessage(enumClass.toString());
+            Bukkit.getConsoleSender().sendMessage(s);
+            Bukkit.getConsoleSender().sendMessage(string);
             throw new RuntimeException(new ArnCommandException("There is something wrong with HndEnumArg. Please report this issue to github: https://github.com/efekos/Arn", e));
         }
     }

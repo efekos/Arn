@@ -333,9 +333,6 @@ public final class Arn {
             signatureBuilder.append(parameter.getType().getName());
             CommandHandlerMethodArgumentResolver handlerMethodArgumentResolver = this.handlerMethodArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().get();
             handlerMethodResolvers.add(handlerMethodArgumentResolver);
-            System.out.println(handlerMethodArgumentResolver);
-            System.out.println(handlerMethodArgumentResolver.requireCommandArgument());
-            System.out.println(this.commandArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().orElse(null));
             if (handlerMethodArgumentResolver.requireCommandArgument())
                 argumentResolvers.add(this.commandArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().get());
             else argumentResolvers.add(null);
@@ -385,11 +382,8 @@ public final class Arn {
                 for (CommandAnnotationLiteral lit : literals)
                     if (lit.getOffset() == 0) nodes.add(net.minecraft.commands.CommandDispatcher.a(lit.getLiteral()));
 
-                System.out.println("iterate nonnull resolvers");
-                System.out.println(nonnullResolvers);
                 for (int i = 0; i < nonnullResolvers.size(); i++) {
                     CommandArgumentResolver resolver = nonnullResolvers.get(i);
-                    System.out.println(resolver);
 
                     if (i != 0) for (CommandAnnotationLiteral lit : literals)
                         if (lit.getOffset() == i)
@@ -420,8 +414,6 @@ public final class Arn {
 
                     try {
                         actualMethodToInvoke.setAccessible(true);
-                        System.out.println(containerInstanceMap.get(method.getMethod().getDeclaringClass().getName()));
-                        System.out.println(objects);
                         return (int) actualMethodToInvoke.invoke(containerInstanceMap.get(method.getMethod().getDeclaringClass().getName()), objects.toArray());
                     } catch (InvocationTargetException e) {
                         if (e.getCause() != null) try { // this wrap exists so ArnCommandException can be thrown
@@ -439,12 +431,9 @@ public final class Arn {
 
                 LiteralArgumentBuilder<CommandListenerWrapper> builder = (LiteralArgumentBuilder<CommandListenerWrapper>) chainArgumentBuilders(nodes, lambda, method.getAnnotationData());
 
-                System.out.println("NODENODES");
-                System.out.println(nodes);
-
                 dispatcher.register(builder);
             } catch (Exception e) {
-                System.out.println(method);
+                Bukkit.getConsoleSender().sendMessage(method.toString());
                 throw new ArnCommandException("Something went wrong with registering command '" + method.getCommand() + "'", e);
             }
 
@@ -462,8 +451,6 @@ public final class Arn {
      */
     private static ArgumentBuilder<?, ?> chainArgumentBuilders(List<ArgumentBuilder> nodes, com.mojang.brigadier.Command<CommandListenerWrapper> executes, CommandAnnotationData data) {
         if (nodes.isEmpty()) return null;
-        System.out.println(nodes.size());
-        System.out.println(data);
 
         if (!data.getPermission().isEmpty())
             nodes.set(0, nodes.get(0).requires(o -> ((CommandListenerWrapper) o).getBukkitSender().hasPermission(data.getPermission())));
