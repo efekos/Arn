@@ -24,10 +24,12 @@
 
 package dev.efekos.arn.config;
 
+import dev.efekos.arn.data.ExceptionMap;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * An interface that represents a configurer of {@link dev.efekos.arn.Arn}. When {@link dev.efekos.arn.Arn#run(Class)}
@@ -53,4 +55,6 @@ public interface ArnConfigurer {
      */
     void addArgumentResolvers(List<CommandArgumentResolver> resolvers);
 
+    void putArgumentResolverExceptions(ExceptionMap<CommandArgumentResolver> map);
+    void putHandlerMethodArgumentResolverExceptions(ExceptionMap<CommandHandlerMethodArgumentResolver> map);
 }

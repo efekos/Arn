@@ -47,7 +47,7 @@ public final class CmdIntArg implements CommandArgumentResolver {
      */
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(int.class) || parameter.getType().equals(Integer.class)) && !parameter.isAnnotationPresent(InventorySlot.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(int.class) || parameter.getType().equals(Integer.class));
     }
 
     /**

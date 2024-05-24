@@ -24,6 +24,9 @@
 
 package dev.efekos.arn.config;
 
+import dev.efekos.arn.annotation.modifier.InventorySlot;
+import dev.efekos.arn.annotation.modifier.Vector;
+import dev.efekos.arn.data.ExceptionMap;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.resolver.impl.command.*;
@@ -105,5 +108,17 @@ public final class BaseArnConfigurer implements ArnConfigurer {
         resolvers.add(new CmdAttributeArg());
         resolvers.add(new CmdVectorArg());
         resolvers.add(new CmdInventorySlotArg());
+    }
+
+    @Override
+    public void putArgumentResolverExceptions(ExceptionMap<CommandArgumentResolver> map) {
+        map.put(CmdLocationArg.class, Vector.class);
+        map.put(CmdIntArg.class, InventorySlot.class);
+    }
+
+    @Override
+    public void putHandlerMethodArgumentResolverExceptions(ExceptionMap<CommandHandlerMethodArgumentResolver> map) {
+        map.put(HndLocationArg.class, Vector.class);
+        map.put(HndIntArg.class, InventorySlot.class);
     }
 }

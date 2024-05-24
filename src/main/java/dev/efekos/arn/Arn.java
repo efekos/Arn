@@ -41,6 +41,7 @@ import dev.efekos.arn.config.BaseArnConfigurer;
 import dev.efekos.arn.data.CommandAnnotationData;
 import dev.efekos.arn.data.CommandAnnotationLiteral;
 import dev.efekos.arn.data.CommandHandlerMethod;
+import dev.efekos.arn.data.ExceptionMap;
 import dev.efekos.arn.exception.ArnArgumentException;
 import dev.efekos.arn.exception.ArnCommandException;
 import dev.efekos.arn.exception.ArnContainerException;
@@ -102,6 +103,9 @@ public final class Arn {
      * commands.
      */
     private final List<CommandHandlerMethod> handlers = new ArrayList<>();
+
+    private final ExceptionMap<CommandArgumentResolver> commandArgumentResolverExceptions = new ExceptionMap<>();
+    private final ExceptionMap<CommandHandlerMethodArgumentResolver> handlerExceptions = new ExceptionMap<>();
 
     /**
      * A map containing an instance of every type annotated with {@link Container}. Used to instantiate {@link ArnConfigurer}s.
@@ -328,10 +332,16 @@ public final class Arn {
 
             if (i != 0) signatureBuilder.append(",");
             signatureBuilder.append(parameter.getType().getName());
-            CommandHandlerMethodArgumentResolver handlerMethodArgumentResolver = this.handlerMethodArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().orElseThrow(() -> ArnExceptionTypes.HM_NO_RESOLVER_ACCESS.create(signatureBuilder.append(")").toString()));
+            CommandHandlerMethodArgumentResolver handlerMethodArgumentResolver = this.handlerMethodArgumentResolvers.stream().filter(resolver ->
+                    resolver.isApplicable(parameter) && Arrays.stream(parameter.getAnnotations()).noneMatch(ann->handlerExceptions.contains(resolver.getClass(),ann.getClass()))
+            ).findFirst().orElseThrow(() -> ArnExceptionTypes.HM_NO_RESOLVER_ACCESS.create(signatureBuilder.append(")").toString()));
+
             handlerMethodResolvers.add(handlerMethodArgumentResolver);
+
             if (handlerMethodArgumentResolver.requireCommandArgument())
-                argumentResolvers.add(this.commandArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().get());
+                argumentResolvers.add(this.commandArgumentResolvers.stream().filter(resolver ->
+                        resolver.isApplicable(parameter)&& Arrays.stream(parameter.getAnnotations()).noneMatch(ann->commandArgumentResolverExceptions.contains(resolver.getClass(),ann.getClass()))
+                ).findFirst().get());
             else argumentResolvers.add(null);
         }
         signatureBuilder.append(")");

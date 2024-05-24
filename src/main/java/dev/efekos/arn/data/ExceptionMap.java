@@ -22,39 +22,32 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.resolver.impl.command;
+package dev.efekos.arn.data;
 
-import com.mojang.brigadier.builder.ArgumentBuilder;
-import dev.efekos.arn.annotation.CommandArgument;
-import dev.efekos.arn.resolver.CommandArgumentResolver;
-import net.minecraft.commands.CommandDispatcher;
-import net.minecraft.commands.arguments.coordinates.ArgumentPosition;
-import org.bukkit.Location;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import java.lang.reflect.Parameter;
+public class ExceptionMap<T> {
 
-/**
- * An implementation of {@link CommandArgumentResolver}. Resolves {@link Location} arguments using block position.
- *
- * @author efekos
- * @since 0.1
- */
-public final class CmdLocationArg implements CommandArgumentResolver {
+    private final Map<Class<? extends T>, List<Class<? extends Annotation>>> actualMap = new HashMap<>();
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Location.class);
+    public void put(Class<? extends T> clazz, Class<? extends Annotation> annotation) {
+        List<Class<? extends Annotation>> list = actualMap.getOrDefault(clazz, new ArrayList<>());
+        if(list.contains(annotation))return;
+        list.add(annotation);
+        actualMap.put(clazz, list);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ArgumentBuilder<?, ?> apply(Parameter parameter) {
-        String s = parameter.getAnnotation(CommandArgument.class).value();
-        return CommandDispatcher.a(s.isEmpty() ? parameter.getName() : s, ArgumentPosition.a());
+    public List<Class<? extends Annotation>> get(Class<? extends T> clazz) {
+        return actualMap.getOrDefault(clazz,new ArrayList<>());
     }
+
+    public boolean contains(Class<? extends T> clazz, Class<? extends Annotation> annotation) {
+        List<Class<? extends Annotation>> list = actualMap.getOrDefault(clazz, new ArrayList<>());
+        return list.contains(annotation);
+    }
+
 }
