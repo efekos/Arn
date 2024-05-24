@@ -302,7 +302,7 @@ public final class Arn {
      * @param method     A {@link Method} that is annotated with {@code annotation}.
      * @return Created {@link CommandHandlerMethod}.
      */
-    private CommandHandlerMethod createHandlerMethod(Command annotation, Method method) {
+    private CommandHandlerMethod createHandlerMethod(Command annotation, Method method) throws ArnCommandException {
         CommandHandlerMethod commandHandlerMethod = new CommandHandlerMethod();
         StringBuilder signatureBuilder = new StringBuilder();
 
@@ -335,7 +335,7 @@ public final class Arn {
 
             if (i != 0) signatureBuilder.append(",");
             signatureBuilder.append(parameter.getType().getName());
-            CommandHandlerMethodArgumentResolver handlerMethodArgumentResolver = this.handlerMethodArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().get();
+            CommandHandlerMethodArgumentResolver handlerMethodArgumentResolver = this.handlerMethodArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().orElseThrow(() -> new ArnCommandException("Checked handlerMethodArgumentResolver isn't present on command '"+signatureBuilder.append(")")+"'. This might be an issue related to Arn, please create an issue on GitHub: https://github.com/efekos/Arn/issues"));
             handlerMethodResolvers.add(handlerMethodArgumentResolver);
             if (handlerMethodArgumentResolver.requireCommandArgument())
                 argumentResolvers.add(this.commandArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().get());
