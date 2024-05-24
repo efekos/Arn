@@ -22,26 +22,26 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.exception.message;
+package dev.efekos.arn.exception.type;
 
 import dev.efekos.arn.exception.ArnException;
 
-public class DynamicArnExceptionType<T> {
+public class Dynamic2ArnExceptionType<T,T2> {
 
-    private final Lambda lambda;
+    private final Lambda<T,T2> lambda;
 
-    public DynamicArnExceptionType(Lambda lambda) {
+    public Dynamic2ArnExceptionType(Lambda<T,T2> lambda) {
         this.lambda = lambda;
     }
 
-    public ArnException create(T o){
-        return lambda.create(o);
+    public ArnException create(T o,T2 o2){
+        return lambda.create(o,o2);
     }
 
     @FunctionalInterface
-    public interface Lambda {
+    public interface Lambda<T,T2> {
 
-        ArnException create(Object o);
+        ArnException create(T o,T2 o2);
 
     }
 
