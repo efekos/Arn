@@ -34,7 +34,7 @@ import dev.efekos.arn.annotation.Container;
  * @author efekos
  * @since 0.1
  */
-public class ArnContainerException extends Exception {
+public class ArnContainerException extends ArnException {
 
     /**
      * Creates a new exception.

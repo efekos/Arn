@@ -24,22 +24,18 @@
 
 package dev.efekos.arn.exception;
 
-import dev.efekos.arn.data.CommandHandlerMethod;
-
 /**
- * An exception type thrown by {@link dev.efekos.arn.Arn} when there is something wrong with a
- * {@link CommandHandlerMethod}. It might be with the command itself, or something happening while executing the
- * {@link CommandHandlerMethod#getMethod()} method.
- *
+ * Base exception type thrown by Arn.
  * @author efekos
- * @since 0.1
+ * @since 0.3
  */
-public class ArnCommandException extends ArnException {
+public class ArnException extends Exception {
+
 
     /**
      * Creates a new exception.
      */
-    public ArnCommandException() {
+    public ArnException() {
     }
 
     /**
@@ -47,7 +43,7 @@ public class ArnCommandException extends ArnException {
      *
      * @param message Exception message.
      */
-    public ArnCommandException(String message) {
+    public ArnException(String message) {
         super(message);
     }
 
@@ -57,7 +53,7 @@ public class ArnCommandException extends ArnException {
      * @param message Exception message.
      * @param cause   Exception cause.
      */
-    public ArnCommandException(String message, Throwable cause) {
+    public ArnException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -66,7 +62,7 @@ public class ArnCommandException extends ArnException {
      *
      * @param cause Exception cause.
      */
-    public ArnCommandException(Throwable cause) {
+    public ArnException(Throwable cause) {
         super(cause);
     }
 
@@ -78,7 +74,7 @@ public class ArnCommandException extends ArnException {
      * @param enableSuppression  Whether suppression should be enabled.
      * @param writableStackTrace Whether stack trace is writeable
      */
-    public ArnCommandException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public ArnException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 

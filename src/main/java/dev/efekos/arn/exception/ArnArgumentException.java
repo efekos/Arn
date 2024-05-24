@@ -31,7 +31,7 @@ package dev.efekos.arn.exception;
  * @author efekos
  * @since 0.1
  */
-public class ArnArgumentException extends Exception {
+public class ArnArgumentException extends ArnException {
 
     /**
      * Creates a new exception.
