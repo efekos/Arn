@@ -27,6 +27,7 @@ package dev.efekos.arn;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import dev.efekos.arn.annotation.Command;
 import dev.efekos.arn.annotation.CommandArgument;
@@ -45,12 +46,11 @@ import dev.efekos.arn.exception.ArnCommandException;
 import dev.efekos.arn.exception.ArnContainerException;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import dev.efekos.arn.resolver.impl.command.*;
-import dev.efekos.arn.resolver.impl.handler.*;
+import dev.efekos.arn.resolver.impl.command.CmdEnumArg;
+import dev.efekos.arn.resolver.impl.handler.HndEnumArg;
 import net.minecraft.commands.CommandListenerWrapper;
 import net.minecraft.network.chat.IChatBaseComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
@@ -266,6 +266,10 @@ public final class Arn {
         // Errors
         if (!method.getReturnType().equals(int.class))
             throw new ArnCommandException("Handler method '" + method.getName() + "' for command '" + annotation.value() + "' does not return 'int'");
+        List<Class<?>> exceptions = Arrays.asList(method.getExceptionTypes());
+        if (exceptions.size() > 1 || (!exceptions.isEmpty() && exceptions.get(0) != CommandSyntaxException.class))
+            throw new ArnCommandException("Handler methods are only allowed to throw can only throw com.mojang.brigaider.exceptions.CommandSyntaxException, '" + method.getName() + "' for command '" + annotation.value() + "' throws "+exceptions.get(0).getName()+".");
+
         long count = Arrays.stream(method.getParameters()).filter(parameter -> REQUIRED_SENDER_CLASSES.contains(parameter.getType()) && !parameter.isAnnotationPresent(CommandArgument.class)).count();
         if (count > 1)
             throw new ArnCommandException("Handler method '" + method.getName() + "' for command '" + annotation.value() + "' must contain maximum one parameter that is a CommandSender.");
@@ -412,14 +416,10 @@ public final class Arn {
                         actualMethodToInvoke.setAccessible(true);
                         return (int) actualMethodToInvoke.invoke(containerInstanceMap.get(method.getMethod().getDeclaringClass().getName()), objects.toArray());
                     } catch (InvocationTargetException e) {
-                        if (e.getCause() != null) try { // this wrap exists so ArnCommandException can be thrown
-                            throw new ArnCommandException("Caused by " + e.getCause().getClass().getSimpleName() + ": " + e.getCause().getMessage(), e.getCause());
-                        } catch (ArnCommandException ex) {
-                            ex.printStackTrace();
-                        }
+                        if (e.getCause() != null) new ArnCommandException("Caused by " + e.getCause().getClass().getSimpleName() + ": " + e.getCause().getMessage(), e.getCause()).printStackTrace();
                         return 1;
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    }  catch (IllegalAccessException e) {
+                        new ArnCommandException("IllegalAccessException: "+e.getMessage()+". This might be an error related to Arn, please create an issue on GitHub: https://github.com/efekos/Arn/issues",e).printStackTrace();
                         return 1;
                     }
 
