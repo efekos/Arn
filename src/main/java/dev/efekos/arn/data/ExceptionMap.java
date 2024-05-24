@@ -45,9 +45,4 @@ public class ExceptionMap<T> {
         return actualMap.getOrDefault(clazz,new ArrayList<>());
     }
 
-    public boolean contains(Class<? extends T> clazz, Class<? extends Annotation> annotation) {
-        List<Class<? extends Annotation>> list = actualMap.getOrDefault(clazz, new ArrayList<>());
-        return list.contains(annotation);
-    }
-
 }

@@ -216,6 +216,8 @@ public final class Arn {
         BaseArnConfigurer configurer = new BaseArnConfigurer();
         configurer.addArgumentResolvers(commandArgumentResolvers);
         configurer.addHandlerMethodArgumentResolvers(handlerMethodArgumentResolvers);
+        configurer.putArgumentResolverExceptions(commandArgumentResolverExceptions);
+        configurer.putHandlerMethodArgumentResolverExceptions(handlerExceptions);
         configured = true;
     }
 
@@ -233,6 +235,9 @@ public final class Arn {
             ArnConfigurer configurerInstance = (ArnConfigurer) containerInstanceMap.get(clazz.getName());
             configurerInstance.addHandlerMethodArgumentResolvers(handlerMethodArgumentResolvers);
             configurerInstance.addArgumentResolvers(commandArgumentResolvers);
+            configurerInstance.putArgumentResolverExceptions(commandArgumentResolverExceptions);
+            System.out.println("a");
+            configurerInstance.putHandlerMethodArgumentResolverExceptions(handlerExceptions);
         }
     }
 
@@ -333,14 +338,14 @@ public final class Arn {
             if (i != 0) signatureBuilder.append(",");
             signatureBuilder.append(parameter.getType().getName());
             CommandHandlerMethodArgumentResolver handlerMethodArgumentResolver = this.handlerMethodArgumentResolvers.stream().filter(resolver ->
-                    resolver.isApplicable(parameter) && Arrays.stream(parameter.getAnnotations()).noneMatch(ann->handlerExceptions.contains(resolver.getClass(),ann.getClass()))
+                    resolver.isApplicable(parameter) && handlerExceptions.get(resolver.getClass()).stream().noneMatch(parameter::isAnnotationPresent)
             ).findFirst().orElseThrow(() -> ArnExceptionTypes.HM_NO_RESOLVER_ACCESS.create(signatureBuilder.append(")").toString()));
 
             handlerMethodResolvers.add(handlerMethodArgumentResolver);
 
             if (handlerMethodArgumentResolver.requireCommandArgument())
                 argumentResolvers.add(this.commandArgumentResolvers.stream().filter(resolver ->
-                        resolver.isApplicable(parameter)&& Arrays.stream(parameter.getAnnotations()).noneMatch(ann->commandArgumentResolverExceptions.contains(resolver.getClass(),ann.getClass()))
+                        resolver.isApplicable(parameter)&& commandArgumentResolverExceptions.get(resolver.getClass()).stream().noneMatch(parameter::isAnnotationPresent)
                 ).findFirst().get());
             else argumentResolvers.add(null);
         }
