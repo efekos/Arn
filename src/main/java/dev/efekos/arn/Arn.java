@@ -44,6 +44,8 @@ import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.exception.ArnArgumentException;
 import dev.efekos.arn.exception.ArnCommandException;
 import dev.efekos.arn.exception.ArnContainerException;
+import dev.efekos.arn.exception.ArnException;
+import dev.efekos.arn.exception.type.ArnExceptionTypes;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.resolver.impl.command.CmdEnumArg;
@@ -160,27 +162,25 @@ public final class Arn {
      * @param reflections Main reflections.
      * @throws ArnArgumentException If something about an enum found is invalid.
      */
-    private void scanEnumArguments(Reflections reflections) throws ArnArgumentException {
+    private void scanEnumArguments(Reflections reflections) throws ArnException {
         List<Class<?>> classes = reflections.getTypesAnnotatedWith(Container.class).stream().filter(aClass -> aClass.isAnnotationPresent(CustomArgument.class)).collect(Collectors.toList());
         for (Class<?> aClass : classes) {
-            if (!aClass.isEnum())
-                throw new ArnArgumentException(aClass.getName() + " is not an enum but is annotated with CustomArgument.");
-            Class<? extends Enum<?>> enumClazz = (Class<? extends Enum<?>>) aClass;
+            if (!aClass.isEnum()) throw ArnExceptionTypes.CA_NOT_ENUM.create(aClass);
+            Class<? extends Enum<?>> enumC = (Class<? extends Enum<?>>) aClass;
 
-            CustomArgument customArgument = enumClazz.getAnnotation(CustomArgument.class);
+            CustomArgument customArgument = enumC.getAnnotation(CustomArgument.class);
             try {
                 NamespacedKey.fromString(customArgument.value());
             } catch (Exception e) {
-                throw new ArnArgumentException("CustomArgument value of " + aClass.getName() + " is not a valid namespaced key.");
+                throw ArnExceptionTypes.CA_VALUE_NOT_KEY.create(aClass);
             }
 
-            if (enumClazz.getEnumConstants().length == 0)
-                throw new ArnArgumentException(enumClazz.getName() + " must have at least one constant to be a CustomArgument");
-            if (Arrays.stream(enumClazz.getEnumConstants()).anyMatch(constant -> !constant.name().toUpperCase(Locale.ENGLISH).equals(constant.name())))
-                throw new ArnArgumentException(enumClazz.getName() + " has a constant with lower-case letters. CustomArguments can't do that.");
+            if (enumC.getEnumConstants().length == 0) throw ArnExceptionTypes.CA_NO_CONSTANTS.create(enumC);
+            if (Arrays.stream(enumC.getEnumConstants()).anyMatch(constant -> !constant.name().toUpperCase(Locale.ENGLISH).equals(constant.name())))
+                throw ArnExceptionTypes.CA_LOWERCASE.create(enumC);
 
-            handlerMethodArgumentResolvers.add(new HndEnumArg(enumClazz));
-            commandArgumentResolvers.add(new CmdEnumArg(enumClazz));
+            handlerMethodArgumentResolvers.add(new HndEnumArg(enumC));
+            commandArgumentResolvers.add(new CmdEnumArg(enumC));
         }
     }
 
@@ -190,7 +190,7 @@ public final class Arn {
      * @param reflections A {@link Reflections} to find {@link Container}s.
      * @throws ArnContainerException If a {@link Container} can't be instantiated using an empty constructor.
      */
-    private void createContainerInstances(Reflections reflections) throws ArnContainerException {
+    private void createContainerInstances(Reflections reflections) throws ArnException {
         for (Class<?> clazz : reflections.getTypesAnnotatedWith(Container.class)) {
             if (clazz.isInterface() || clazz.isAnnotation() || clazz.isEnum()) continue;
 
@@ -200,7 +200,7 @@ public final class Arn {
                 Object o = ctor.newInstance();
                 containerInstanceMap.put(clazz.getName(), o);
             } catch (Exception e) {
-                throw new ArnContainerException("There was an error while trying to instantiate " + clazz.getName() + ".", e);
+                throw ArnExceptionTypes.CONTAINER_INSTANTIATE.create(clazz, e);
             }
         }
     }
@@ -236,9 +236,9 @@ public final class Arn {
      * Scans every {@link Container} for {@link Command}s using {@code reflections}.
      *
      * @param reflections A {@link Reflections} object to use finding {@link Command}s.
-     * @throws ArnCommandException If a {@link Command} is invalid.
+     * @throws ArnException If a {@link Command} is invalid.
      */
-    private void scanCommands(Reflections reflections) throws ArnCommandException {
+    private void scanCommands(Reflections reflections) throws ArnException {
         Set<Class<?>> containers = reflections.getTypesAnnotatedWith(Container.class);
 
         for (Class<?> container : containers)
@@ -247,7 +247,6 @@ public final class Arn {
                     instance.command(method.getAnnotation(Command.class), method);
 
     }
-
 
     /**
      * A list of classes that are a sender. There can't be more than one parameter with one of these classes in a
@@ -260,37 +259,31 @@ public final class Arn {
      *
      * @param annotation The {@link Command} annotation of {@code method}.
      * @param method     A {@link Method} that is annotated with {@code annotation}.
-     * @throws ArnCommandException If something about {@code method} or created {@link CommandHandlerMethod} doesn't seem right.
+     * @throws ArnException If something about {@code method} or created {@link CommandHandlerMethod} doesn't seem right.
      */
-    private void command(Command annotation, Method method) throws ArnCommandException {
+    private void command(Command annotation, Method method) throws ArnException {
         // Errors
-        if (!method.getReturnType().equals(int.class))
-            throw new ArnCommandException("Handler method '" + method.getName() + "' for command '" + annotation.value() + "' does not return 'int'");
+        if (!method.getReturnType().equals(int.class)) throw ArnExceptionTypes.HM_NOT_INT.create(method, annotation);
         List<Class<?>> exceptions = Arrays.asList(method.getExceptionTypes());
         if (exceptions.size() > 1 || (!exceptions.isEmpty() && exceptions.get(0) != CommandSyntaxException.class))
-            throw new ArnCommandException("Handler methods are only allowed to throw can only throw com.mojang.brigaider.exceptions.CommandSyntaxException, '" + method.getName() + "' for command '" + annotation.value() + "' throws "+exceptions.get(0).getName()+".");
+            throw ArnExceptionTypes.HM_THROWS.create(method, annotation, exceptions);
 
         long count = Arrays.stream(method.getParameters()).filter(parameter -> REQUIRED_SENDER_CLASSES.contains(parameter.getType()) && !parameter.isAnnotationPresent(CommandArgument.class)).count();
-        if (count > 1)
-            throw new ArnCommandException("Handler method '" + method.getName() + "' for command '" + annotation.value() + "' must contain maximum one parameter that is a CommandSender.");
+        if (count > 1) throw ArnExceptionTypes.HM_MULTIPLE_SENDERS.create(method, annotation);
+
         for (Parameter parameter : method.getParameters()) {
             if (handlerMethodArgumentResolvers.stream().noneMatch(car -> car.isApplicable(parameter)))
-                throw new ArnCommandException("Handler method '" + method.getName() + "' for command '" + annotation.value() + "' has a parameter '" + parameter.getName() + "' that isn't applicable for anything.");
+                throw ArnExceptionTypes.HM_NOT_APPLICABLE.create(method, annotation, parameter);
             if (handlerMethodArgumentResolvers.stream().anyMatch(car -> car.isApplicable(parameter) && car.requireCommandArgument()) && commandArgumentResolvers.stream().noneMatch(car -> car.isApplicable(parameter)))
-                throw new ArnCommandException("Handler method '" + method.getName() + "' for command '" + annotation.value() + "' has a parameter '" + parameter.getName() + "' that isn't applicable for anything.");
+                throw ArnExceptionTypes.HM_NOT_APPLICABLE.create(method, annotation, parameter);
         }
 
         CommandHandlerMethod commandHandlerMethod = createHandlerMethod(annotation, method);
 
-        if (handlers.stream().anyMatch(method1 -> commandHandlerMethod.getSignature().equals(method1.getSignature())))
-            throw new ArnCommandException("Duplicate command '" + commandHandlerMethod.getSignature() + "'");
+        if (handlers.stream().anyMatch(method1 -> commandHandlerMethod.getSignature().equals(method1.getSignature()))) throw ArnExceptionTypes.HM_DUPLICATE.create(commandHandlerMethod);
         for (CommandAnnotationLiteral literal : commandHandlerMethod.getAnnotationData().getLiterals()) {
-
-            if (literal.getOffset() < 0)
-                throw new ArnCommandException("Command '" + annotation.value() + "' has a literal with a negative offset value.");
-            if (!literal.getLiteral().matches("^[a-z]+$"))
-                throw new ArnCommandException("Literal '" + literal.getLiteral() + "' of command '" + annotation.value() + " has an illegal character.");
-
+            if (literal.getOffset() < 0) throw ArnExceptionTypes.LITERAL_NEG_OFFSET.create(annotation);
+            if (!literal.getLiteral().matches("^[a-z]+$")) throw ArnExceptionTypes.LITERAL_ILLEGAL.create(literal, annotation);
         }
         handlers.add(commandHandlerMethod);
     }
@@ -302,7 +295,7 @@ public final class Arn {
      * @param method     A {@link Method} that is annotated with {@code annotation}.
      * @return Created {@link CommandHandlerMethod}.
      */
-    private CommandHandlerMethod createHandlerMethod(Command annotation, Method method) throws ArnCommandException {
+    private CommandHandlerMethod createHandlerMethod(Command annotation, Method method) throws ArnException {
         CommandHandlerMethod commandHandlerMethod = new CommandHandlerMethod();
         StringBuilder signatureBuilder = new StringBuilder();
 
@@ -335,7 +328,7 @@ public final class Arn {
 
             if (i != 0) signatureBuilder.append(",");
             signatureBuilder.append(parameter.getType().getName());
-            CommandHandlerMethodArgumentResolver handlerMethodArgumentResolver = this.handlerMethodArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().orElseThrow(() -> new ArnCommandException("Checked handlerMethodArgumentResolver isn't present on command '"+signatureBuilder.append(")")+"'. This might be an issue related to Arn, please create an issue on GitHub: https://github.com/efekos/Arn/issues"));
+            CommandHandlerMethodArgumentResolver handlerMethodArgumentResolver = this.handlerMethodArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().orElseThrow(() -> ArnExceptionTypes.HM_NO_RESOLVER_ACCESS.create(signatureBuilder.append(")").toString()));
             handlerMethodResolvers.add(handlerMethodArgumentResolver);
             if (handlerMethodArgumentResolver.requireCommandArgument())
                 argumentResolvers.add(this.commandArgumentResolvers.stream().filter(resolver -> resolver.isApplicable(parameter)).findFirst().get());
@@ -355,7 +348,7 @@ public final class Arn {
      *
      * @throws ArnCommandException As a wrapper of an actual exception when encountered.
      */
-    private void registerCommands() throws ArnCommandException {
+    private void registerCommands() throws ArnException {
         CommandDispatcher<CommandListenerWrapper> dispatcher = ((CraftServer) Bukkit.getServer()).getHandle().c().aE().a();
 
         for (CommandHandlerMethod method : handlers) {
@@ -370,14 +363,8 @@ public final class Arn {
                 for (int i = 0; i < method.getArgumentResolvers().size(); i++)
                     if (method.getArgumentResolvers().get(i) == null) indexesToDelete.add(i);
 
-                List<CommandArgumentResolver> nonnullResolvers = IntStream.range(0, method.getArgumentResolvers().size())
-                        .filter(i -> !indexesToDelete.contains(i))
-                        .mapToObj(method.getArgumentResolvers()::get)
-                        .collect(Collectors.toList());
-                List<Parameter> parametersClone = IntStream.range(0, method.getArgumentResolvers().size())
-                        .filter(i -> !indexesToDelete.contains(i))
-                        .mapToObj(method.getParameters()::get)
-                        .collect(Collectors.toList());
+                List<CommandArgumentResolver> nonnullResolvers = IntStream.range(0, method.getArgumentResolvers().size()).filter(i -> !indexesToDelete.contains(i)).mapToObj(method.getArgumentResolvers()::get).collect(Collectors.toList());
+                List<Parameter> parametersClone = IntStream.range(0, method.getArgumentResolvers().size()).filter(i -> !indexesToDelete.contains(i)).mapToObj(method.getParameters()::get).collect(Collectors.toList());
 
                 for (CommandAnnotationLiteral lit : literals)
                     if (lit.getOffset() == 0) nodes.add(net.minecraft.commands.CommandDispatcher.a(lit.getLiteral()));
@@ -400,8 +387,7 @@ public final class Arn {
                         throw CONSOLE_BLOCKED_EXCEPTION.create();
                     if (method.isBlocksCommandBlock() && sender instanceof BlockCommandSender)
                         throw CM_BLOCKED_EXCEPTION.create();
-                    if (method.isBlocksPlayer() && sender instanceof Player)
-                        throw PLAYER_BLOCKED_EXCEPTION.create();
+                    if (method.isBlocksPlayer() && sender instanceof Player) throw PLAYER_BLOCKED_EXCEPTION.create();
 
                     List<Object> objects = new ArrayList<>();
 
@@ -416,10 +402,10 @@ public final class Arn {
                         actualMethodToInvoke.setAccessible(true);
                         return (int) actualMethodToInvoke.invoke(containerInstanceMap.get(method.getMethod().getDeclaringClass().getName()), objects.toArray());
                     } catch (InvocationTargetException e) {
-                        if (e.getCause() != null) new ArnCommandException("Caused by " + e.getCause().getClass().getSimpleName() + ": " + e.getCause().getMessage(), e.getCause()).printStackTrace();
+                        if (e.getCause() != null) ArnExceptionTypes.COMMAND_ERROR.create(e.getCause()).printStackTrace();
                         return 1;
-                    }  catch (IllegalAccessException e) {
-                        new ArnCommandException("IllegalAccessException: "+e.getMessage()+". This might be an error related to Arn, please create an issue on GitHub: https://github.com/efekos/Arn/issues",e).printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        ArnExceptionTypes.COMMAND_NO_ACCESS.create().initCause(e).printStackTrace();
                         return 1;
                     }
 
@@ -430,7 +416,7 @@ public final class Arn {
                 dispatcher.register(builder);
             } catch (Exception e) {
                 Bukkit.getConsoleSender().sendMessage(method.toString());
-                throw new ArnCommandException("Something went wrong with registering command '" + method.getCommand() + "'", e);
+                throw ArnExceptionTypes.COMMAND_REGISTER_ERROR.create(method,e);
             }
 
         }
