@@ -34,6 +34,8 @@ import java.util.Map;
  * Represents a {@code Map<Class<? extends T>, List<Class<? extends Annotation>>>}, but provides only two necessary
  * methods to manage the map.
  * @param <T> Key type of the map.
+ * @author efekos
+ * @since 0.3
  */
 public class ExceptionMap<T> {
 

@@ -31,6 +31,8 @@ import dev.efekos.arn.exception.ArnException;
  * @param <T> Type of the first argument.
  * @param <T2> Type of the second argument.
  * @param <T3> Type of the third argument.
+ * @since 0.3
+ * @author efekos
  */
 public class Dynamic3ArnExceptionType<T,T2,T3> {
 

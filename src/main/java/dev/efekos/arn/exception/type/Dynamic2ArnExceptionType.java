@@ -32,6 +32,8 @@ import java.util.function.BiFunction;
  * Dynamic exception creator that takes two arguments.
  * @param <T> Type of the first argument.
  * @param <T2> Type of the second argument.
+ * @author efekos
+ * @since 0.3
  */
 public class Dynamic2ArnExceptionType<T,T2> {
 

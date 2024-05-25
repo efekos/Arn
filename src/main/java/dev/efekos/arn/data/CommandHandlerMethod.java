@@ -39,7 +39,7 @@ import java.util.Objects;
  * information about how this class is used by {@link dev.efekos.arn.Arn}.
  *
  * @author efekos
- * @version 0.1
+ * @since 0.1
  */
 public class CommandHandlerMethod {
 

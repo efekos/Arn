@@ -32,6 +32,8 @@ import java.util.function.Function;
 /**
  * Basic exception creator that uses one argument.
  * @param <T> Type of the argument.
+ * @since 0.3
+ * @author efekos
  */
 public class DynamicArnExceptionType<T> {
 
