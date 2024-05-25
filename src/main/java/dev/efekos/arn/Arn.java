@@ -29,10 +29,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import dev.efekos.arn.annotation.Command;
-import dev.efekos.arn.annotation.CommandArgument;
-import dev.efekos.arn.annotation.Container;
-import dev.efekos.arn.annotation.CustomArgument;
+import dev.efekos.arn.annotation.*;
 import dev.efekos.arn.annotation.block.BlockCommandBlock;
 import dev.efekos.arn.annotation.block.BlockConsole;
 import dev.efekos.arn.annotation.block.BlockPlayer;
@@ -51,9 +48,14 @@ import dev.efekos.arn.resolver.CommandArgumentResolver;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.resolver.impl.command.CmdEnumArg;
 import dev.efekos.arn.resolver.impl.handler.HndEnumArg;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import net.minecraft.commands.CommandListenerWrapper;
 import net.minecraft.network.chat.IChatBaseComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
@@ -69,6 +71,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -154,6 +157,7 @@ public final class Arn {
             instance.createContainerInstances(reflections);
             instance.scanCommands(reflections);
             instance.registerCommands();
+            instance.registerHelpers(reflections);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -437,6 +441,74 @@ public final class Arn {
         }
     }
 
+    private void registerHelpers(Reflections reflections) {
+        CommandDispatcher<CommandListenerWrapper> dispatcher = ((CraftServer) Bukkit.getServer()).getHandle().c().aE().a();
+
+        for (Class<?> helperClass : reflections.getTypesAnnotatedWith(Container.class).stream().filter(aClass -> aClass.isAnnotationPresent(Helper.class)).collect(Collectors.toList())) {
+            List<CommandHandlerMethod> associatedHelperMethods = handlers.stream().filter(commandHandlerMethod -> commandHandlerMethod.getMethod().getDeclaringClass().equals(helperClass)).collect(Collectors.toList());
+
+            com.mojang.brigadier.Command<CommandListenerWrapper> lambda = (s)->{
+                CommandSender sender = s.getSource().getBukkitSender();
+
+                for (CommandHandlerMethod helperMethod : associatedHelperMethods) {
+                    Supplier<Boolean> isDisabled;
+                    if(sender instanceof Player) isDisabled = helperMethod::isBlocksPlayer;
+                    else if(sender instanceof BlockCommandSender) isDisabled = helperMethod::isBlocksCommandBlock;
+                    else if(sender instanceof ConsoleCommandSender) isDisabled = helperMethod::isBlocksConsole;
+                    else isDisabled = ()->false;
+                    if(isDisabled.get())continue;
+
+                    String permission = helperMethod.getAnnotationData().getPermission();
+                    if(permission!=null&&!sender.hasPermission(permission)) continue;
+
+                    StringBuilder builder = new StringBuilder().append(ChatColor.GRAY+"/");
+
+                    int adcI = 0;
+                    List<Parameter> a = helperMethod.getParameters().stream().filter(parameter -> parameter.isAnnotationPresent(CommandArgument.class)).collect(Collectors.toList());
+
+                    for (CommandAnnotationLiteral lit : helperMethod.getAnnotationData().getLiterals())
+                        if(lit.getOffset()==0) builder.append(ChatColor.GRAY+lit.getLiteral()+" ");
+
+
+                    for (int i = 0; i < a.size(); i++) {
+
+                        if(i!=0)
+                            for (CommandAnnotationLiteral lit : helperMethod.getAnnotationData().getLiterals())
+                                if(lit.getOffset()==i) builder.append(ChatColor.GRAY+lit.getLiteral()+" ");
+
+                        Parameter parameter = a.get(i);
+                        builder.append(ARGUMENT_DISPLAY_COLORS.get((adcI++)%5) + "<"+parameter.getName()+"> ");
+                    }
+
+                    BaseComponent component = TextComponent.fromLegacy(builder.toString());
+
+                    component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text(new TextComponent(helperMethod.getAnnotationData().getDescription()))));
+                    sender.spigot().sendMessage(component);
+                }
+
+                return 0;
+            };
+
+
+            ArrayList<CommandAnnotationLiteral> literals = new ArrayList<>();
+            for (String s : helperClass.getAnnotation(Helper.class).value().split("\\" + CommandAnnotationLiteral.SEPARATOR_CHAR_STRING))
+                literals.add(CommandAnnotationLiteral.parse(s));
+
+            List<ArgumentBuilder> builders = literals.stream().map(commandAnnotationLiteral -> net.minecraft.commands.CommandDispatcher.a(commandAnnotationLiteral.getLiteral())).collect(Collectors.toList());
+            ArgumentBuilder<?, ?> finalNode = chainArgumentBuilders(builders, lambda, null);
+
+            dispatcher.register(((LiteralArgumentBuilder) finalNode));
+
+
+        }
+
+
+
+
+    }
+
+    private static final List<ChatColor> ARGUMENT_DISPLAY_COLORS = Arrays.asList(ChatColor.AQUA,ChatColor.YELLOW,ChatColor.GREEN,ChatColor.LIGHT_PURPLE,ChatColor.GOLD);
+
     /**
      * Chains given argument builders into one {@link ArgumentBuilder} that can be used to register the command.
      *
@@ -449,7 +521,7 @@ public final class Arn {
     private static ArgumentBuilder<?, ?> chainArgumentBuilders(List<ArgumentBuilder> nodes, com.mojang.brigadier.Command<CommandListenerWrapper> executes, CommandAnnotationData data) {
         if (nodes.isEmpty()) return null;
 
-        if (!data.getPermission().isEmpty())
+        if (data!=null&&!data.getPermission().isEmpty())
             nodes.set(0, nodes.get(0).requires(o -> ((CommandListenerWrapper) o).getBukkitSender().hasPermission(data.getPermission())));
 
         ArgumentBuilder chainedBuilder = nodes.get(nodes.size() - 1).executes(executes);
