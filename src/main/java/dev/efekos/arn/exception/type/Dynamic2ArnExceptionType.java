@@ -26,23 +26,30 @@ package dev.efekos.arn.exception.type;
 
 import dev.efekos.arn.exception.ArnException;
 
+import java.util.function.BiFunction;
+
+/**
+ * Dynamic exception creator that takes two arguments.
+ * @param <T> Type of the first argument.
+ * @param <T2> Type of the second argument.
+ */
 public class Dynamic2ArnExceptionType<T,T2> {
 
-    private final Lambda<T,T2> lambda;
+    /**
+     * Lambda method that takes two arguments.
+     */
+    private final BiFunction<T,T2,ArnException> lambda;
 
-    public Dynamic2ArnExceptionType(Lambda<T,T2> lambda) {
+    public Dynamic2ArnExceptionType(BiFunction<T,T2,ArnException> lambda) {
         this.lambda = lambda;
     }
 
+    /**
+     * Creates an exception using {@link #lambda}.
+     * @return Created exception.
+     */
     public ArnException create(T o,T2 o2){
-        return lambda.create(o,o2);
-    }
-
-    @FunctionalInterface
-    public interface Lambda<T,T2> {
-
-        ArnException create(T o,T2 o2);
-
+        return lambda.apply(o,o2);
     }
 
 }

@@ -26,21 +26,51 @@ package dev.efekos.arn.exception.type;
 
 import dev.efekos.arn.exception.ArnException;
 
+/**
+ * Dynamic exception creator that takes three arguments.
+ * @param <T> Type of the first argument.
+ * @param <T2> Type of the second argument.
+ * @param <T3> Type of the third argument.
+ */
 public class Dynamic3ArnExceptionType<T,T2,T3> {
 
+    /**
+     * Lambda method that takes three arguments.
+     */
     private final Lambda<T,T2,T3> lambda;
 
+    /**
+     * Creates a new exception type.
+     * @param lambda Function used to create the exception.
+     */
     public Dynamic3ArnExceptionType(Lambda<T,T2,T3> lambda) {
         this.lambda = lambda;
     }
 
+    /**
+     * Creates an exception using {@link #lambda}.
+     * @return Created exception.
+     */
     public ArnException create(T o,T2 o2,T3 o3){
         return lambda.create(o,o2,o3);
     }
 
+    /**
+     * Lambda method that takes three arguments and returns an {@link ArnException}.
+     * @param <T> Type of the first argument.
+     * @param <T2> Type of the second argument.
+     * @param <T3> Type of the third argument.
+     */
     @FunctionalInterface
     public interface Lambda<T,T2,T3> {
 
+        /**
+         * Creates an {@link ArnException}.
+         * @param o First object.
+         * @param o2 Second object.
+         * @param o3 Third object.
+         * @return An {@link ArnException}.
+         */
         ArnException create(T o,T2 o2,T3 o3);
 
     }

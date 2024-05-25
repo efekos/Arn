@@ -22,38 +22,7 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.exception.type;
-
-import dev.efekos.arn.exception.ArnException;
-
-import java.util.function.Supplier;
-
 /**
- * An exception creator that creates a simple exception without using any arguments.
- * @since 0.3
- * @author efekos
+ * Modifier annotations related to {@link dev.efekos.arn.annotation.FromSender}.
  */
-public class SimpleArnExceptionType {
-
-    /**
-     * The function used to create the exception.
-     */
-    private final Supplier<ArnException> lambda;
-
-    /**
-     * Creates a new exception type.
-     * @param lambda Supplier function to create the exception.
-     */
-    public SimpleArnExceptionType(Supplier<ArnException> lambda) {
-        this.lambda = lambda;
-    }
-
-    /**
-     * Creates an exception using {@link #lambda}.
-     * @return Created exception.
-     */
-    public ArnException create(){
-        return lambda.get();
-    }
-
-}
+package dev.efekos.arn.annotation.modifier.sender;

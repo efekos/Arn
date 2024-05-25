@@ -26,23 +26,34 @@ package dev.efekos.arn.exception.type;
 
 import dev.efekos.arn.exception.ArnException;
 
+import java.util.function.Function;
+
+
+/**
+ * Basic exception creator that uses one argument.
+ * @param <T> Type of the argument.
+ */
 public class DynamicArnExceptionType<T> {
 
-    private final Lambda<T> lambda;
+    /**
+     * Lambda method that takes one argument
+     */
+    private final Function<T,ArnException> lambda;
 
-    public DynamicArnExceptionType(Lambda<T> lambda) {
+    /**
+     * Creates a new exception type.
+     * @param lambda A function to create the exception.
+     */
+    public DynamicArnExceptionType(Function<T, ArnException> lambda) {
         this.lambda = lambda;
     }
 
+    /**
+     * Creates an exception using {@link #lambda}.
+     * @return Created exception.
+     */
     public ArnException create(T o){
-        return lambda.create(o);
-    }
-
-    @FunctionalInterface
-    public interface Lambda<T> {
-
-        ArnException create(T o);
-
+        return lambda.apply(o);
     }
 
 }
