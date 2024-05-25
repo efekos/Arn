@@ -26,6 +26,7 @@
     * [Configurations](#configurations)
     * [Running](#running)
     * [Quick access to sender properties](#quick-access-to-sender-properties)
+    * [Annotation exceptions](#annotation-exceptions)
   * [License](#license)
 <!-- TOC -->
 
