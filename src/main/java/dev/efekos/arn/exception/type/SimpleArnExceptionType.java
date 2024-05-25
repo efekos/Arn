@@ -34,7 +34,7 @@ import java.util.function.Supplier;
  * @author efekos
  * @since 0.3
  */
-public class SimpleArnExceptionType {
+public final class SimpleArnExceptionType {
 
     /**
      * The function used to create the exception.

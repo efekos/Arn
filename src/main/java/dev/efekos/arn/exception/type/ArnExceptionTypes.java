@@ -41,7 +41,7 @@ import java.util.List;
  * @author efekos
  * @since 0.3
  */
-public class ArnExceptionTypes {
+public final class ArnExceptionTypes {
 
     // CustomArgument
 
