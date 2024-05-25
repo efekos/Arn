@@ -333,6 +333,40 @@ are the valid parameters you can use. Keep in mind that they all also need
 If a [`@FromSender`](https://efekos.dev/javadoc/arn/0.2/dev/efekos/arn/annotation/FromSender.html)ed argument is not
 available for the sender, it will return `null` instead.
 
+### Annotation exceptions
+
+When you make custom argument resolvers, your resolvers might have conflicts with some other resolvers. In order to
+prevent this, you can use annotation exceptions. When you add an annotation exception to a resolver, that resolver can't
+work on parameters with that annotation, for example:
+
+````java
+
+import dev.efekos.arn.annotation.Container;
+import dev.efekos.arn.config.ArnConfigurer;
+import dev.efekos.arn.data.ExceptionMap;
+import dev.efekos.arn.resolver.CommandArgumentResolver;
+import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.resolver.impl.command.CmdStringArg;
+import dev.efekos.arn.resolver.impl.handler.HndStringArg;
+import me.efekos.great.annotation.Greater;
+
+@Container
+public class GreatConfigurer implements ArnConfigurer {
+
+  @Override
+  public void putArgumentResolverExceptions(ExceptionMap<CommandArgumentResolver> map) {
+    map.put(CmdStringArg.class, Greater.class); // now CmdStringArg won't be applicable for parameters with @Greater
+  }
+
+  @Override
+  public void putHandlerMethodArgumentResolverExceptions(ExceptionMap<CommandHandlerMethodArgumentResolver> map) {
+    map.put(HndStringArg.class, Greater.class); // This blocks HndStringArg the same way
+  }
+  
+}
+
+````
+
 ## License
 
 This repository is licensed under [MIT License](https://github.com/efekos/Arn/blob/master/LICENSE).
