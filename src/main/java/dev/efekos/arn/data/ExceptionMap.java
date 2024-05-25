@@ -30,10 +30,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents a {@code Map<Class<? extends T>, List<Class<? extends Annotation>>>}, but provides only two necessary
+ * methods to manage the map.
+ * @param <T> Key type of the map.
+ */
 public class ExceptionMap<T> {
 
+    /**
+     * Actual map that is represented by this {@link ExceptionMap}.
+     */
     private final Map<Class<? extends T>, List<Class<? extends Annotation>>> actualMap = new HashMap<>();
 
+    /**
+     * Adds an annotation to the exception list of the class given.
+     * @param clazz A class.
+     * @param annotation An annotation class.
+     */
     public void put(Class<? extends T> clazz, Class<? extends Annotation> annotation) {
         List<Class<? extends Annotation>> list = actualMap.getOrDefault(clazz, new ArrayList<>());
         if(list.contains(annotation))return;
@@ -41,6 +54,11 @@ public class ExceptionMap<T> {
         actualMap.put(clazz, list);
     }
 
+    /**
+     * Returns the exception list of the class given.
+     * @param clazz A class.
+     * @return A list of annotation classes.
+     */
     public List<Class<? extends Annotation>> get(Class<? extends T> clazz) {
         return actualMap.getOrDefault(clazz,new ArrayList<>());
     }

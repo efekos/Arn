@@ -40,6 +40,10 @@ public class Dynamic2ArnExceptionType<T,T2> {
      */
     private final BiFunction<T,T2,ArnException> lambda;
 
+    /**
+     * Creates a new exception type.
+     * @param lambda Function to create an exception.
+     */
     public Dynamic2ArnExceptionType(BiFunction<T,T2,ArnException> lambda) {
         this.lambda = lambda;
     }
@@ -47,6 +51,8 @@ public class Dynamic2ArnExceptionType<T,T2> {
     /**
      * Creates an exception using {@link #lambda}.
      * @return Created exception.
+     * @param o First object.
+     * @param o2 Second object.
      */
     public ArnException create(T o,T2 o2){
         return lambda.apply(o,o2);

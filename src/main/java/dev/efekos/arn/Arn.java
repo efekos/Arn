@@ -107,7 +107,15 @@ public final class Arn {
      */
     private final List<CommandHandlerMethod> handlers = new ArrayList<>();
 
+    /**
+     * An {@link ExceptionMap} storing annotation exceptions of {@link CommandArgumentResolver}s.
+     */
     private final ExceptionMap<CommandArgumentResolver> commandArgumentResolverExceptions = new ExceptionMap<>();
+
+
+    /**
+     * An {@link ExceptionMap} storing annotation exceptions of {@link CommandHandlerMethodArgumentResolver}s.
+     */
     private final ExceptionMap<CommandHandlerMethodArgumentResolver> handlerExceptions = new ExceptionMap<>();
 
     /**
@@ -307,6 +315,7 @@ public final class Arn {
      * @param annotation The {@link Command} annotation of {@code method}.
      * @param method     A {@link Method} that is annotated with {@code annotation}.
      * @return Created {@link CommandHandlerMethod}.
+     * @throws ArnException See {@link ArnExceptionTypes#HM_NO_RESOLVER_ACCESS}.
      */
     private CommandHandlerMethod createHandlerMethod(Command annotation, Method method) throws ArnException {
         CommandHandlerMethod commandHandlerMethod = new CommandHandlerMethod();
@@ -441,6 +450,10 @@ public final class Arn {
         }
     }
 
+    /**
+     * Scans classes annotated with {@link Helper}
+     * @param reflections A {@link Reflections} object to use finding {@link Helper}s.
+     */
     private void registerHelpers(Reflections reflections) {
         CommandDispatcher<CommandListenerWrapper> dispatcher = ((CraftServer) Bukkit.getServer()).getHandle().c().aE().a();
 
@@ -507,6 +520,10 @@ public final class Arn {
 
     }
 
+    /**
+     * Argument formatting colors. When executing helper methods, argument colors will be in this order of colors. When
+     * there is more than 5 arguments, color goes back to the first element and repeats the same colors.
+     */
     private static final List<ChatColor> ARGUMENT_DISPLAY_COLORS = Arrays.asList(ChatColor.AQUA,ChatColor.YELLOW,ChatColor.GREEN,ChatColor.LIGHT_PURPLE,ChatColor.GOLD);
 
     /**

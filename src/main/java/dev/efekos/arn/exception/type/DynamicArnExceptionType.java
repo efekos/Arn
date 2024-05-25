@@ -51,6 +51,7 @@ public class DynamicArnExceptionType<T> {
     /**
      * Creates an exception using {@link #lambda}.
      * @return Created exception.
+     * @param o Argument object.
      */
     public ArnException create(T o){
         return lambda.apply(o);

@@ -50,6 +50,9 @@ public class Dynamic3ArnExceptionType<T,T2,T3> {
     /**
      * Creates an exception using {@link #lambda}.
      * @return Created exception.
+     * @param o First object.
+     * @param o2 Second object.
+     * @param o3 Third object.
      */
     public ArnException create(T o,T2 o2,T3 o3){
         return lambda.create(o,o2,o3);

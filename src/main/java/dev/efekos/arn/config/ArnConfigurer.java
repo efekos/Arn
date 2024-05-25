@@ -55,6 +55,16 @@ public interface ArnConfigurer {
      */
     void addArgumentResolvers(List<CommandArgumentResolver> resolvers);
 
+    /**
+     * Adds extra annotation exceptions to the given map.
+     * @param map An {@link ExceptionMap}.
+     */
     void putArgumentResolverExceptions(ExceptionMap<CommandArgumentResolver> map);
+
+
+    /**
+     * Adds extra annotation exceptions to the given map.
+     * @param map An {@link ExceptionMap}.
+     */
     void putHandlerMethodArgumentResolverExceptions(ExceptionMap<CommandHandlerMethodArgumentResolver> map);
 }
