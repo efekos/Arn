@@ -44,23 +44,29 @@ import java.lang.reflect.Parameter;
  * @since 0.2
  */
 public class HndSenderLoc implements CommandHandlerMethodArgumentResolver {
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(FromSender.class) && parameter.getType().equals(Location.class);
     }
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean requireCommandArgument() {
         return false;
     }
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Location resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         CommandSender sender = context.getSource().getBukkitSender();
-        if(sender instanceof Player) return ((Player) sender).getLocation();
+        if (sender instanceof Player) return ((Player) sender).getLocation();
         else return null;
     }
 }

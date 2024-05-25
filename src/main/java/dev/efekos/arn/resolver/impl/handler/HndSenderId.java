@@ -44,23 +44,29 @@ import java.util.UUID;
  */
 public final class HndSenderId implements CommandHandlerMethodArgumentResolver {
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(FromSender.class) && parameter.getType().equals(UUID.class);
     }
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean requireCommandArgument() {
         return false;
     }
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         CommandSender sender = context.getSource().getBukkitSender();
-        if(sender instanceof Player) return ((Player) sender).getUniqueId();
+        if (sender instanceof Player) return ((Player) sender).getUniqueId();
         return null;
     }
 

@@ -29,7 +29,6 @@ import dev.efekos.arn.resolver.CommandArgumentResolver;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * An interface that represents a configurer of {@link dev.efekos.arn.Arn}. When {@link dev.efekos.arn.Arn#run(Class)}
@@ -57,6 +56,7 @@ public interface ArnConfigurer {
 
     /**
      * Adds extra annotation exceptions to the given map.
+     *
      * @param map An {@link ExceptionMap}.
      */
     void putArgumentResolverExceptions(ExceptionMap<CommandArgumentResolver> map);
@@ -64,6 +64,7 @@ public interface ArnConfigurer {
 
     /**
      * Adds extra annotation exceptions to the given map.
+     *
      * @param map An {@link ExceptionMap}.
      */
     void putHandlerMethodArgumentResolverExceptions(ExceptionMap<CommandHandlerMethodArgumentResolver> map);

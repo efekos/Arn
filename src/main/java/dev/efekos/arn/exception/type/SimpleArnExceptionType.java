@@ -30,8 +30,9 @@ import java.util.function.Supplier;
 
 /**
  * An exception creator that creates a simple exception without using any arguments.
- * @since 0.3
+ *
  * @author efekos
+ * @since 0.3
  */
 public class SimpleArnExceptionType {
 
@@ -42,6 +43,7 @@ public class SimpleArnExceptionType {
 
     /**
      * Creates a new exception type.
+     *
      * @param lambda Supplier function to create the exception.
      */
     public SimpleArnExceptionType(Supplier<ArnException> lambda) {
@@ -50,9 +52,10 @@ public class SimpleArnExceptionType {
 
     /**
      * Creates an exception using {@link #lambda}.
+     *
      * @return Created exception.
      */
-    public ArnException create(){
+    public ArnException create() {
         return lambda.get();
     }
 

@@ -37,8 +37,9 @@ import java.util.List;
 
 /**
  * Utility class containing every exception type thrown by {@link dev.efekos.arn.Arn}.
- * @since 0.3
+ *
  * @author efekos
+ * @since 0.3
  */
 public class ArnExceptionTypes {
 
@@ -70,7 +71,7 @@ public class ArnExceptionTypes {
     /**
      * Thrown when instantiating containers fail, probably because a container didn't support empty constructors.
      */
-    public static final Dynamic2ArnExceptionType<Class<?>,Exception> CONTAINER_INSTANTIATE = new Dynamic2ArnExceptionType<>((o, o2) -> new ArnContainerException("There was an error while trying to instantiate "+ o + ".", o2));
+    public static final Dynamic2ArnExceptionType<Class<?>, Exception> CONTAINER_INSTANTIATE = new Dynamic2ArnExceptionType<>((o, o2) -> new ArnContainerException("There was an error while trying to instantiate " + o + ".", o2));
 
     // Handler Method
 
@@ -135,6 +136,6 @@ public class ArnExceptionTypes {
     /**
      * Thrown when registering a command fails.
      */
-    public static final Dynamic2ArnExceptionType<CommandHandlerMethod,Throwable> COMMAND_REGISTER_ERROR = new Dynamic2ArnExceptionType<>((o,o2) -> new ArnCommandException("Something went wrong with registering command '" + o.getCommand() + "'. This might be an error related to Arn, please create an issue on GitHub: https://github.com/efekos/Arn/issues",o2));
+    public static final Dynamic2ArnExceptionType<CommandHandlerMethod, Throwable> COMMAND_REGISTER_ERROR = new Dynamic2ArnExceptionType<>((o, o2) -> new ArnCommandException("Something went wrong with registering command '" + o.getCommand() + "'. This might be an error related to Arn, please create an issue on GitHub: https://github.com/efekos/Arn/issues", o2));
 
 }

@@ -32,8 +32,9 @@ import java.lang.annotation.Target;
 /**
  * An annotation that tells Arn to create a helper command that logs every usable command defined at the class which has
  * this annotation.
- * @since 0.3
+ *
  * @author efeos
+ * @since 0.3
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
@@ -41,6 +42,7 @@ public @interface Helper {
 
     /**
      * Name of the helper command.
+     *
      * @return Name of the helper command.
      * @see Command#value()
      */

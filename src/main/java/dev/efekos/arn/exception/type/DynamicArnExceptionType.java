@@ -31,19 +31,21 @@ import java.util.function.Function;
 
 /**
  * Basic exception creator that uses one argument.
+ *
  * @param <T> Type of the argument.
- * @since 0.3
  * @author efekos
+ * @since 0.3
  */
 public class DynamicArnExceptionType<T> {
 
     /**
      * Lambda method that takes one argument
      */
-    private final Function<T,ArnException> lambda;
+    private final Function<T, ArnException> lambda;
 
     /**
      * Creates a new exception type.
+     *
      * @param lambda A function to create the exception.
      */
     public DynamicArnExceptionType(Function<T, ArnException> lambda) {
@@ -52,10 +54,11 @@ public class DynamicArnExceptionType<T> {
 
     /**
      * Creates an exception using {@link #lambda}.
-     * @return Created exception.
+     *
      * @param o Argument object.
+     * @return Created exception.
      */
-    public ArnException create(T o){
+    public ArnException create(T o) {
         return lambda.apply(o);
     }
 

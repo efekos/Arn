@@ -26,6 +26,7 @@ package dev.efekos.arn.exception;
 
 /**
  * Base exception type thrown by Arn.
+ *
  * @author efekos
  * @since 0.3
  */

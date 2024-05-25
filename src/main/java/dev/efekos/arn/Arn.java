@@ -301,10 +301,12 @@ public final class Arn {
 
         CommandHandlerMethod commandHandlerMethod = createHandlerMethod(annotation, method);
 
-        if (handlers.stream().anyMatch(method1 -> commandHandlerMethod.getSignature().equals(method1.getSignature()))) throw ArnExceptionTypes.HM_DUPLICATE.create(commandHandlerMethod);
+        if (handlers.stream().anyMatch(method1 -> commandHandlerMethod.getSignature().equals(method1.getSignature())))
+            throw ArnExceptionTypes.HM_DUPLICATE.create(commandHandlerMethod);
         for (CommandAnnotationLiteral literal : commandHandlerMethod.getAnnotationData().getLiterals()) {
             if (literal.getOffset() < 0) throw ArnExceptionTypes.LITERAL_NEG_OFFSET.create(annotation);
-            if (!literal.getLiteral().matches("^[a-z]+$")) throw ArnExceptionTypes.LITERAL_ILLEGAL.create(literal, annotation);
+            if (!literal.getLiteral().matches("^[a-z]+$"))
+                throw ArnExceptionTypes.LITERAL_ILLEGAL.create(literal, annotation);
         }
         handlers.add(commandHandlerMethod);
     }
@@ -358,7 +360,7 @@ public final class Arn {
 
             if (handlerMethodArgumentResolver.requireCommandArgument())
                 argumentResolvers.add(this.commandArgumentResolvers.stream().filter(resolver ->
-                        resolver.isApplicable(parameter)&& commandArgumentResolverExceptions.get(resolver.getClass()).stream().noneMatch(parameter::isAnnotationPresent)
+                        resolver.isApplicable(parameter) && commandArgumentResolverExceptions.get(resolver.getClass()).stream().noneMatch(parameter::isAnnotationPresent)
                 ).findFirst().get());
             else argumentResolvers.add(null);
         }
@@ -430,7 +432,8 @@ public final class Arn {
                         actualMethodToInvoke.setAccessible(true);
                         return (int) actualMethodToInvoke.invoke(containerInstanceMap.get(method.getMethod().getDeclaringClass().getName()), objects.toArray());
                     } catch (InvocationTargetException e) {
-                        if (e.getCause() != null) ArnExceptionTypes.COMMAND_ERROR.create(e.getCause()).printStackTrace();
+                        if (e.getCause() != null)
+                            ArnExceptionTypes.COMMAND_ERROR.create(e.getCause()).printStackTrace();
                         return 1;
                     } catch (IllegalAccessException e) {
                         ArnExceptionTypes.COMMAND_NO_ACCESS.create().initCause(e).printStackTrace();
@@ -444,7 +447,7 @@ public final class Arn {
                 dispatcher.register(builder);
             } catch (Exception e) {
                 Bukkit.getConsoleSender().sendMessage(method.toString());
-                throw ArnExceptionTypes.COMMAND_REGISTER_ERROR.create(method,e);
+                throw ArnExceptionTypes.COMMAND_REGISTER_ERROR.create(method, e);
             }
 
         }
@@ -452,6 +455,7 @@ public final class Arn {
 
     /**
      * Scans classes annotated with {@link Helper}
+     *
      * @param reflections A {@link Reflections} object to use finding {@link Helper}s.
      */
     private void registerHelpers(Reflections reflections) {
@@ -460,42 +464,42 @@ public final class Arn {
         for (Class<?> helperClass : reflections.getTypesAnnotatedWith(Container.class).stream().filter(aClass -> aClass.isAnnotationPresent(Helper.class)).collect(Collectors.toList())) {
             List<CommandHandlerMethod> associatedHelperMethods = handlers.stream().filter(commandHandlerMethod -> commandHandlerMethod.getMethod().getDeclaringClass().equals(helperClass)).collect(Collectors.toList());
 
-            com.mojang.brigadier.Command<CommandListenerWrapper> lambda = (s)->{
+            com.mojang.brigadier.Command<CommandListenerWrapper> lambda = (s) -> {
                 CommandSender sender = s.getSource().getBukkitSender();
 
                 for (CommandHandlerMethod helperMethod : associatedHelperMethods) {
                     Supplier<Boolean> isDisabled;
-                    if(sender instanceof Player) isDisabled = helperMethod::isBlocksPlayer;
-                    else if(sender instanceof BlockCommandSender) isDisabled = helperMethod::isBlocksCommandBlock;
-                    else if(sender instanceof ConsoleCommandSender) isDisabled = helperMethod::isBlocksConsole;
-                    else isDisabled = ()->false;
-                    if(isDisabled.get())continue;
+                    if (sender instanceof Player) isDisabled = helperMethod::isBlocksPlayer;
+                    else if (sender instanceof BlockCommandSender) isDisabled = helperMethod::isBlocksCommandBlock;
+                    else if (sender instanceof ConsoleCommandSender) isDisabled = helperMethod::isBlocksConsole;
+                    else isDisabled = () -> false;
+                    if (isDisabled.get()) continue;
 
                     String permission = helperMethod.getAnnotationData().getPermission();
-                    if(permission!=null&&!sender.hasPermission(permission)) continue;
+                    if (permission != null && !sender.hasPermission(permission)) continue;
 
-                    StringBuilder builder = new StringBuilder().append(ChatColor.GRAY+"/");
+                    StringBuilder builder = new StringBuilder().append(ChatColor.GRAY + "/");
 
                     int adcI = 0;
                     List<Parameter> a = helperMethod.getParameters().stream().filter(parameter -> parameter.isAnnotationPresent(CommandArgument.class)).collect(Collectors.toList());
 
                     for (CommandAnnotationLiteral lit : helperMethod.getAnnotationData().getLiterals())
-                        if(lit.getOffset()==0) builder.append(ChatColor.GRAY+lit.getLiteral()+" ");
+                        if (lit.getOffset() == 0) builder.append(ChatColor.GRAY + lit.getLiteral() + " ");
 
 
                     for (int i = 0; i < a.size(); i++) {
 
-                        if(i!=0)
+                        if (i != 0)
                             for (CommandAnnotationLiteral lit : helperMethod.getAnnotationData().getLiterals())
-                                if(lit.getOffset()==i) builder.append(ChatColor.GRAY+lit.getLiteral()+" ");
+                                if (lit.getOffset() == i) builder.append(ChatColor.GRAY + lit.getLiteral() + " ");
 
                         Parameter parameter = a.get(i);
-                        builder.append(ARGUMENT_DISPLAY_COLORS.get((adcI++)%5) + "<"+parameter.getName()+"> ");
+                        builder.append(ARGUMENT_DISPLAY_COLORS.get((adcI++) % 5) + "<" + parameter.getName() + "> ");
                     }
 
                     BaseComponent component = TextComponent.fromLegacy(builder.toString());
 
-                    component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text(new TextComponent(helperMethod.getAnnotationData().getDescription()))));
+                    component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(new TextComponent(helperMethod.getAnnotationData().getDescription()))));
                     sender.spigot().sendMessage(component);
                 }
 
@@ -516,15 +520,13 @@ public final class Arn {
         }
 
 
-
-
     }
 
     /**
      * Argument formatting colors. When executing helper methods, argument colors will be in this order of colors. When
      * there is more than 5 arguments, color goes back to the first element and repeats the same colors.
      */
-    private static final List<ChatColor> ARGUMENT_DISPLAY_COLORS = Arrays.asList(ChatColor.AQUA,ChatColor.YELLOW,ChatColor.GREEN,ChatColor.LIGHT_PURPLE,ChatColor.GOLD);
+    private static final List<ChatColor> ARGUMENT_DISPLAY_COLORS = Arrays.asList(ChatColor.AQUA, ChatColor.YELLOW, ChatColor.GREEN, ChatColor.LIGHT_PURPLE, ChatColor.GOLD);
 
     /**
      * Chains given argument builders into one {@link ArgumentBuilder} that can be used to register the command.
@@ -538,7 +540,7 @@ public final class Arn {
     private static ArgumentBuilder<?, ?> chainArgumentBuilders(List<ArgumentBuilder> nodes, com.mojang.brigadier.Command<CommandListenerWrapper> executes, CommandAnnotationData data) {
         if (nodes.isEmpty()) return null;
 
-        if (data!=null&&!data.getPermission().isEmpty())
+        if (data != null && !data.getPermission().isEmpty())
             nodes.set(0, nodes.get(0).requires(o -> ((CommandListenerWrapper) o).getBukkitSender().hasPermission(data.getPermission())));
 
         ArgumentBuilder chainedBuilder = nodes.get(nodes.size() - 1).executes(executes);

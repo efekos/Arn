@@ -36,12 +36,15 @@ import java.util.List;
 
 /**
  * Default configuration of Arn.
+ *
  * @author efekos
  * @since 0.2
  */
 public final class BaseArnConfigurer implements ArnConfigurer {
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addHandlerMethodArgumentResolvers(List<CommandHandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new HndIntArg());
@@ -81,7 +84,9 @@ public final class BaseArnConfigurer implements ArnConfigurer {
         resolvers.add(new HndSenderLoc());
     }
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addArgumentResolvers(List<CommandArgumentResolver> resolvers) {
         resolvers.add(new CmdBooleanArg());

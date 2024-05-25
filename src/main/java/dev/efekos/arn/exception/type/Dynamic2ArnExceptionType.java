@@ -30,34 +30,37 @@ import java.util.function.BiFunction;
 
 /**
  * Dynamic exception creator that takes two arguments.
- * @param <T> Type of the first argument.
+ *
+ * @param <T>  Type of the first argument.
  * @param <T2> Type of the second argument.
  * @author efekos
  * @since 0.3
  */
-public class Dynamic2ArnExceptionType<T,T2> {
+public class Dynamic2ArnExceptionType<T, T2> {
 
     /**
      * Lambda method that takes two arguments.
      */
-    private final BiFunction<T,T2,ArnException> lambda;
+    private final BiFunction<T, T2, ArnException> lambda;
 
     /**
      * Creates a new exception type.
+     *
      * @param lambda Function to create an exception.
      */
-    public Dynamic2ArnExceptionType(BiFunction<T,T2,ArnException> lambda) {
+    public Dynamic2ArnExceptionType(BiFunction<T, T2, ArnException> lambda) {
         this.lambda = lambda;
     }
 
     /**
      * Creates an exception using {@link #lambda}.
-     * @return Created exception.
-     * @param o First object.
+     *
+     * @param o  First object.
      * @param o2 Second object.
+     * @return Created exception.
      */
-    public ArnException create(T o,T2 o2){
-        return lambda.apply(o,o2);
+    public ArnException create(T o, T2 o2) {
+        return lambda.apply(o, o2);
     }
 
 }
