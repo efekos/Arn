@@ -91,7 +91,7 @@ public final class HndEnumArg implements CommandHandlerMethodArgumentResolver {
         } catch (IllegalArgumentException e) {
             throw ResourceArgument.a.create(string, enumClass.getAnnotation(CustomArgument.class).value());
         } catch (NullPointerException e) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"ARN-ERROR");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "ARN-ERROR");
             Bukkit.getConsoleSender().sendMessage(enumClass.toString());
             Bukkit.getConsoleSender().sendMessage(s);
             Bukkit.getConsoleSender().sendMessage(string);

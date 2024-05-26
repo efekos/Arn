@@ -40,7 +40,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Parameter;
-import java.util.Arrays;
 import java.util.Collection;
 
 /**

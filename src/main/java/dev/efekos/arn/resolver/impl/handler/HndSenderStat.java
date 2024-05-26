@@ -89,9 +89,9 @@ public final class HndSenderStat implements CommandHandlerMethodArgumentResolver
      * @return Same value that might be cast to another class.
      */
     private Object caster(Class<?> paramType, Object value) {
-        if (paramType.equals(int.class) || paramType.equals(Integer.class)) return (Integer) value;
-        if (paramType.equals(float.class) || paramType.equals(Float.class)) return (Float) value;
-        if (paramType.equals(double.class) || paramType.equals(Double.class)) return (Double) value;
+        if (paramType.equals(int.class) || paramType.equals(Integer.class)) return value;
+        if (paramType.equals(float.class) || paramType.equals(Float.class)) return value;
+        if (paramType.equals(double.class) || paramType.equals(Double.class)) return value;
         return value;
     }
 }

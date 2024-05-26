@@ -27,7 +27,6 @@ package dev.efekos.arn.resolver.impl.command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.annotation.CommandArgument;
-import dev.efekos.arn.annotation.modifier.InventorySlot;
 import dev.efekos.arn.annotation.modifier.NumberLimitations;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import net.minecraft.commands.CommandDispatcher;

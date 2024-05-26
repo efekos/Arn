@@ -71,11 +71,11 @@ public final class HndSenderEqu implements CommandHandlerMethodArgumentResolver 
         if (!(sender instanceof Player)) return null;
         Player player = (Player) sender;
 
-        if(parameter.isAnnotationPresent(OffHand.class)) return player.getInventory().getItemInOffHand();
-        if(parameter.isAnnotationPresent(Helmet.class)) return player.getInventory().getHelmet();
-        if(parameter.isAnnotationPresent(Chestplate.class)) return player.getInventory().getChestplate();
-        if(parameter.isAnnotationPresent(Leggings.class)) return player.getInventory().getLeggings();
-        if(parameter.isAnnotationPresent(Boots.class)) return player.getInventory().getBoots();
+        if (parameter.isAnnotationPresent(OffHand.class)) return player.getInventory().getItemInOffHand();
+        if (parameter.isAnnotationPresent(Helmet.class)) return player.getInventory().getHelmet();
+        if (parameter.isAnnotationPresent(Chestplate.class)) return player.getInventory().getChestplate();
+        if (parameter.isAnnotationPresent(Leggings.class)) return player.getInventory().getLeggings();
+        if (parameter.isAnnotationPresent(Boots.class)) return player.getInventory().getBoots();
         return player.getInventory().getItemInMainHand();
     }
 }

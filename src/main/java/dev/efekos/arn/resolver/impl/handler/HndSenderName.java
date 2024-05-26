@@ -33,12 +33,9 @@ import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import net.minecraft.commands.CommandListenerWrapper;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.type.CommandBlock;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
 import java.lang.reflect.Parameter;
 import java.util.Locale;
@@ -56,7 +53,7 @@ public final class HndSenderName implements CommandHandlerMethodArgumentResolver
      */
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(FromSender.class) && parameter.getType().equals(String.class) && (parameter.isAnnotationPresent(Name.class)||parameter.getName().toLowerCase(Locale.ENGLISH).endsWith("name"));
+        return parameter.isAnnotationPresent(FromSender.class) && parameter.getType().equals(String.class) && (parameter.isAnnotationPresent(Name.class) || parameter.getName().toLowerCase(Locale.ENGLISH).endsWith("name"));
     }
 
     /**
@@ -73,11 +70,11 @@ public final class HndSenderName implements CommandHandlerMethodArgumentResolver
     @Override
     public String resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         CommandSender sender = context.getSource().getBukkitSender();
-        if(sender instanceof ConsoleCommandSender) return "CONSOLE";
-        if(sender instanceof BlockCommandSender) {
+        if (sender instanceof ConsoleCommandSender) return "CONSOLE";
+        if (sender instanceof BlockCommandSender) {
             Block b = ((BlockCommandSender) sender).getBlock();
             Location location = b.getLocation();
-            return "[@"+b.getType().getKey().getKey()+":"+location.getBlockX()+":"+location.getBlockY()+":"+location.getBlockZ()+"]";
+            return "[@" + b.getType().getKey().getKey() + ":" + location.getBlockX() + ":" + location.getBlockY() + ":" + location.getBlockZ() + "]";
         }
         return sender.getName();
     }

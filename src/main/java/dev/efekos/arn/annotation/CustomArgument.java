@@ -38,6 +38,7 @@ public @interface CustomArgument {
 
     /**
      * Returns name of this "registry". Must be a valid {@link org.bukkit.NamespacedKey}.
+     *
      * @return Value of this annotation.
      */
     String value();
