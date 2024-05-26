@@ -33,6 +33,7 @@ import dev.efekos.arn.annotation.*;
 import dev.efekos.arn.annotation.block.BlockCommandBlock;
 import dev.efekos.arn.annotation.block.BlockConsole;
 import dev.efekos.arn.annotation.block.BlockPlayer;
+import dev.efekos.arn.argument.CustomArgumentType;
 import dev.efekos.arn.config.ArnConfigurer;
 import dev.efekos.arn.config.BaseArnConfigurer;
 import dev.efekos.arn.data.CommandAnnotationData;
@@ -46,7 +47,9 @@ import dev.efekos.arn.exception.ArnException;
 import dev.efekos.arn.exception.type.ArnExceptionTypes;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.resolver.impl.command.CmdCustomArg;
 import dev.efekos.arn.resolver.impl.command.CmdEnumArg;
+import dev.efekos.arn.resolver.impl.handler.HndCustomArg;
 import dev.efekos.arn.resolver.impl.handler.HndEnumArg;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -157,17 +160,28 @@ public final class Arn {
         Reflections reflections = new Reflections(mainClass.getPackage().getName());
 
         try {
+            instance.createContainerInstances(reflections);
+
             if (!instance.configured) instance.configure();
             instance.scanConfigurers(reflections);
+
             instance.scanEnumArguments(reflections);
+            instance.scanCustomArguments(reflections);
 
-
-            instance.createContainerInstances(reflections);
             instance.scanCommands(reflections);
             instance.registerCommands();
             instance.registerHelpers(reflections);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void scanCustomArguments(Reflections reflections) {
+        for (Class<?> customArgumentClass : reflections.getTypesAnnotatedWith(Container.class).stream().filter(aClass -> Arrays.asList(aClass.getInterfaces()).contains(CustomArgumentType.class)).collect(Collectors.toList())) {
+            CustomArgumentType<?> o = (CustomArgumentType<?>) containerInstanceMap.get(customArgumentClass.getName());
+
+            handlerMethodArgumentResolvers.add(new HndCustomArg(o));
+            commandArgumentResolvers.add(new CmdCustomArg(o));
         }
     }
 
