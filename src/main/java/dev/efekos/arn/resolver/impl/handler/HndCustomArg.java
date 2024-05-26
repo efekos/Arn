@@ -28,7 +28,6 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.annotation.CommandArgument;
-import dev.efekos.arn.annotation.CustomArgument;
 import dev.efekos.arn.argument.CustomArgumentType;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
@@ -46,7 +45,7 @@ public final class HndCustomArg implements CommandHandlerMethodArgumentResolver 
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CustomArgument.class) && parameter.getType().equals(customArgumentType.getType());
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(customArgumentType.getType());
     }
 
     @Override

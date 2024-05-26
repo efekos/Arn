@@ -27,7 +27,6 @@ package dev.efekos.arn.resolver.impl.command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.annotation.CommandArgument;
-import dev.efekos.arn.annotation.CustomArgument;
 import dev.efekos.arn.argument.CustomArgumentType;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import net.minecraft.commands.CommandDispatcher;
@@ -44,7 +43,7 @@ public final class CmdCustomArg implements CommandArgumentResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CustomArgument.class) && parameter.getType().equals(customArgumentType.getType());
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(customArgumentType.getType());
     }
 
     @Override
