@@ -51,29 +51,36 @@ public final class HndCustomArg implements CommandHandlerMethodArgumentResolver 
 
     /**
      * Creates a new resolver.
+     *
      * @param customArgumentType An instance of the {@link CustomArgumentType} this resolver resolves.
      */
     public HndCustomArg(CustomArgumentType<?> customArgumentType) {
         this.customArgumentType = customArgumentType;
     }
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(customArgumentType.getType());
     }
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean requireCommandArgument() {
         return true;
     }
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         String string = StringArgumentType.getString(context, s.isEmpty() ? parameter.getName() : s);
-        return customArgumentType.parse(context.getSource().getBukkitSender(),string);
+        return customArgumentType.parse(context.getSource().getBukkitSender(), string);
     }
 }

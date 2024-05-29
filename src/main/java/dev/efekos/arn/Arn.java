@@ -178,6 +178,7 @@ public final class Arn {
 
     /**
      * Scans {@link Container}s annotated with {@link CustomArgumentType} and creates a resolver for them.
+     *
      * @param reflections Main reflections.
      */
     private void scanCustomArguments(Reflections reflections) {

@@ -42,7 +42,7 @@ public class ArnException extends Exception {
      */
     public ArnException() {
         List<StackTraceElement> list = new ArrayList<>(Arrays.asList(this.getStackTrace()));
-        for (int i = 0; i < 3; i++) list.remove(list.size()-1);
+        for (int i = 0; i < 3; i++) list.remove(list.size() - 1);
         setStackTrace(list.toArray(new StackTraceElement[list.size()]));
     }
 
@@ -54,7 +54,7 @@ public class ArnException extends Exception {
     public ArnException(String message) {
         super(message);
         List<StackTraceElement> list = new ArrayList<>(Arrays.asList(this.getStackTrace()));
-        for (int i = 0; i < 3; i++) list.remove(list.size()-1);
+        for (int i = 0; i < 3; i++) list.remove(list.size() - 1);
         setStackTrace(list.toArray(new StackTraceElement[list.size()]));
     }
 
@@ -67,7 +67,7 @@ public class ArnException extends Exception {
     public ArnException(String message, Throwable cause) {
         super(message, cause);
         List<StackTraceElement> list = new ArrayList<>(Arrays.asList(this.getStackTrace()));
-        for (int i = 0; i < 3; i++) list.remove(list.size()-1);
+        for (int i = 0; i < 3; i++) list.remove(list.size() - 1);
         setStackTrace(list.toArray(new StackTraceElement[list.size()]));
     }
 
@@ -79,7 +79,7 @@ public class ArnException extends Exception {
     public ArnException(Throwable cause) {
         super(cause);
         List<StackTraceElement> list = new ArrayList<>(Arrays.asList(this.getStackTrace()));
-        for (int i = 0; i < 3; i++) list.remove(list.size()-1);
+        for (int i = 0; i < 3; i++) list.remove(list.size() - 1);
         setStackTrace(list.toArray(new StackTraceElement[list.size()]));
     }
 
@@ -94,7 +94,7 @@ public class ArnException extends Exception {
     public ArnException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
         List<StackTraceElement> list = new ArrayList<>(Arrays.asList(this.getStackTrace()));
-        for (int i = 0; i < 3; i++) list.remove(list.size()-1);
+        for (int i = 0; i < 3; i++) list.remove(list.size() - 1);
         setStackTrace(list.toArray(new StackTraceElement[list.size()]));
     }
 

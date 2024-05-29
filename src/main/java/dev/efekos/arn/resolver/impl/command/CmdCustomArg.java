@@ -48,6 +48,7 @@ public final class CmdCustomArg implements CommandArgumentResolver {
 
     /**
      * Creates a new resolver.
+     *
      * @param customArgumentType An instance of the {@link CustomArgumentType} this resolver resolves.
      */
     public CmdCustomArg(CustomArgumentType<?> customArgumentType) {
@@ -62,11 +63,13 @@ public final class CmdCustomArg implements CommandArgumentResolver {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(customArgumentType.getType());
     }
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArgumentBuilder apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return CommandDispatcher.a(s.isEmpty()?parameter.getName():s,StringArgumentType.string()).suggests((commandContext, suggestionsBuilder) -> {
+        return CommandDispatcher.a(s.isEmpty() ? parameter.getName() : s, StringArgumentType.string()).suggests((commandContext, suggestionsBuilder) -> {
             for (String ss : customArgumentType.suggest(commandContext.getSource().getBukkitSender())) {
                 suggestionsBuilder.suggest(ss);
             }
