@@ -176,6 +176,10 @@ public final class Arn {
         }
     }
 
+    /**
+     * Scans {@link Container}s annotated with {@link CustomArgumentType} and creates a resolver for them.
+     * @param reflections Main reflections.
+     */
     private void scanCustomArguments(Reflections reflections) {
         for (Class<?> customArgumentClass : reflections.getTypesAnnotatedWith(Container.class).stream().filter(aClass -> Arrays.asList(aClass.getInterfaces()).contains(CustomArgumentType.class)).collect(Collectors.toList())) {
             CustomArgumentType<?> o = (CustomArgumentType<?>) containerInstanceMap.get(customArgumentClass.getName());

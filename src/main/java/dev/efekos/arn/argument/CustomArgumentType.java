@@ -29,12 +29,35 @@ import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
+/**
+ * An interface used to create custom argument types. When scanned by {@link dev.efekos.arn.Arn}, {@link T} becomes a
+ * usable argument type that is handled by the implementation of this interface.
+ * @param <T> Type of the custom argument.
+ * @since 0.3.1
+ * @author efekos
+ */
 public interface CustomArgumentType<T> {
 
+    /**
+     * Returns class instance of the custom argument.
+     * @return A {@link Class} instance.
+     */
     Class<T> getType();
 
+    /**
+     * Suggests a list of strings to the given command sender.
+     * @param sender Any command sender.
+     * @return A list of suggestions.
+     */
     List<String> suggest(CommandSender sender);
 
+    /**
+     * Parses the given argument.
+     * @param sender Sender who sent this argument.
+     * @param arg The argument value.
+     * @return Parsed object.
+     * @throws CommandSyntaxException If {@code arg} is invalid.
+     */
     T parse(CommandSender sender, String arg) throws CommandSyntaxException;
 
 }

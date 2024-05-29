@@ -33,19 +33,36 @@ import net.minecraft.commands.CommandDispatcher;
 
 import java.lang.reflect.Parameter;
 
+/**
+ * An implementation of {@link CommandArgumentResolver}. Resolves {@link CustomArgumentType}s.
+ *
+ * @author efekos
+ * @since 0.3.1
+ */
 public final class CmdCustomArg implements CommandArgumentResolver {
 
+    /**
+     * An instance of the {@link CustomArgumentType} this resolver resolves.
+     */
     private final CustomArgumentType<?> customArgumentType;
 
+    /**
+     * Creates a new resolver.
+     * @param customArgumentType An instance of the {@link CustomArgumentType} this resolver resolves.
+     */
     public CmdCustomArg(CustomArgumentType<?> customArgumentType) {
         this.customArgumentType = customArgumentType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(customArgumentType.getType());
     }
 
+    /**{@inheritDoc}*/
     @Override
     public ArgumentBuilder apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();

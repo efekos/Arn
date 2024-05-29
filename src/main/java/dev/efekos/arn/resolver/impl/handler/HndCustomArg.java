@@ -35,24 +35,41 @@ import net.minecraft.commands.CommandListenerWrapper;
 
 import java.lang.reflect.Parameter;
 
+
+/**
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link CustomArgumentType}s.
+ *
+ * @author efekos
+ * @since 0.3.1
+ */
 public final class HndCustomArg implements CommandHandlerMethodArgumentResolver {
 
+    /**
+     * An instance of the {@link CustomArgumentType} this resolver resolves.
+     */
     private final CustomArgumentType<?> customArgumentType;
 
+    /**
+     * Creates a new resolver.
+     * @param customArgumentType An instance of the {@link CustomArgumentType} this resolver resolves.
+     */
     public HndCustomArg(CustomArgumentType<?> customArgumentType) {
         this.customArgumentType = customArgumentType;
     }
 
+    /**{@inheritDoc}*/
     @Override
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(customArgumentType.getType());
     }
 
+    /**{@inheritDoc}*/
     @Override
     public boolean requireCommandArgument() {
         return true;
     }
 
+    /**{@inheritDoc}*/
     @Override
     public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
