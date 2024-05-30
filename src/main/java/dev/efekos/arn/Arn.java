@@ -450,9 +450,10 @@ public final class Arn {
                     try {
                         actualMethodToInvoke.setAccessible(true);
                         return (int) actualMethodToInvoke.invoke(containerInstanceMap.get(method.getMethod().getDeclaringClass().getName()), objects.toArray());
-                    } catch (InvocationTargetException e) {
+                    }catch (InvocationTargetException e) {
                         if (e.getCause() != null)
-                            ArnExceptionTypes.COMMAND_ERROR.create(e.getCause()).printStackTrace();
+                            if(e.getCause() instanceof CommandSyntaxException) throw ((CommandSyntaxException) e.getCause());
+                        else ArnExceptionTypes.COMMAND_ERROR.create(e.getCause()).printStackTrace();
                         return 1;
                     } catch (IllegalAccessException e) {
                         ArnExceptionTypes.COMMAND_NO_ACCESS.create().initCause(e).printStackTrace();
