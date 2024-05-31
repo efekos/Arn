@@ -85,7 +85,7 @@ public final class HndCustomArg implements CommandHandlerMethodArgumentResolver 
         String string = StringArgumentType.getString(context, s.isEmpty() ? parameter.getName() : s);
         try {
             return customArgumentType.parse(context.getSource().getBukkitSender(), string);
-        } catch (ArnSyntaxException e){
+        } catch (ArnSyntaxException e) {
             throw Arn.GENERIC.create(e.getMessage());
         }
     }

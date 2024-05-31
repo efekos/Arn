@@ -305,7 +305,7 @@ public final class Arn {
         // Errors
         if (!method.getReturnType().equals(int.class)) throw ArnExceptionTypes.HM_NOT_INT.create(method, annotation);
         List<Class<?>> exceptions = Arrays.asList(method.getExceptionTypes());
-        if (exceptions.size() > 1 || (!exceptions.isEmpty() && exceptions.stream().anyMatch(aClass -> !aClass.equals(CommandSyntaxException.class)&&!aClass.equals(ArnSyntaxException.class))))
+        if (exceptions.size() > 1 || (!exceptions.isEmpty() && exceptions.stream().anyMatch(aClass -> !aClass.equals(CommandSyntaxException.class) && !aClass.equals(ArnSyntaxException.class))))
             throw ArnExceptionTypes.HM_THROWS.create(method, annotation, exceptions);
 
         long count = Arrays.stream(method.getParameters()).filter(parameter -> REQUIRED_SENDER_CLASSES.contains(parameter.getType()) && !parameter.isAnnotationPresent(CommandArgument.class)).count();
@@ -450,10 +450,11 @@ public final class Arn {
                     try {
                         actualMethodToInvoke.setAccessible(true);
                         return (int) actualMethodToInvoke.invoke(containerInstanceMap.get(method.getMethod().getDeclaringClass().getName()), objects.toArray());
-                    }catch (InvocationTargetException e) {
+                    } catch (InvocationTargetException e) {
                         if (e.getCause() == null) return 1;
-                        if(e.getCause() instanceof CommandSyntaxException) throw (CommandSyntaxException) e.getCause();
-                        else if (e.getCause() instanceof ArnSyntaxException) throw GENERIC.create(e.getCause().getMessage());
+                        if (e.getCause() instanceof CommandSyntaxException) throw (CommandSyntaxException) e.getCause();
+                        else if (e.getCause() instanceof ArnSyntaxException)
+                            throw GENERIC.create(e.getCause().getMessage());
                         else ArnExceptionTypes.COMMAND_ERROR.create(e.getCause()).printStackTrace();
                         return 1;
                     } catch (IllegalAccessException e) {

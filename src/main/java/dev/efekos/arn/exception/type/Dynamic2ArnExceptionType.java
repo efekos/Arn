@@ -36,7 +36,7 @@ import java.util.function.BiFunction;
  * @author efekos
  * @since 0.3
  */
-public final class Dynamic2ArnExceptionType<E extends ArnException,T, T2> {
+public final class Dynamic2ArnExceptionType<E extends ArnException, T, T2> {
 
     /**
      * Lambda method that takes two arguments.

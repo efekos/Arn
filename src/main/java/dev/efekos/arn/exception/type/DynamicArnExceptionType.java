@@ -36,7 +36,7 @@ import java.util.function.Function;
  * @author efekos
  * @since 0.3
  */
-public final class DynamicArnExceptionType<E extends ArnException,T> {
+public final class DynamicArnExceptionType<E extends ArnException, T> {
 
     /**
      * Lambda method that takes one argument

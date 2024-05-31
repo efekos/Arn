@@ -35,19 +35,19 @@ import dev.efekos.arn.exception.ArnException;
  * @author efekos
  * @since 0.3
  */
-public final class Dynamic3ArnExceptionType<E extends ArnException,T, T2, T3> {
+public final class Dynamic3ArnExceptionType<E extends ArnException, T, T2, T3> {
 
     /**
      * Lambda method that takes three arguments.
      */
-    private final Lambda<T, T2, T3,E> lambda;
+    private final Lambda<T, T2, T3, E> lambda;
 
     /**
      * Creates a new exception type.
      *
      * @param lambda Function used to create the exception.
      */
-    public Dynamic3ArnExceptionType(Lambda<T, T2, T3,E> lambda) {
+    public Dynamic3ArnExceptionType(Lambda<T, T2, T3, E> lambda) {
         this.lambda = lambda;
     }
 
