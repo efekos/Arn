@@ -27,9 +27,11 @@ package dev.efekos.arn.resolver.impl.handler;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import dev.efekos.arn.Arn;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.argument.CustomArgumentType;
 import dev.efekos.arn.data.CommandHandlerMethod;
+import dev.efekos.arn.exception.ArnSyntaxException;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import net.minecraft.commands.CommandListenerWrapper;
 
@@ -81,6 +83,10 @@ public final class HndCustomArg implements CommandHandlerMethodArgumentResolver 
     public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         String string = StringArgumentType.getString(context, s.isEmpty() ? parameter.getName() : s);
-        return customArgumentType.parse(context.getSource().getBukkitSender(), string);
+        try {
+            return customArgumentType.parse(context.getSource().getBukkitSender(), string);
+        } catch (ArnSyntaxException e){
+            throw Arn.GENERIC.create(e.getMessage());
+        }
     }
 }

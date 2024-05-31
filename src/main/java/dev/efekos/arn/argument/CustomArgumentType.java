@@ -24,7 +24,7 @@
 
 package dev.efekos.arn.argument;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import dev.efekos.arn.exception.ArnSyntaxException;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -60,8 +60,8 @@ public interface CustomArgumentType<T> {
      * @param sender Sender who sent this argument.
      * @param arg    The argument value.
      * @return Parsed object.
-     * @throws CommandSyntaxException If {@code arg} is invalid.
+     * @throws ArnSyntaxException If {@code arg} is invalid.
      */
-    T parse(CommandSender sender, String arg) throws CommandSyntaxException;
+    T parse(CommandSender sender, String arg) throws ArnSyntaxException;
 
 }

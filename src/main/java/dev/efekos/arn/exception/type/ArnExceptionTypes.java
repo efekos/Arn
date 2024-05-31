@@ -24,6 +24,7 @@
 
 package dev.efekos.arn.exception.type;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.annotation.Command;
 import dev.efekos.arn.data.CommandAnnotationLiteral;
 import dev.efekos.arn.data.CommandHandlerMethod;
@@ -137,5 +138,4 @@ public final class ArnExceptionTypes {
      * Thrown when registering a command fails.
      */
     public static final Dynamic2ArnExceptionType<ArnCommandException,CommandHandlerMethod, Throwable> COMMAND_REGISTER_ERROR = new Dynamic2ArnExceptionType<>((o, o2) -> new ArnCommandException("Something went wrong with registering command '" + o.getCommand() + "'. This might be an error related to Arn, please create an issue on GitHub: https://github.com/efekos/Arn/issues", o2));
-
 }

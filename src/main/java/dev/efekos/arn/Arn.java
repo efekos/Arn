@@ -28,6 +28,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import dev.efekos.arn.annotation.*;
 import dev.efekos.arn.annotation.block.BlockCommandBlock;
@@ -40,10 +41,7 @@ import dev.efekos.arn.data.CommandAnnotationData;
 import dev.efekos.arn.data.CommandAnnotationLiteral;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.data.ExceptionMap;
-import dev.efekos.arn.exception.ArnArgumentException;
-import dev.efekos.arn.exception.ArnCommandException;
-import dev.efekos.arn.exception.ArnContainerException;
-import dev.efekos.arn.exception.ArnException;
+import dev.efekos.arn.exception.*;
 import dev.efekos.arn.exception.type.ArnExceptionTypes;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
@@ -143,6 +141,8 @@ public final class Arn {
      * is a {@link Player}.
      */
     public static final SimpleCommandExceptionType PLAYER_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(IChatBaseComponent.b("This command can't be used by players."));
+
+    public static final DynamicCommandExceptionType GENERIC = new DynamicCommandExceptionType(o -> IChatBaseComponent.b((String) o));
 
     /**
      * Whether was {@link #configure()} called or not. Used to prevent {@link #configure()} from being called more than
@@ -305,7 +305,7 @@ public final class Arn {
         // Errors
         if (!method.getReturnType().equals(int.class)) throw ArnExceptionTypes.HM_NOT_INT.create(method, annotation);
         List<Class<?>> exceptions = Arrays.asList(method.getExceptionTypes());
-        if (exceptions.size() > 1 || (!exceptions.isEmpty() && exceptions.get(0) != CommandSyntaxException.class))
+        if (exceptions.size() > 1 || (!exceptions.isEmpty() && exceptions.stream().anyMatch(aClass -> !aClass.equals(CommandSyntaxException.class)&&!aClass.equals(ArnSyntaxException.class))))
             throw ArnExceptionTypes.HM_THROWS.create(method, annotation, exceptions);
 
         long count = Arrays.stream(method.getParameters()).filter(parameter -> REQUIRED_SENDER_CLASSES.contains(parameter.getType()) && !parameter.isAnnotationPresent(CommandArgument.class)).count();
@@ -451,8 +451,9 @@ public final class Arn {
                         actualMethodToInvoke.setAccessible(true);
                         return (int) actualMethodToInvoke.invoke(containerInstanceMap.get(method.getMethod().getDeclaringClass().getName()), objects.toArray());
                     }catch (InvocationTargetException e) {
-                        if (e.getCause() != null)
-                            if(e.getCause() instanceof CommandSyntaxException) throw ((CommandSyntaxException) e.getCause());
+                        if (e.getCause() == null) return 1;
+                        if(e.getCause() instanceof CommandSyntaxException) throw (CommandSyntaxException) e.getCause();
+                        else if (e.getCause() instanceof ArnSyntaxException) throw GENERIC.create(e.getCause().getMessage());
                         else ArnExceptionTypes.COMMAND_ERROR.create(e.getCause()).printStackTrace();
                         return 1;
                     } catch (IllegalAccessException e) {
