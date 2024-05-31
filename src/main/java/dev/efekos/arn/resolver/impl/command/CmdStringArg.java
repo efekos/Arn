@@ -27,6 +27,8 @@ package dev.efekos.arn.resolver.impl.command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.annotation.CommandArgument;
+import dev.efekos.arn.annotation.modifier.Greedy;
+import dev.efekos.arn.annotation.modifier.Word;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import net.minecraft.commands.CommandDispatcher;
 
@@ -54,6 +56,8 @@ public final class CmdStringArg implements CommandArgumentResolver {
     @Override
     public ArgumentBuilder<?, ?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return CommandDispatcher.a(s.isEmpty() ? parameter.getName() : s, StringArgumentType.string());
+        boolean b1 = parameter.isAnnotationPresent(Greedy.class);
+        boolean b2 = parameter.isAnnotationPresent(Word.class);
+        return CommandDispatcher.a(s.isEmpty() ? parameter.getName() : s, b1 ? StringArgumentType.greedyString() : (b2?StringArgumentType.word():StringArgumentType.string()));
     }
 }
