@@ -35,19 +35,19 @@ import dev.efekos.arn.exception.ArnException;
  * @author efekos
  * @since 0.3
  */
-public final class Dynamic3ArnExceptionType<T, T2, T3> {
+public final class Dynamic3ArnExceptionType<E extends ArnException,T, T2, T3> {
 
     /**
      * Lambda method that takes three arguments.
      */
-    private final Lambda<T, T2, T3> lambda;
+    private final Lambda<T, T2, T3,E> lambda;
 
     /**
      * Creates a new exception type.
      *
      * @param lambda Function used to create the exception.
      */
-    public Dynamic3ArnExceptionType(Lambda<T, T2, T3> lambda) {
+    public Dynamic3ArnExceptionType(Lambda<T, T2, T3,E> lambda) {
         this.lambda = lambda;
     }
 
@@ -59,7 +59,7 @@ public final class Dynamic3ArnExceptionType<T, T2, T3> {
      * @param o3 Third object.
      * @return Created exception.
      */
-    public ArnException create(T o, T2 o2, T3 o3) {
+    public E create(T o, T2 o2, T3 o3) {
         return lambda.create(o, o2, o3);
     }
 
@@ -71,7 +71,7 @@ public final class Dynamic3ArnExceptionType<T, T2, T3> {
      * @param <T3> Type of the third argument.
      */
     @FunctionalInterface
-    public interface Lambda<T, T2, T3> {
+    public interface Lambda<T, T2, T3, E extends ArnException> {
 
         /**
          * Creates an {@link ArnException}.
@@ -81,7 +81,7 @@ public final class Dynamic3ArnExceptionType<T, T2, T3> {
          * @param o3 Third object.
          * @return An {@link ArnException}.
          */
-        ArnException create(T o, T2 o2, T3 o3);
+        E create(T o, T2 o2, T3 o3);
 
     }
 

@@ -36,19 +36,19 @@ import java.util.function.Function;
  * @author efekos
  * @since 0.3
  */
-public final class DynamicArnExceptionType<T> {
+public final class DynamicArnExceptionType<E extends ArnException,T> {
 
     /**
      * Lambda method that takes one argument
      */
-    private final Function<T, ArnException> lambda;
+    private final Function<T, E> lambda;
 
     /**
      * Creates a new exception type.
      *
      * @param lambda A function to create the exception.
      */
-    public DynamicArnExceptionType(Function<T, ArnException> lambda) {
+    public DynamicArnExceptionType(Function<T, E> lambda) {
         this.lambda = lambda;
     }
 
@@ -58,7 +58,7 @@ public final class DynamicArnExceptionType<T> {
      * @param o Argument object.
      * @return Created exception.
      */
-    public ArnException create(T o) {
+    public E create(T o) {
         return lambda.apply(o);
     }
 

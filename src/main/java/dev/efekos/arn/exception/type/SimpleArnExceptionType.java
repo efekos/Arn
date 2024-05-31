@@ -34,19 +34,19 @@ import java.util.function.Supplier;
  * @author efekos
  * @since 0.3
  */
-public final class SimpleArnExceptionType {
+public final class SimpleArnExceptionType<E extends ArnException> {
 
     /**
      * The function used to create the exception.
      */
-    private final Supplier<ArnException> lambda;
+    private final Supplier<E> lambda;
 
     /**
      * Creates a new exception type.
      *
      * @param lambda Supplier function to create the exception.
      */
-    public SimpleArnExceptionType(Supplier<ArnException> lambda) {
+    public SimpleArnExceptionType(Supplier<E> lambda) {
         this.lambda = lambda;
     }
 
@@ -55,7 +55,7 @@ public final class SimpleArnExceptionType {
      *
      * @return Created exception.
      */
-    public ArnException create() {
+    public E create() {
         return lambda.get();
     }
 
