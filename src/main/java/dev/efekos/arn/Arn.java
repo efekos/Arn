@@ -432,6 +432,8 @@ public final class Arn {
                 com.mojang.brigadier.Command<CommandListenerWrapper> lambda = commandContext -> {
 
                     CommandSender sender = commandContext.getSource().getBukkitSender();
+                    if (!method.getAnnotationData().getPermission().isEmpty() && !sender.hasPermission(method.getAnnotationData().getPermission()))
+                        return 1;
                     if (method.isBlocksConsole() && sender instanceof ConsoleCommandSender)
                         throw CONSOLE_BLOCKED_EXCEPTION.create();
                     if (method.isBlocksCommandBlock() && sender instanceof BlockCommandSender)
@@ -562,15 +564,13 @@ public final class Arn {
     private static ArgumentBuilder<?, ?> chainArgumentBuilders(List<ArgumentBuilder> nodes, com.mojang.brigadier.Command<CommandListenerWrapper> executes, CommandAnnotationData data) {
         if (nodes.isEmpty()) return null;
 
-        if (data != null && !data.getPermission().isEmpty())
-            nodes.set(0, nodes.get(0).requires(o -> ((CommandListenerWrapper) o).getBukkitSender().hasPermission(data.getPermission())));
-
         ArgumentBuilder chainedBuilder = nodes.get(nodes.size() - 1).executes(executes);
 
-        for (int i = nodes.size() - 2; i >= 0; i--) {
-            chainedBuilder = nodes.get(i).then(chainedBuilder);
-        }
+        for (int i = nodes.size() - 2; i >= 0; i--)
+            chainedBuilder = nodes.get(i).then(chainedBuilder.requires(o -> ((CommandListenerWrapper) o).hasPermission(0, data.getPermission()))).requires(o -> ((CommandListenerWrapper) o).hasPermission(0, data.getPermission()));
 
+        if (!data.getPermission().isEmpty())
+            chainedBuilder = chainedBuilder.requires(o -> ((CommandListenerWrapper) o).c(4));
         return chainedBuilder;
     }
 
