@@ -30,7 +30,7 @@ import dev.efekos.arn.annotation.FromSender;
 import dev.efekos.arn.annotation.modifier.sender.*;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import net.minecraft.commands.CommandListenerWrapper;
+import net.minecraft.commands.CommandSourceStack;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -66,7 +66,7 @@ public final class HndSenderEqu implements CommandHandlerMethodArgumentResolver 
      * {@inheritDoc}
      */
     @Override
-    public ItemStack resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
+    public ItemStack resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         CommandSender sender = context.getSource().getBukkitSender();
         if (!(sender instanceof Player)) return null;
         Player player = (Player) sender;

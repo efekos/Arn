@@ -29,11 +29,10 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import net.minecraft.commands.CommandListenerWrapper;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.ResourceArgument;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.MinecraftKey;
+import net.minecraft.resources.ResourceLocation;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 
@@ -59,12 +58,11 @@ public final class HndEnchantmentArg implements CommandHandlerMethodArgumentReso
      * {@inheritDoc}
      */
     @Override
-    public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
+    public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        Holder.c<net.minecraft.world.item.enchantment.Enchantment> enchantmentc = ResourceArgument.g(context, s.isEmpty() ? parameter.getName() : s);
-
-        MinecraftKey key = BuiltInRegistries.f.b(enchantmentc.a());
-        NamespacedKey effectKey = new NamespacedKey(key.b(), key.a());
+        Holder.Reference<net.minecraft.world.item.enchantment.Enchantment> enchantmentc = ResourceArgument.getEnchantment(context, s.isEmpty() ? parameter.getName() : s);
+        ResourceLocation key = enchantmentc.key().location();
+        NamespacedKey effectKey = new NamespacedKey(key.getNamespace(), key.getPath());
         return Enchantment.getByKey(effectKey);
     }
 

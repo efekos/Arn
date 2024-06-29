@@ -28,7 +28,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import net.minecraft.commands.CommandListenerWrapper;
+import net.minecraft.commands.CommandSourceStack;
 import org.bukkit.command.CommandSender;
 
 import java.lang.reflect.Parameter;
@@ -61,7 +61,7 @@ public final class HndSender implements CommandHandlerMethodArgumentResolver {
      * {@inheritDoc}
      */
     @Override
-    public CommandSender resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
+    public CommandSender resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         return context.getSource().getBukkitSender();
     }
 }

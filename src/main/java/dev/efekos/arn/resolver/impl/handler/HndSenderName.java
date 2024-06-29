@@ -30,7 +30,7 @@ import dev.efekos.arn.annotation.FromSender;
 import dev.efekos.arn.annotation.modifier.sender.Name;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import net.minecraft.commands.CommandListenerWrapper;
+import net.minecraft.commands.CommandSourceStack;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
@@ -68,7 +68,7 @@ public final class HndSenderName implements CommandHandlerMethodArgumentResolver
      * {@inheritDoc}
      */
     @Override
-    public String resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
+    public String resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         CommandSender sender = context.getSource().getBukkitSender();
         if (sender instanceof ConsoleCommandSender) return "CONSOLE";
         if (sender instanceof BlockCommandSender) {

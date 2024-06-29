@@ -30,9 +30,15 @@ import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
-import net.minecraft.commands.CommandListenerWrapper;
-import net.minecraft.commands.arguments.ArgumentChatComponent;
-import net.minecraft.network.chat.IChatBaseComponent;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.arguments.ComponentArgument;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.flag.FeatureFlags;
+import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_21_R1.CraftServer;
 
 import java.lang.reflect.Parameter;
 
@@ -52,14 +58,24 @@ public final class HndTextArg implements CommandHandlerMethodArgumentResolver {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(BaseComponent.class);
     }
 
+    /***/
+    private static CommandBuildContext context;
+
+    /***/
+    private static void initializeContext() {
+        FeatureFlagSet flagSet = FeatureFlagSet.of(FeatureFlags.VANILLA);
+        HolderLookup.Provider holderlookup = ((CraftServer) Bukkit.getServer()).getHandle().getServer().registryAccess();
+        context = CommandBuildContext.simple(holderlookup, flagSet);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public BaseComponent resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
+    public BaseComponent resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        IChatBaseComponent component = ArgumentChatComponent.a(context, s.isEmpty() ? parameter.getName() : s);
-        String json = IChatBaseComponent.ChatSerializer.a(component);
+        Component component = ComponentArgument.getComponent(context, s.isEmpty() ? parameter.getName() : s);
+        String json = Component.Serializer.toJson(component,HndTextArg.context);
         return ComponentSerializer.deserialize(json);
     }
 

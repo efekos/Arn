@@ -29,13 +29,14 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import net.minecraft.commands.CommandListenerWrapper;
-import net.minecraft.commands.arguments.ArgumentEntity;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.arguments.EntityArgument;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_20_R3.CraftServer;
-import org.bukkit.craftbukkit.v1_20_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_21_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_21_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -62,12 +63,13 @@ public final class HndMultipleEntityArg implements CommandHandlerMethodArgumentR
      * {@inheritDoc}
      */
     @Override
-    public Entity[] resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
+    public Entity[] resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        Collection<? extends net.minecraft.world.entity.Entity> entities = ArgumentEntity.b(context, s.isEmpty() ? parameter.getName() : s);
+        Collection<? extends net.minecraft.world.entity.Entity> entities = EntityArgument.getEntities(context, s.isEmpty() ? parameter.getName() : s);
         CommandSender sender = context.getSource().getBukkitSender();
         World w;
         if (sender instanceof Player) w = ((Player) sender).getWorld();
+        else if (sender instanceof BlockCommandSender) w = ((BlockCommandSender) sender).getBlock().getWorld();
         else w = Bukkit.getWorld("overworld");
         return entities.stream().map(entity -> CraftEntity.getEntity(((CraftServer) Bukkit.getServer()), entity)).filter(craftEntity -> craftEntity.getWorld().equals(w)).toArray(CraftEntity[]::new);
     }

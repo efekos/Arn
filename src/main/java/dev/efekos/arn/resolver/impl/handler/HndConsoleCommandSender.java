@@ -28,7 +28,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import net.minecraft.commands.CommandListenerWrapper;
+import net.minecraft.commands.CommandSourceStack;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 
@@ -62,7 +62,7 @@ public final class HndConsoleCommandSender implements CommandHandlerMethodArgume
      * {@inheritDoc}
      */
     @Override
-    public ConsoleCommandSender resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
+    public ConsoleCommandSender resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         CommandSender sender = context.getSource().getBukkitSender();
         if (sender instanceof ConsoleCommandSender) return ((ConsoleCommandSender) sender);
         return null;

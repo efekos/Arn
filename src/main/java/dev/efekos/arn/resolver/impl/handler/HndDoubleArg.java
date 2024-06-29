@@ -29,7 +29,7 @@ import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import net.minecraft.commands.CommandListenerWrapper;
+import net.minecraft.commands.CommandSourceStack;
 
 import java.lang.reflect.Parameter;
 
@@ -54,7 +54,7 @@ public final class HndDoubleArg implements CommandHandlerMethodArgumentResolver 
      * {@inheritDoc}
      */
     @Override
-    public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
+    public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         return DoubleArgumentType.getDouble(context, s.isEmpty() ? parameter.getName() : s);
     }

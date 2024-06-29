@@ -27,7 +27,7 @@ package dev.efekos.arn.resolver;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.data.CommandHandlerMethod;
-import net.minecraft.commands.CommandListenerWrapper;
+import net.minecraft.commands.CommandSourceStack;
 
 import java.lang.reflect.Parameter;
 
@@ -67,6 +67,6 @@ public interface CommandHandlerMethodArgumentResolver {
      * @return An object to be passed in to {@code parameter}.
      * @throws CommandSyntaxException if needed.
      */
-    Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException;
+    Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException;
 
 }

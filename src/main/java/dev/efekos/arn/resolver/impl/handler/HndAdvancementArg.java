@@ -31,11 +31,11 @@ import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.commands.CommandListenerWrapper;
-import net.minecraft.commands.arguments.ArgumentMinecraftKeyRegistered;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.arguments.ResourceLocationArgument;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.craftbukkit.v1_20_R3.advancement.CraftAdvancement;
+import org.bukkit.craftbukkit.v1_21_R1.advancement.CraftAdvancement;
 
 import java.lang.reflect.Parameter;
 
@@ -67,9 +67,9 @@ public final class HndAdvancementArg implements CommandHandlerMethodArgumentReso
      * {@inheritDoc}
      */
     @Override
-    public Advancement resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
+    public Advancement resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        AdvancementHolder advancement = ArgumentMinecraftKeyRegistered.a(context, s.isEmpty() ? parameter.getName() : s);
+        AdvancementHolder advancement = ResourceLocationArgument.getAdvancement(context, s.isEmpty() ? parameter.getName() : s);
         return new CraftAdvancement(advancement);
     }
 

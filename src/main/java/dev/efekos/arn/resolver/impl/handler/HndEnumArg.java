@@ -32,7 +32,7 @@ import dev.efekos.arn.annotation.CustomArgument;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.exception.ArnCommandException;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import net.minecraft.commands.CommandListenerWrapper;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.ResourceArgument;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -82,14 +82,14 @@ public final class HndEnumArg implements CommandHandlerMethodArgumentResolver {
      * {@inheritDoc}
      */
     @Override
-    public Enum<?> resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
+    public Enum<?> resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
 
         String s = parameter.getAnnotation(CommandArgument.class).value();
         String string = StringArgumentType.getString(context, s.isEmpty() ? parameter.getName() : s);
         try {
             return Enum.valueOf(enumClass.getEnumConstants()[0].getClass(), string.toUpperCase(Locale.ENGLISH));
         } catch (IllegalArgumentException e) {
-            throw ResourceArgument.a.create(string, enumClass.getAnnotation(CustomArgument.class).value());
+            throw ResourceArgument.ERROR_UNKNOWN_RESOURCE.create(string, enumClass.getAnnotation(CustomArgument.class).value());
         } catch (NullPointerException e) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "ARN-ERROR");
             Bukkit.getConsoleSender().sendMessage(enumClass.toString());

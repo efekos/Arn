@@ -29,8 +29,8 @@ import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.annotation.modifier.InventorySlot;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import net.minecraft.commands.CommandListenerWrapper;
-import net.minecraft.commands.arguments.ArgumentInventorySlot;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.arguments.SlotArgument;
 
 import java.lang.reflect.Parameter;
 
@@ -55,9 +55,9 @@ public final class HndInventorySlotArg implements CommandHandlerMethodArgumentRe
      * {@inheritDoc}
      */
     @Override
-    public Integer resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
+    public Integer resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return ArgumentInventorySlot.a(context, s.isEmpty() ? parameter.getName() : s);
+        return SlotArgument.getSlot(context, s.isEmpty() ? parameter.getName() : s);
     }
 
     /**

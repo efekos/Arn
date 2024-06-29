@@ -29,12 +29,12 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import net.minecraft.commands.CommandListenerWrapper;
-import net.minecraft.commands.arguments.blocks.ArgumentTile;
-import net.minecraft.commands.arguments.blocks.ArgumentTileLocation;
-import net.minecraft.world.level.block.state.IBlockData;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.arguments.blocks.BlockInput;
+import net.minecraft.commands.arguments.blocks.BlockStateArgument;
+import net.minecraft.world.level.block.state.BlockState;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.craftbukkit.v1_20_R3.block.data.CraftBlockData;
+import org.bukkit.craftbukkit.v1_21_R1.block.data.CraftBlockData;
 
 import java.lang.reflect.Parameter;
 
@@ -66,12 +66,12 @@ public final class HndBlockDataArg implements CommandHandlerMethodArgumentResolv
      * {@inheritDoc}
      */
     @Override
-    public BlockData resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
+    public BlockData resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        ArgumentTileLocation tile = ArgumentTile.a(context, s.isEmpty() ? parameter.getName() : s);
-        IBlockData data = tile.a();
+        BlockInput tile = BlockStateArgument.getBlock(context, s.isEmpty() ? parameter.getName() : s);
+        BlockState state = tile.getState();
 
-        return CraftBlockData.fromData(data);
+        return CraftBlockData.fromData(state);
     }
 
 }

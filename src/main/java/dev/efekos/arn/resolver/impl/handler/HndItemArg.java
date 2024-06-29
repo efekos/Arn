@@ -30,12 +30,12 @@ import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.annotation.modifier.Item;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import net.minecraft.commands.CommandListenerWrapper;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.ResourceArgument;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.MinecraftKey;
+import net.minecraft.resources.ResourceLocation;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 
@@ -63,12 +63,12 @@ public final class HndItemArg implements CommandHandlerMethodArgumentResolver {
      * {@inheritDoc}
      */
     @Override
-    public Material resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
+    public Material resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        Holder.c<net.minecraft.world.item.Item> itemc = ResourceArgument.a(context, s.isEmpty() ? parameter.getName() : s, Registries.F);
-        net.minecraft.world.item.Item item = itemc.a();
-        MinecraftKey key = BuiltInRegistries.h.b(item);
-        return Arrays.stream(Material.values()).filter(material -> material.getKey().equals(new NamespacedKey(key.b(), key.a()))).findFirst().orElse(null);
+        Holder.Reference<net.minecraft.world.item.Item> itemc = ResourceArgument.getResource(context, s.isEmpty() ? parameter.getName() : s, Registries.ITEM);
+        net.minecraft.world.item.Item item = itemc.value();
+        ResourceLocation key = BuiltInRegistries.ITEM.getKey(item);
+        return Arrays.stream(Material.values()).filter(material -> material.getKey().equals(new NamespacedKey(key.getNamespace(), key.getPath()))).findFirst().orElse(null);
     }
 
     /**

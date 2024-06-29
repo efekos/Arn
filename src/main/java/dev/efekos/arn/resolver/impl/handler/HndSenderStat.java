@@ -30,7 +30,7 @@ import dev.efekos.arn.annotation.FromSender;
 import dev.efekos.arn.annotation.modifier.sender.*;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import net.minecraft.commands.CommandListenerWrapper;
+import net.minecraft.commands.CommandSourceStack;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -67,7 +67,7 @@ public final class HndSenderStat implements CommandHandlerMethodArgumentResolver
      * {@inheritDoc}
      */
     @Override
-    public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
+    public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         CommandSender sender = context.getSource().getBukkitSender();
         if (!(sender instanceof Player)) return null;
         Player player = (Player) sender;
@@ -89,9 +89,9 @@ public final class HndSenderStat implements CommandHandlerMethodArgumentResolver
      * @return Same value that might be cast to another class.
      */
     private Object caster(Class<?> paramType, Object value) {
-        if (paramType.equals(int.class) || paramType.equals(Integer.class)) return value;
-        if (paramType.equals(float.class) || paramType.equals(Float.class)) return value;
-        if (paramType.equals(double.class) || paramType.equals(Double.class)) return value;
+        if (paramType.equals(int.class) || paramType.equals(Integer.class)) return (int)value;
+        if (paramType.equals(float.class) || paramType.equals(Float.class)) return (float)value;
+        if (paramType.equals(double.class) || paramType.equals(Double.class)) return (double)value;
         return value;
     }
 }

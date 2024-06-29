@@ -28,7 +28,7 @@ import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import net.minecraft.commands.CommandListenerWrapper;
+import net.minecraft.commands.CommandSourceStack;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -54,7 +54,7 @@ public final class HndPlayerSender implements CommandHandlerMethodArgumentResolv
      * {@inheritDoc}
      */
     @Override
-    public Player resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) {
+    public Player resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) {
         CommandSender sender = context.getSource().getBukkitSender();
         if (sender instanceof Player) return ((Player) sender);
         return null;

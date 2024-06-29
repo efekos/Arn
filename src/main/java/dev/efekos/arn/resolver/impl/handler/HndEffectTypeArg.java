@@ -29,12 +29,12 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import net.minecraft.commands.CommandListenerWrapper;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.ResourceArgument;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.MinecraftKey;
-import net.minecraft.world.effect.MobEffectList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
 import org.bukkit.NamespacedKey;
 import org.bukkit.potion.PotionEffectType;
 
@@ -60,12 +60,12 @@ public final class HndEffectTypeArg implements CommandHandlerMethodArgumentResol
      * {@inheritDoc}
      */
     @Override
-    public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
+    public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        Holder.c<MobEffectList> f = ResourceArgument.f(context, s.isEmpty() ? parameter.getName() : s);
-        MobEffectList list = f.a();
-        MinecraftKey key = BuiltInRegistries.d.b(list);
-        NamespacedKey effectKey = new NamespacedKey(key.b(), key.a());
+        Holder.Reference<MobEffect> f = ResourceArgument.getMobEffect(context, s.isEmpty() ? parameter.getName() : s);
+        MobEffect list = f.value();
+        ResourceLocation key = BuiltInRegistries.MOB_EFFECT.getKey(list);
+        NamespacedKey effectKey = new NamespacedKey(key.getNamespace(), key.getPath());
         return PotionEffectType.getByKey(effectKey);
     }
 

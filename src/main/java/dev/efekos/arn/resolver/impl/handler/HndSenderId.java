@@ -29,7 +29,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.annotation.FromSender;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import net.minecraft.commands.CommandListenerWrapper;
+import net.minecraft.commands.CommandSourceStack;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -64,7 +64,7 @@ public final class HndSenderId implements CommandHandlerMethodArgumentResolver {
      * {@inheritDoc}
      */
     @Override
-    public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
+    public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         CommandSender sender = context.getSource().getBukkitSender();
         if (sender instanceof Player) return ((Player) sender).getUniqueId();
         return null;

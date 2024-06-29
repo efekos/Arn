@@ -33,7 +33,7 @@ import dev.efekos.arn.argument.CustomArgumentType;
 import dev.efekos.arn.data.CommandHandlerMethod;
 import dev.efekos.arn.exception.ArnSyntaxException;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import net.minecraft.commands.CommandListenerWrapper;
+import net.minecraft.commands.CommandSourceStack;
 
 import java.lang.reflect.Parameter;
 
@@ -80,7 +80,7 @@ public final class HndCustomArg implements CommandHandlerMethodArgumentResolver 
      * {@inheritDoc}
      */
     @Override
-    public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
+    public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         String string = StringArgumentType.getString(context, s.isEmpty() ? parameter.getName() : s);
         try {
