@@ -53,15 +53,16 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
-import net.minecraft.commands.CommandListenerWrapper;
-import net.minecraft.network.chat.IChatBaseComponent;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.craftbukkit.v1_20_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_21_R1.CraftServer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
@@ -128,21 +129,21 @@ public final class Arn {
      * An exception type thrown by command handler when a command is blocked to {@link ConsoleCommandSender}s, but the
      * command sender is a {@link ConsoleCommandSender}.
      */
-    public static final SimpleCommandExceptionType CONSOLE_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(IChatBaseComponent.b("This command can't be used by the console."));
+    public static final SimpleCommandExceptionType CONSOLE_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(Component.literal("This command can't be used by the console."));
 
     /**
      * An exception type thrown by command handler when a command is blocked to {@link BlockCommandSender}s, but the
      * command sender is a {@link BlockCommandSender}.
      */
-    public static final SimpleCommandExceptionType CM_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(IChatBaseComponent.b("This command can't be used by command blocks."));
+    public static final SimpleCommandExceptionType CM_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(Component.literal("This command can't be used by command blocks."));
 
     /**
      * An exception type thrown by command handler when a command is blocked to {@link Player}s, but the command sender
      * is a {@link Player}.
      */
-    public static final SimpleCommandExceptionType PLAYER_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(IChatBaseComponent.b("This command can't be used by players."));
+    public static final SimpleCommandExceptionType PLAYER_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(Component.literal("This command can't be used by players."));
 
-    public static final DynamicCommandExceptionType GENERIC = new DynamicCommandExceptionType(o -> IChatBaseComponent.b((String) o));
+    public static final DynamicCommandExceptionType GENERIC = new DynamicCommandExceptionType(o -> Component.literal((String) o));
 
     /**
      * Whether was {@link #configure()} called or not. Used to prevent {@link #configure()} from being called more than
@@ -398,7 +399,7 @@ public final class Arn {
      * @throws ArnCommandException As a wrapper of an actual exception when encountered.
      */
     private void registerCommands() throws ArnException {
-        CommandDispatcher<CommandListenerWrapper> dispatcher = ((CraftServer) Bukkit.getServer()).getHandle().c().aE().a();
+        CommandDispatcher<CommandSourceStack> dispatcher = ((CraftServer) Bukkit.getServer()).getHandle().getServer().getCommands().getDispatcher();
 
         for (CommandHandlerMethod method : handlers) {
             try {
@@ -416,20 +417,20 @@ public final class Arn {
                 List<Parameter> parametersClone = IntStream.range(0, method.getArgumentResolvers().size()).filter(i -> !indexesToDelete.contains(i)).mapToObj(method.getParameters()::get).collect(Collectors.toList());
 
                 for (CommandAnnotationLiteral lit : literals)
-                    if (lit.getOffset() == 0) nodes.add(net.minecraft.commands.CommandDispatcher.a(lit.getLiteral()));
+                    if (lit.getOffset() == 0) nodes.add(Commands.literal(lit.getLiteral()));
 
                 for (int i = 0; i < nonnullResolvers.size(); i++) {
                     CommandArgumentResolver resolver = nonnullResolvers.get(i);
 
                     if (i != 0) for (CommandAnnotationLiteral lit : literals)
                         if (lit.getOffset() == i)
-                            nodes.add(net.minecraft.commands.CommandDispatcher.a(lit.getLiteral()));
+                            nodes.add(Commands.literal(lit.getLiteral()));
 
                     ArgumentBuilder builder = resolver.apply(parametersClone.get(i));
                     if (builder != null) nodes.add(builder);
                 }
 
-                com.mojang.brigadier.Command<CommandListenerWrapper> lambda = commandContext -> {
+                com.mojang.brigadier.Command<CommandSourceStack> lambda = commandContext -> {
 
                     CommandSender sender = commandContext.getSource().getBukkitSender();
                     if (!method.getAnnotationData().getPermission().isEmpty() && !sender.hasPermission(method.getAnnotationData().getPermission()))
@@ -466,7 +467,7 @@ public final class Arn {
 
                 };
 
-                LiteralArgumentBuilder<CommandListenerWrapper> builder = (LiteralArgumentBuilder<CommandListenerWrapper>) chainArgumentBuilders(nodes, lambda, method.getAnnotationData());
+                LiteralArgumentBuilder<CommandSourceStack> builder = (LiteralArgumentBuilder<CommandSourceStack>) chainArgumentBuilders(nodes, lambda, method.getAnnotationData());
 
                 dispatcher.register(builder);
             } catch (Exception e) {
@@ -483,12 +484,12 @@ public final class Arn {
      * @param reflections A {@link Reflections} object to use finding {@link Helper}s.
      */
     private void registerHelpers(Reflections reflections) {
-        CommandDispatcher<CommandListenerWrapper> dispatcher = ((CraftServer) Bukkit.getServer()).getHandle().c().aE().a();
+        CommandDispatcher<CommandSourceStack> dispatcher = ((CraftServer) Bukkit.getServer()).getHandle().getServer().getCommands().getDispatcher();
 
         for (Class<?> helperClass : reflections.getTypesAnnotatedWith(Container.class).stream().filter(aClass -> aClass.isAnnotationPresent(Helper.class)).collect(Collectors.toList())) {
             List<CommandHandlerMethod> associatedHelperMethods = handlers.stream().filter(commandHandlerMethod -> commandHandlerMethod.getMethod().getDeclaringClass().equals(helperClass)).collect(Collectors.toList());
 
-            com.mojang.brigadier.Command<CommandListenerWrapper> lambda = (s) -> {
+            com.mojang.brigadier.Command<CommandSourceStack> lambda = (s) -> {
                 CommandSender sender = s.getSource().getBukkitSender();
 
                 for (CommandHandlerMethod helperMethod : associatedHelperMethods) {
@@ -535,7 +536,7 @@ public final class Arn {
             for (String s : helperClass.getAnnotation(Helper.class).value().split("\\" + CommandAnnotationLiteral.SEPARATOR_CHAR_STRING))
                 literals.add(CommandAnnotationLiteral.parse(s));
 
-            List<ArgumentBuilder> builders = literals.stream().map(commandAnnotationLiteral -> net.minecraft.commands.CommandDispatcher.a(commandAnnotationLiteral.getLiteral())).collect(Collectors.toList());
+            List<ArgumentBuilder> builders = literals.stream().map(commandAnnotationLiteral -> Commands.literal(commandAnnotationLiteral.getLiteral())).collect(Collectors.toList());
             ArgumentBuilder<?, ?> finalNode = chainArgumentBuilders(builders, lambda, null);
 
             dispatcher.register(((LiteralArgumentBuilder) finalNode));
@@ -561,16 +562,16 @@ public final class Arn {
      *                 be applied to first literal of the chain.
      * @return {@code nodes[0]} with rest of the nodes attached to it.
      */
-    private static ArgumentBuilder<?, ?> chainArgumentBuilders(List<ArgumentBuilder> nodes, com.mojang.brigadier.Command<CommandListenerWrapper> executes, CommandAnnotationData data) {
+    private static ArgumentBuilder<?, ?> chainArgumentBuilders(List<ArgumentBuilder> nodes, com.mojang.brigadier.Command<CommandSourceStack> executes, CommandAnnotationData data) {
         if (nodes.isEmpty()) return null;
 
         ArgumentBuilder chainedBuilder = nodes.get(nodes.size() - 1).executes(executes);
 
         for (int i = nodes.size() - 2; i >= 0; i--)
-            chainedBuilder = nodes.get(i).then(chainedBuilder.requires(o -> ((CommandListenerWrapper) o).hasPermission(0, data.getPermission()))).requires(o -> ((CommandListenerWrapper) o).hasPermission(0, data.getPermission()));
+            chainedBuilder = nodes.get(i).then(chainedBuilder.requires(o -> ((CommandSourceStack) o).hasPermission(0, data.getPermission()))).requires(o -> ((CommandSourceStack) o).hasPermission(0, data.getPermission()));
 
         if (!data.getPermission().isEmpty())
-            chainedBuilder = chainedBuilder.requires(o -> ((CommandListenerWrapper) o).c(4));
+            chainedBuilder = chainedBuilder.requires(o -> ((CommandSourceStack) o).hasPermission(0,data.getPermission()));
         return chainedBuilder;
     }
 
