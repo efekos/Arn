@@ -28,8 +28,8 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.annotation.modifier.InventorySlot;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
-import net.minecraft.commands.CommandDispatcher;
-import net.minecraft.commands.arguments.ArgumentInventorySlot;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.SlotArgument;
 
 import java.lang.reflect.Parameter;
 
@@ -56,6 +56,6 @@ public final class CmdInventorySlotArg implements CommandArgumentResolver {
     @Override
     public ArgumentBuilder<?, ?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return CommandDispatcher.a(s.isEmpty() ? parameter.getName() : s, ArgumentInventorySlot.a());
+        return Commands.argument(s.isEmpty() ? parameter.getName() : s, SlotArgument.slot());
     }
 }

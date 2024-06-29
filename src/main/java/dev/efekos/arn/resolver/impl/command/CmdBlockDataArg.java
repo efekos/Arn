@@ -28,14 +28,14 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import net.minecraft.commands.CommandBuildContext;
-import net.minecraft.commands.CommandDispatcher;
-import net.minecraft.commands.arguments.blocks.ArgumentTile;
-import net.minecraft.core.IRegistryCustom;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.blocks.BlockStateArgument;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.flag.FeatureFlags;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.craftbukkit.v1_20_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_21_R1.CraftServer;
 
 import java.lang.reflect.Parameter;
 
@@ -60,9 +60,9 @@ public final class CmdBlockDataArg implements CommandArgumentResolver {
 
     /***/
     private static void initializeContext() {
-        FeatureFlagSet flagSet = FeatureFlagSet.a(FeatureFlags.a);
-        IRegistryCustom.Dimension holderlookup = ((CraftServer) Bukkit.getServer()).getHandle().c().aZ();
-        context = CommandBuildContext.a(holderlookup, flagSet);
+        FeatureFlagSet flagSet = FeatureFlagSet.of(FeatureFlags.VANILLA);
+        HolderLookup.Provider holderlookup = ((CraftServer) Bukkit.getServer()).getHandle().getServer().registryAccess();
+        context = CommandBuildContext.simple(holderlookup, flagSet);
     }
 
     /**
@@ -72,7 +72,7 @@ public final class CmdBlockDataArg implements CommandArgumentResolver {
     public ArgumentBuilder apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         if (context == null) initializeContext();
-        return CommandDispatcher.a(s.isEmpty() ? parameter.getName() : s, ArgumentTile.a(context));
+        return Commands.argument(s.isEmpty() ? parameter.getName() : s, BlockStateArgument.block(context));
     }
 
 }

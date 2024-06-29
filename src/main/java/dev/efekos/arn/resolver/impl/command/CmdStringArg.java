@@ -30,7 +30,7 @@ import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.annotation.modifier.Greedy;
 import dev.efekos.arn.annotation.modifier.Word;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
-import net.minecraft.commands.CommandDispatcher;
+import net.minecraft.commands.Commands;
 
 import java.lang.reflect.Parameter;
 
@@ -58,6 +58,6 @@ public final class CmdStringArg implements CommandArgumentResolver {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         boolean b1 = parameter.isAnnotationPresent(Greedy.class);
         boolean b2 = parameter.isAnnotationPresent(Word.class);
-        return CommandDispatcher.a(s.isEmpty() ? parameter.getName() : s, b1 ? StringArgumentType.greedyString() : (b2 ? StringArgumentType.word() : StringArgumentType.string()));
+        return Commands.argument(s.isEmpty() ? parameter.getName() : s, b1 ? StringArgumentType.greedyString() : (b2 ? StringArgumentType.word() : StringArgumentType.string()));
     }
 }

@@ -29,7 +29,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.annotation.modifier.NumberLimitations;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
-import net.minecraft.commands.CommandDispatcher;
+import net.minecraft.commands.Commands;
 
 import java.lang.reflect.Parameter;
 
@@ -57,6 +57,6 @@ public final class CmdFloatArg implements CommandArgumentResolver {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         NumberLimitations limitations = parameter.getAnnotation(NumberLimitations.class);
         boolean b = limitations != null;
-        return CommandDispatcher.a(s.isEmpty() ? parameter.getName() : s, b ? FloatArgumentType.floatArg(limitations.min(), limitations.max()) : FloatArgumentType.floatArg());
+        return Commands.argument(s.isEmpty() ? parameter.getName() : s, b ? FloatArgumentType.floatArg(limitations.min(), limitations.max()) : FloatArgumentType.floatArg());
     }
 }

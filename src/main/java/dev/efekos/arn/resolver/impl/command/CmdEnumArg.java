@@ -30,7 +30,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.annotation.CustomArgument;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
-import net.minecraft.commands.CommandDispatcher;
+import net.minecraft.commands.Commands;
 
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
@@ -81,7 +81,7 @@ public final class CmdEnumArg implements CommandArgumentResolver {
     @Override
     public ArgumentBuilder apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return CommandDispatcher.a(s.isEmpty() ? parameter.getName() : s, StringArgumentType.word()).suggests((context, builder) -> {
+        return Commands.argument(s.isEmpty() ? parameter.getName() : s, StringArgumentType.word()).suggests((context, builder) -> {
             for (String constant : constants)
                 if (constant.startsWith(builder.getRemainingLowerCase())) builder.suggest(constant);
             return builder.buildFuture();

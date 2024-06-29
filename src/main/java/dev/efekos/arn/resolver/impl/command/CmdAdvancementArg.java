@@ -30,10 +30,10 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.commands.CommandDispatcher;
-import net.minecraft.commands.CommandListenerWrapper;
-import net.minecraft.commands.ICompletionProvider;
-import net.minecraft.commands.arguments.ArgumentMinecraftKeyRegistered;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.commands.arguments.ResourceLocationArgument;
 import org.bukkit.advancement.Advancement;
 
 import java.lang.reflect.Parameter;
@@ -56,9 +56,9 @@ public final class CmdAdvancementArg implements CommandArgumentResolver {
     }
 
     /***/
-    private static final SuggestionProvider<CommandListenerWrapper> c = (var0, var1) -> {
-        Collection<AdvancementHolder> var2 = var0.getSource().l().aB().b();
-        return ICompletionProvider.a(var2.stream().map(AdvancementHolder::a), var1);
+    private static final SuggestionProvider<CommandSourceStack> c = (var0, var1) -> {
+        Collection<AdvancementHolder> var2 = var0.getSource().getServer().getAdvancements().getAllAdvancements();
+        return SharedSuggestionProvider.suggestResource(var2.stream().map(AdvancementHolder::id), var1);
     };
 
     /**
@@ -67,7 +67,7 @@ public final class CmdAdvancementArg implements CommandArgumentResolver {
     @Override
     public ArgumentBuilder apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return CommandDispatcher.a(s.isEmpty() ? parameter.getName() : s, ArgumentMinecraftKeyRegistered.a()).suggests(c);
+        return Commands.argument(s.isEmpty() ? parameter.getName() : s, ResourceLocationArgument.id()).suggests(c);
     }
 
 }

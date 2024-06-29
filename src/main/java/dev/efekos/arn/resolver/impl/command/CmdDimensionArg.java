@@ -28,7 +28,9 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import net.minecraft.commands.CommandDispatcher;
+import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.ArgumentDimension;
+import net.minecraft.commands.arguments.DimensionArgument;
 import org.bukkit.World;
 
 import java.lang.reflect.Parameter;
@@ -58,6 +60,6 @@ public final class CmdDimensionArg implements CommandArgumentResolver {
     @Override
     public ArgumentBuilder<?, ?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return CommandDispatcher.a(s.isEmpty() ? parameter.getName() : s, ArgumentDimension.a());
+        return Commands.argument(s.isEmpty() ? parameter.getName() : s, DimensionArgument.dimension());
     }
 }
