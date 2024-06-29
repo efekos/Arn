@@ -27,9 +27,7 @@ package dev.efekos.arn.resolver.impl.command;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
-import net.minecraft.commands.CommandDispatcher;
 import net.minecraft.commands.Commands;
-import net.minecraft.commands.arguments.ArgumentDimension;
 import net.minecraft.commands.arguments.DimensionArgument;
 import org.bukkit.World;
 

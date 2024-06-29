@@ -29,17 +29,14 @@ import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.annotation.modifier.Block;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import net.minecraft.commands.CommandBuildContext;
-import net.minecraft.commands.CommandDispatcher;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.ResourceArgument;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.IRegistryCustom;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.flag.FeatureFlags;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_20_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_21_R1.CraftServer;
 
 import java.lang.reflect.Parameter;
