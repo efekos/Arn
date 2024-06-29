@@ -183,7 +183,7 @@ public final class Arn {
      * @param reflections Main reflections.
      */
     private void scanCustomArguments(Reflections reflections) {
-        for (Class<?> customArgumentClass : reflections.getTypesAnnotatedWith(Container.class).stream().filter(aClass -> Arrays.asList(aClass.getInterfaces()).contains(CustomArgumentType.class)).collect(Collectors.toList())) {
+        for (Class<?> customArgumentClass : reflections.getTypesAnnotatedWith(Container.class).stream().filter(aClass -> Arrays.asList(aClass.getInterfaces()).contains(CustomArgumentType.class)).toList()) {
             CustomArgumentType<?> o = (CustomArgumentType<?>) containerInstanceMap.get(customArgumentClass.getName());
 
             handlerMethodArgumentResolvers.add(new HndCustomArg(o));
@@ -199,7 +199,7 @@ public final class Arn {
      * @throws ArnArgumentException If something about an enum found is invalid.
      */
     private void scanEnumArguments(Reflections reflections) throws ArnException {
-        List<Class<?>> classes = reflections.getTypesAnnotatedWith(Container.class).stream().filter(aClass -> aClass.isAnnotationPresent(CustomArgument.class)).collect(Collectors.toList());
+        List<Class<?>> classes = reflections.getTypesAnnotatedWith(Container.class).stream().filter(aClass -> aClass.isAnnotationPresent(CustomArgument.class)).toList();
         for (Class<?> aClass : classes) {
             if (!aClass.isEnum()) throw ArnExceptionTypes.CA_NOT_ENUM.create(aClass);
             Class<? extends Enum<?>> enumC = (Class<? extends Enum<?>>) aClass;
@@ -413,8 +413,8 @@ public final class Arn {
                 for (int i = 0; i < method.getArgumentResolvers().size(); i++)
                     if (method.getArgumentResolvers().get(i) == null) indexesToDelete.add(i);
 
-                List<CommandArgumentResolver> nonnullResolvers = IntStream.range(0, method.getArgumentResolvers().size()).filter(i -> !indexesToDelete.contains(i)).mapToObj(method.getArgumentResolvers()::get).collect(Collectors.toList());
-                List<Parameter> parametersClone = IntStream.range(0, method.getArgumentResolvers().size()).filter(i -> !indexesToDelete.contains(i)).mapToObj(method.getParameters()::get).collect(Collectors.toList());
+                List<CommandArgumentResolver> nonnullResolvers = IntStream.range(0, method.getArgumentResolvers().size()).filter(i -> !indexesToDelete.contains(i)).mapToObj(method.getArgumentResolvers()::get).toList();
+                List<Parameter> parametersClone = IntStream.range(0, method.getArgumentResolvers().size()).filter(i -> !indexesToDelete.contains(i)).mapToObj(method.getParameters()::get).toList();
 
                 for (CommandAnnotationLiteral lit : literals)
                     if (lit.getOffset() == 0) nodes.add(Commands.literal(lit.getLiteral()));
@@ -486,8 +486,8 @@ public final class Arn {
     private void registerHelpers(Reflections reflections) {
         CommandDispatcher<CommandSourceStack> dispatcher = ((CraftServer) Bukkit.getServer()).getHandle().getServer().getCommands().getDispatcher();
 
-        for (Class<?> helperClass : reflections.getTypesAnnotatedWith(Container.class).stream().filter(aClass -> aClass.isAnnotationPresent(Helper.class)).collect(Collectors.toList())) {
-            List<CommandHandlerMethod> associatedHelperMethods = handlers.stream().filter(commandHandlerMethod -> commandHandlerMethod.getMethod().getDeclaringClass().equals(helperClass)).collect(Collectors.toList());
+        for (Class<?> helperClass : reflections.getTypesAnnotatedWith(Container.class).stream().filter(aClass -> aClass.isAnnotationPresent(Helper.class)).toList()) {
+            List<CommandHandlerMethod> associatedHelperMethods = handlers.stream().filter(commandHandlerMethod -> commandHandlerMethod.getMethod().getDeclaringClass().equals(helperClass)).toList();
 
             com.mojang.brigadier.Command<CommandSourceStack> lambda = (s) -> {
                 CommandSender sender = s.getSource().getBukkitSender();
@@ -506,7 +506,7 @@ public final class Arn {
                     StringBuilder builder = new StringBuilder().append(ChatColor.GRAY + "/");
 
                     int adcI = 0;
-                    List<Parameter> a = helperMethod.getParameters().stream().filter(parameter -> parameter.isAnnotationPresent(CommandArgument.class)).collect(Collectors.toList());
+                    List<Parameter> a = helperMethod.getParameters().stream().filter(parameter -> parameter.isAnnotationPresent(CommandArgument.class)).toList();
 
                     for (CommandAnnotationLiteral lit : helperMethod.getAnnotationData().getLiterals())
                         if (lit.getOffset() == 0) builder.append(ChatColor.GRAY + lit.getLiteral() + " ");
