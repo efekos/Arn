@@ -42,6 +42,11 @@ import java.lang.reflect.Parameter;
 public final class CmdLongArg implements CommandArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public CmdLongArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

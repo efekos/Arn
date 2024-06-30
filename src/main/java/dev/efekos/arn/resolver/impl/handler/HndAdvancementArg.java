@@ -48,6 +48,11 @@ import java.lang.reflect.Parameter;
 public final class HndAdvancementArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndAdvancementArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

@@ -41,6 +41,11 @@ import java.util.Map;
 public class ExceptionMap<T> {
 
     /**
+     * Creates a new exception map.
+     */
+    public ExceptionMap() {}
+
+    /**
      * Actual map that is represented by this {@link ExceptionMap}.
      */
     private final Map<Class<? extends T>, List<Class<? extends Annotation>>> actualMap = new HashMap<>();

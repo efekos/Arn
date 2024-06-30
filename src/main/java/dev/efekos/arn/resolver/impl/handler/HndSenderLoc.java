@@ -44,6 +44,12 @@ import java.lang.reflect.Parameter;
  * @since 0.2
  */
 public class HndSenderLoc implements CommandHandlerMethodArgumentResolver {
+
+    /**
+     * Creates a new resolver.
+     */
+    public HndSenderLoc() {}
+
     /**
      * {@inheritDoc}
      */

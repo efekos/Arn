@@ -47,6 +47,11 @@ import java.lang.reflect.Parameter;
 public final class HndSenderEqu implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndSenderEqu() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

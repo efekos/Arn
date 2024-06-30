@@ -51,6 +51,11 @@ import java.lang.reflect.Parameter;
 public final class HndVectorArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndVectorArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

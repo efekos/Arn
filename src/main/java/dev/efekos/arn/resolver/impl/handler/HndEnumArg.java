@@ -48,6 +48,7 @@ import java.util.Locale;
  * @since 0.1
  */
 public final class HndEnumArg implements CommandHandlerMethodArgumentResolver {
+
     /**
      * Main {@link Enum} class this resolver will handle.
      */

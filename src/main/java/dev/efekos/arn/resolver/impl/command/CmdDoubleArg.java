@@ -42,6 +42,11 @@ import java.lang.reflect.Parameter;
 public final class CmdDoubleArg implements CommandArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public CmdDoubleArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

@@ -29,6 +29,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * When added to a {@link dev.efekos.arn.annotation.CommandArgument} that is a {@link String}, will make that argument
+ * accept only one word that doesn't contain any space.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 public @interface Word {

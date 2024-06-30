@@ -42,6 +42,11 @@ import java.util.List;
  */
 public final class BaseArnConfigurer implements ArnConfigurer {
 
+    /***
+     * Creates a new configurer.
+     */
+    public BaseArnConfigurer() {}
+
     /**
      * {@inheritDoc}
      */

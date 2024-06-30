@@ -43,6 +43,11 @@ import java.lang.reflect.Parameter;
 public final class HndPlayerSender implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndPlayerSender() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

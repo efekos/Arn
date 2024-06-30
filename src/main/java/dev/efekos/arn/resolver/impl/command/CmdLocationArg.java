@@ -42,6 +42,11 @@ import java.lang.reflect.Parameter;
 public final class CmdLocationArg implements CommandArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public CmdLocationArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

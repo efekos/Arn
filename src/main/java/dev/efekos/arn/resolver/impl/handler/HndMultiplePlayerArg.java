@@ -50,6 +50,11 @@ import java.util.Collection;
 public final class HndMultiplePlayerArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndMultiplePlayerArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

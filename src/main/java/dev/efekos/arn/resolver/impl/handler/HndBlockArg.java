@@ -51,6 +51,11 @@ import java.util.Arrays;
 public final class HndBlockArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndBlockArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

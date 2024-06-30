@@ -31,6 +31,7 @@ import java.util.function.Supplier;
 /**
  * An exception creator that creates a simple exception without using any arguments.
  *
+ * @param <E>  Type of the actual exception.
  * @author efekos
  * @since 0.3
  */

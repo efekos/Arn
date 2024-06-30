@@ -45,6 +45,11 @@ import java.util.UUID;
 public final class HndSenderId implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndSenderId() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

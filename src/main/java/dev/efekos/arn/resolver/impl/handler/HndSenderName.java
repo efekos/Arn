@@ -49,6 +49,11 @@ import java.util.Locale;
 public final class HndSenderName implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndSenderName() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

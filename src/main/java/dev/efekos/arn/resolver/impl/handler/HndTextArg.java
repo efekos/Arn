@@ -51,6 +51,11 @@ import java.lang.reflect.Parameter;
 public final class HndTextArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndTextArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -58,10 +63,14 @@ public final class HndTextArg implements CommandHandlerMethodArgumentResolver {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(BaseComponent.class);
     }
 
-    /***/
+    /**
+     * A context that is needed to resolve an argument.
+     */
     private static CommandBuildContext context;
 
-    /***/
+    /**
+     * Initializes {@link #context}.
+     */
     private static void initializeContext() {
         FeatureFlagSet flagSet = FeatureFlagSet.of(FeatureFlags.VANILLA);
         HolderLookup.Provider holderlookup = ((CraftServer) Bukkit.getServer()).getHandle().getServer().registryAccess();
@@ -72,10 +81,11 @@ public final class HndTextArg implements CommandHandlerMethodArgumentResolver {
      * {@inheritDoc}
      */
     @Override
-    public BaseComponent resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) {
+    public BaseComponent resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> ctx) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        Component component = ComponentArgument.getComponent(context, s.isEmpty() ? parameter.getName() : s);
-        String json = Component.Serializer.toJson(component,HndTextArg.context);
+        Component component = ComponentArgument.getComponent(ctx, s.isEmpty() ? parameter.getName() : s);
+        if(context==null) initializeContext();
+        String json = Component.Serializer.toJson(component,context);
         return ComponentSerializer.deserialize(json);
     }
 

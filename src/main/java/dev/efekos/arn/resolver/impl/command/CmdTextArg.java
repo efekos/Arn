@@ -48,6 +48,11 @@ import java.lang.reflect.Parameter;
 public final class CmdTextArg implements CommandArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public CmdTextArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -56,10 +61,14 @@ public final class CmdTextArg implements CommandArgumentResolver {
     }
 
 
-    /***/
+    /**
+     * A context that is needed to resolve an argument.
+     */
     private static CommandBuildContext context;
 
-    /***/
+    /**
+     * Initializes {@link #context}.
+     */
     private static void initializeContext() {
         FeatureFlagSet flagSet = FeatureFlagSet.of(FeatureFlags.VANILLA);
         HolderLookup.Provider holderlookup = ((CraftServer) Bukkit.getServer()).getHandle().getServer().registryAccess();

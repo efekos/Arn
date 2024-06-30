@@ -47,6 +47,11 @@ import java.lang.reflect.Parameter;
 public final class HndBlockDataArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndBlockDataArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

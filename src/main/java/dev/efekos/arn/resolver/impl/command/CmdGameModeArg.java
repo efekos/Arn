@@ -42,6 +42,11 @@ import java.lang.reflect.Parameter;
 public final class CmdGameModeArg implements CommandArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public CmdGameModeArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

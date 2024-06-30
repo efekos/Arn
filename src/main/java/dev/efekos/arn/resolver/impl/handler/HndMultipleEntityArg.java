@@ -52,6 +52,11 @@ import java.util.Collection;
 public final class HndMultipleEntityArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndMultipleEntityArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

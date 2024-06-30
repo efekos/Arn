@@ -48,6 +48,11 @@ import java.lang.reflect.Parameter;
 public final class HndSenderStat implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndSenderStat() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

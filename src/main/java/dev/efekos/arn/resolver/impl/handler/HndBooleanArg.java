@@ -43,6 +43,11 @@ import java.lang.reflect.Parameter;
 public final class HndBooleanArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndBooleanArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

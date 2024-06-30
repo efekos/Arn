@@ -42,6 +42,11 @@ import java.lang.reflect.Parameter;
 public final class CmdIntArg implements CommandArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public CmdIntArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

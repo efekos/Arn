@@ -37,7 +37,7 @@ import org.bukkit.World;
 import java.lang.reflect.Parameter;
 
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link } arguments.
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link DimensionArgument} arguments.
  * <strong>Since this implementation uses {@link DimensionArgument}, which was only made for to dimensions of one world,
  * there isn't any conclusion that this resolver will work with different worlds, such as ones made by Multiverse plugin.
  * </strong>
@@ -46,6 +46,11 @@ import java.lang.reflect.Parameter;
  * @since 0.1
  */
 public final class HndDimensionArg implements CommandHandlerMethodArgumentResolver {
+
+    /**
+     * Creates a new resolver.
+     */
+    public HndDimensionArg() {}
 
     /**
      * {@inheritDoc}

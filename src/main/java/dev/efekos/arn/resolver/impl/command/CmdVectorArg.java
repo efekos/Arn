@@ -43,6 +43,11 @@ import java.lang.reflect.Parameter;
 public final class CmdVectorArg implements CommandArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public CmdVectorArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

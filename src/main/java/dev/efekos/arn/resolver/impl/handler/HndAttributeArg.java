@@ -51,6 +51,11 @@ import java.util.Arrays;
 public final class HndAttributeArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndAttributeArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

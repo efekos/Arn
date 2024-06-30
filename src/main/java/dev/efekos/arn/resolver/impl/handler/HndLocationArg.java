@@ -51,6 +51,11 @@ import java.lang.reflect.Parameter;
 public final class HndLocationArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndLocationArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

@@ -43,6 +43,11 @@ import java.util.List;
  */
 public final class ArnExceptionTypes {
 
+    /**
+     * Creates a new instance of this class, but it is private because you don't need to instantiate this class anyway.
+     */
+    private ArnExceptionTypes() {}
+
     // CustomArgument
 
     /**

@@ -61,6 +61,8 @@ public interface CommandHandlerMethodArgumentResolver {
     boolean requireCommandArgument();
 
     /**
+     * Resolves value of an argument into an {@link Object}.
+     *
      * @param parameter The {@link Parameter} that was associated with this resolver in the first place.
      * @param method    Main {@link CommandHandlerMethod} in case something from there is needed.
      * @param context   Command context to get arguments from the executed command.

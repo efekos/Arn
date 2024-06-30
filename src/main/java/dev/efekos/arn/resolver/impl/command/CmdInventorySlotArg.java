@@ -43,6 +43,11 @@ import java.lang.reflect.Parameter;
 public final class CmdInventorySlotArg implements CommandArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public CmdInventorySlotArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

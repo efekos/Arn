@@ -42,6 +42,11 @@ import java.lang.reflect.Parameter;
 public final class HndFloatArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndFloatArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

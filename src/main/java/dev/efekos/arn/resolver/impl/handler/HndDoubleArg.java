@@ -43,6 +43,11 @@ import java.lang.reflect.Parameter;
 public final class HndDoubleArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndDoubleArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

@@ -42,6 +42,11 @@ import java.lang.reflect.Parameter;
 public final class HndStringArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndStringArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

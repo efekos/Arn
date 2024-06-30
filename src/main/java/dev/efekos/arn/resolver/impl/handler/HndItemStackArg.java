@@ -46,6 +46,11 @@ import java.lang.reflect.Parameter;
 public final class HndItemStackArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndItemStackArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

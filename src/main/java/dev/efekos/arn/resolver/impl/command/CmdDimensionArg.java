@@ -34,8 +34,8 @@ import org.bukkit.World;
 import java.lang.reflect.Parameter;
 
 /**
- * An implementation of {@link CommandArgumentResolver}. Resolves {@link World} arguments using {@link ArgumentDimension}.
- * <strong>Since this implementation uses {@link ArgumentDimension}, which was only made for dimensions of one world,
+ * An implementation of {@link CommandArgumentResolver}. Resolves {@link World} arguments using {@link DimensionArgument}.
+ * <strong>Since this implementation uses {@link DimensionArgument}, which was only made for dimensions of one world,
  * there isn't any conclusion that this resolver will work with different worlds, such as ones made by Multiverse plugin.
  * </strong>
  *
@@ -43,6 +43,11 @@ import java.lang.reflect.Parameter;
  * @since 0.1
  */
 public final class CmdDimensionArg implements CommandArgumentResolver {
+
+    /**
+     * Creates a new resolver.
+     */
+    public CmdDimensionArg() {}
 
     /**
      * {@inheritDoc}

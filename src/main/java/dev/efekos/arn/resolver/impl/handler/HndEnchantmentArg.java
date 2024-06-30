@@ -47,6 +47,11 @@ import java.lang.reflect.Parameter;
 public final class HndEnchantmentArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndEnchantmentArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

@@ -52,6 +52,11 @@ import java.util.Arrays;
 public final class HndItemArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndItemArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

@@ -49,6 +49,11 @@ import java.lang.reflect.Parameter;
 public final class HndEffectTypeArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndEffectTypeArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

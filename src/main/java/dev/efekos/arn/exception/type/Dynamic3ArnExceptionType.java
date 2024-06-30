@@ -32,6 +32,7 @@ import dev.efekos.arn.exception.ArnException;
  * @param <T>  Type of the first argument.
  * @param <T2> Type of the second argument.
  * @param <T3> Type of the third argument.
+ * @param <E>  Type of the actual exception.
  * @author efekos
  * @since 0.3
  */
@@ -69,6 +70,7 @@ public final class Dynamic3ArnExceptionType<E extends ArnException, T, T2, T3> {
      * @param <T>  Type of the first argument.
      * @param <T2> Type of the second argument.
      * @param <T3> Type of the third argument.
+     * @param <E>  Type of the actual exception.
      */
     @FunctionalInterface
     public interface Lambda<T, T2, T3, E extends ArnException> {

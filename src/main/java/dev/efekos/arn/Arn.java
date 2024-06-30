@@ -88,6 +88,11 @@ import java.util.stream.IntStream;
 public final class Arn {
 
     /**
+     * Creates a new instance of Arn.
+     */
+    private Arn() {}
+
+    /**
      * Local instance of {@link Arn}, used by {@link #run(Class)}.
      */
     private static final Arn instance = new Arn();
@@ -143,6 +148,9 @@ public final class Arn {
      */
     public static final SimpleCommandExceptionType PLAYER_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(Component.literal("This command can't be used by players."));
 
+    /**
+     * Generic exception type used to handle {@link ArnSyntaxException}s.
+     */
     public static final DynamicCommandExceptionType GENERIC = new DynamicCommandExceptionType(o -> Component.literal((String) o));
 
     /**

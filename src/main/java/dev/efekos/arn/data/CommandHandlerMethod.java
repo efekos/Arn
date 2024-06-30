@@ -44,6 +44,11 @@ import java.util.Objects;
 public class CommandHandlerMethod {
 
     /**
+     * Creates a new handler method.
+     */
+    public CommandHandlerMethod() {}
+
+    /**
      * Value of the {@link Command#value()} on {@link #method}.
      */
     private String command;

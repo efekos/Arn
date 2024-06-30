@@ -46,6 +46,11 @@ import java.util.Locale;
 public final class HndGameModeArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndGameModeArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

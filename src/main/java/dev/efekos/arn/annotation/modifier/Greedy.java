@@ -29,6 +29,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * If applied to a {@link dev.efekos.arn.annotation.CommandArgument} that is a {@link String}, that argument will accept
+ * spaces without having to put the string in quotation marks. <strong>This string argument must be last argument in the
+ * argument list.</strong>
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 public @interface Greedy {

@@ -42,6 +42,11 @@ import java.lang.reflect.Parameter;
 public final class CmdMultiplePlayerArg implements CommandArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public CmdMultiplePlayerArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override

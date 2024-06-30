@@ -44,6 +44,11 @@ import java.lang.reflect.Parameter;
 public final class HndInventorySlotArg implements CommandHandlerMethodArgumentResolver {
 
     /**
+     * Creates a new resolver.
+     */
+    public HndInventorySlotArg() {}
+
+    /**
      * {@inheritDoc}
      */
     @Override
