@@ -276,7 +276,6 @@ public final class Arn {
             configurerInstance.addHandlerMethodArgumentResolvers(handlerMethodArgumentResolvers);
             configurerInstance.addArgumentResolvers(commandArgumentResolvers);
             configurerInstance.putArgumentResolverExceptions(commandArgumentResolverExceptions);
-            System.out.println("a");
             configurerInstance.putHandlerMethodArgumentResolverExceptions(handlerExceptions);
         }
     }
@@ -439,7 +438,7 @@ public final class Arn {
                 }
 
                 for (CommandAnnotationLiteral lit : literals)
-                    if(lit.getOffset()==nonnullResolvers.size()) nodes.add(Commands.literal(lit.getLiteral()));
+                    if(lit.getOffset()==nonnullResolvers.size()&&lit.getOffset()!=0) nodes.add(Commands.literal(lit.getLiteral()));
 
                 com.mojang.brigadier.Command<CommandSourceStack> lambda = commandContext -> {
 
