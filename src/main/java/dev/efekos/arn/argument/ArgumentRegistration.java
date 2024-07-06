@@ -24,8 +24,7 @@
 
 package dev.efekos.arn.argument;
 
-import com.mojang.brigadier.arguments.ArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.arguments.*;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
@@ -49,14 +48,32 @@ public enum ArgumentRegistration {
 
     /**
      * Uses word arguments. If your suggestions are a list of words made out of lowercase English characters, this
-     * registration type will be useful
+     * registration type will be useful.
      */
     WORD(StringArgumentType::word,StringArgumentType::getString),
 
     /**
      * Similar to {@link #WORD}, but allows symbols and spaces using quotation marks.
      */
-    STRING(StringArgumentType::string,StringArgumentType::getString);
+    STRING(StringArgumentType::string,StringArgumentType::getString),
+
+    /**
+     * Uses integer argument type. If your argument is going to parse an integer in a specific way, this registration
+     * type will be useful.
+     */
+    INTEGER(IntegerArgumentType::integer,(context, name) -> IntegerArgumentType.getInteger(context,name)+""),
+
+    /**
+     * Uses double argument type. If your argument is going to parse a double in a specific way, this registration
+     * type will be useful.
+     */
+    DOUBLE(DoubleArgumentType::doubleArg,(context, name) -> DoubleArgumentType.getDouble(context,name)+""),
+
+    /**
+     * Uses boolean argument type. If your argument is going to parse a bool in a specific way, this registration type
+     * will be useful.
+     */
+    BOOLEAN(BoolArgumentType::bool,(context, name) -> BoolArgumentType.getBool(context,name)+"");
 
     /**
      * A {@link Supplier} for the {@link ArgumentType} needed for this registration.
