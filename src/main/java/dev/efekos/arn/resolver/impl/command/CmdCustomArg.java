@@ -24,12 +24,12 @@
 
 package dev.efekos.arn.resolver.impl.command;
 
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.argument.CustomArgumentType;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
 
 import java.lang.reflect.Parameter;
 
@@ -69,11 +69,8 @@ public final class CmdCustomArg implements CommandArgumentResolver {
     @Override
     public ArgumentBuilder apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        return Commands.argument(s.isEmpty() ? parameter.getName() : s, StringArgumentType.string()).suggests((commandContext, suggestionsBuilder) -> {
-            for (String ss : customArgumentType.suggest(commandContext.getSource().getBukkitSender())) {
-                suggestionsBuilder.suggest(ss);
-            }
-            return suggestionsBuilder.buildFuture();
-        });
+        return Commands.argument(s.isEmpty() ? parameter.getName() : s, customArgumentType.getRegistration().getFunc()).suggests((context, builder) ->
+            SharedSuggestionProvider.suggest(customArgumentType.suggest(context.getSource().getBukkitSender()),builder)
+        );
     }
 }

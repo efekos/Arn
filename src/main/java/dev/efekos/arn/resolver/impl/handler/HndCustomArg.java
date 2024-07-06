@@ -24,7 +24,6 @@
 
 package dev.efekos.arn.resolver.impl.handler;
 
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.Arn;
@@ -82,7 +81,7 @@ public final class HndCustomArg implements CommandHandlerMethodArgumentResolver 
     @Override
     public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        String string = StringArgumentType.getString(context, s.isEmpty() ? parameter.getName() : s);
+        String string = customArgumentType.getRegistration().getV(context, s.isEmpty() ? parameter.getName() : s);
         try {
             return customArgumentType.parse(context.getSource().getBukkitSender(), string);
         } catch (ArnSyntaxException e) {

@@ -47,6 +47,13 @@ public interface CustomArgumentType<T> {
     Class<T> getType();
 
     /**
+     * Returns an {@link ArgumentRegistration}, specifying how this argument should be registered.
+     *
+     * @return An {@link ArgumentRegistration}.
+     */
+    ArgumentRegistration getRegistration();
+
+    /**
      * Suggests a list of strings to the given command sender.
      *
      * @param sender Any command sender.
