@@ -438,6 +438,9 @@ public final class Arn {
                     if (builder != null) nodes.add(builder);
                 }
 
+                for (CommandAnnotationLiteral lit : literals)
+                    if(lit.getOffset()==nonnullResolvers.size()) nodes.add(Commands.literal(lit.getLiteral()));
+
                 com.mojang.brigadier.Command<CommandSourceStack> lambda = commandContext -> {
 
                     CommandSender sender = commandContext.getSource().getBukkitSender();
