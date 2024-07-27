@@ -51,22 +51,15 @@ import java.lang.reflect.Parameter;
 public final class HndTextArg implements CommandHandlerMethodArgumentResolver {
 
     /**
-     * Creates a new resolver.
-     */
-    public HndTextArg() {}
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(BaseComponent.class);
-    }
-
-    /**
      * A context that is needed to resolve an argument.
      */
     private static CommandBuildContext context;
+
+    /**
+     * Creates a new resolver.
+     */
+    public HndTextArg() {
+    }
 
     /**
      * Initializes {@link #context}.
@@ -81,11 +74,19 @@ public final class HndTextArg implements CommandHandlerMethodArgumentResolver {
      * {@inheritDoc}
      */
     @Override
+    public boolean isApplicable(Parameter parameter) {
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(BaseComponent.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public BaseComponent resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> ctx) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         Component component = ComponentArgument.getComponent(ctx, s.isEmpty() ? parameter.getName() : s);
-        if(context==null) initializeContext();
-        String json = Component.Serializer.toJson(component,context);
+        if (context == null) initializeContext();
+        String json = Component.Serializer.toJson(component, context);
         return ComponentSerializer.deserialize(json);
     }
 

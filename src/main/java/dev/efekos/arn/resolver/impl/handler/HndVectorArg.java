@@ -53,7 +53,8 @@ public final class HndVectorArg implements CommandHandlerMethodArgumentResolver 
     /**
      * Creates a new resolver.
      */
-    public HndVectorArg() {}
+    public HndVectorArg() {
+    }
 
     /**
      * {@inheritDoc}
@@ -77,8 +78,8 @@ public final class HndVectorArg implements CommandHandlerMethodArgumentResolver 
 
         CommandSender sender = context.getSource().getBukkitSender();
         if (sender instanceof Player p) return new Location(p.getWorld(), x, y, z);
-        else if (sender instanceof BlockCommandSender bc) return new Location(bc.getBlock().getWorld(),x,y,z);
-        else return new Location(Bukkit.getWorld("overworld"),x,y,z);
+        else if (sender instanceof BlockCommandSender bc) return new Location(bc.getBlock().getWorld(), x, y, z);
+        else return new Location(Bukkit.getWorld("overworld"), x, y, z);
     }
 
     /**

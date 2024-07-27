@@ -53,7 +53,8 @@ public final class HndBlockArg implements CommandHandlerMethodArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public HndBlockArg() {}
+    public HndBlockArg() {
+    }
 
     /**
      * {@inheritDoc}

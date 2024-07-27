@@ -45,7 +45,8 @@ public final class HndConsoleCommandSender implements CommandHandlerMethodArgume
     /**
      * Creates a new resolver.
      */
-    public HndConsoleCommandSender() {}
+    public HndConsoleCommandSender() {
+    }
 
     /**
      * {@inheritDoc}

@@ -44,7 +44,8 @@ public final class HndLongArg implements CommandHandlerMethodArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public HndLongArg() {}
+    public HndLongArg() {
+    }
 
     /**
      * {@inheritDoc}

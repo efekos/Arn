@@ -53,7 +53,8 @@ public final class HndAttributeArg implements CommandHandlerMethodArgumentResolv
     /**
      * Creates a new resolver.
      */
-    public HndAttributeArg() {}
+    public HndAttributeArg() {
+    }
 
     /**
      * {@inheritDoc}

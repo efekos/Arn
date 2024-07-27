@@ -53,7 +53,8 @@ public final class HndLocationArg implements CommandHandlerMethodArgumentResolve
     /**
      * Creates a new resolver.
      */
-    public HndLocationArg() {}
+    public HndLocationArg() {
+    }
 
     /**
      * {@inheritDoc}

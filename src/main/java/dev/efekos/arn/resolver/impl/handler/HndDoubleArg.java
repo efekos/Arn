@@ -45,7 +45,8 @@ public final class HndDoubleArg implements CommandHandlerMethodArgumentResolver 
     /**
      * Creates a new resolver.
      */
-    public HndDoubleArg() {}
+    public HndDoubleArg() {
+    }
 
     /**
      * {@inheritDoc}

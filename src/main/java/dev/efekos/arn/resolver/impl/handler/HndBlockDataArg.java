@@ -49,7 +49,8 @@ public final class HndBlockDataArg implements CommandHandlerMethodArgumentResolv
     /**
      * Creates a new resolver.
      */
-    public HndBlockDataArg() {}
+    public HndBlockDataArg() {
+    }
 
     /**
      * {@inheritDoc}

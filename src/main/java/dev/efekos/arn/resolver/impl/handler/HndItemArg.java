@@ -54,7 +54,8 @@ public final class HndItemArg implements CommandHandlerMethodArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public HndItemArg() {}
+    public HndItemArg() {
+    }
 
     /**
      * {@inheritDoc}

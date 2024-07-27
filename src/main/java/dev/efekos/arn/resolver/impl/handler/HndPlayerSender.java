@@ -45,7 +45,8 @@ public final class HndPlayerSender implements CommandHandlerMethodArgumentResolv
     /**
      * Creates a new resolver.
      */
-    public HndPlayerSender() {}
+    public HndPlayerSender() {
+    }
 
     /**
      * {@inheritDoc}

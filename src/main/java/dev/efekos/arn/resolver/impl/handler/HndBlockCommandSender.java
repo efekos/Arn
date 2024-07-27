@@ -45,7 +45,8 @@ public final class HndBlockCommandSender implements CommandHandlerMethodArgument
     /**
      * Creates a new resolver.
      */
-    public HndBlockCommandSender() {}
+    public HndBlockCommandSender() {
+    }
 
     /**
      * {@inheritDoc}

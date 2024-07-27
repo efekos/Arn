@@ -48,7 +48,8 @@ public final class HndGameModeArg implements CommandHandlerMethodArgumentResolve
     /**
      * Creates a new resolver.
      */
-    public HndGameModeArg() {}
+    public HndGameModeArg() {
+    }
 
     /**
      * {@inheritDoc}

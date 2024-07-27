@@ -50,7 +50,8 @@ public final class HndDimensionArg implements CommandHandlerMethodArgumentResolv
     /**
      * Creates a new resolver.
      */
-    public HndDimensionArg() {}
+    public HndDimensionArg() {
+    }
 
     /**
      * {@inheritDoc}

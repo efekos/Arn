@@ -49,7 +49,8 @@ public final class HndEnchantmentArg implements CommandHandlerMethodArgumentReso
     /**
      * Creates a new resolver.
      */
-    public HndEnchantmentArg() {}
+    public HndEnchantmentArg() {
+    }
 
     /**
      * {@inheritDoc}

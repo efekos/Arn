@@ -48,7 +48,8 @@ public final class HndItemStackArg implements CommandHandlerMethodArgumentResolv
     /**
      * Creates a new resolver.
      */
-    public HndItemStackArg() {}
+    public HndItemStackArg() {
+    }
 
     /**
      * {@inheritDoc}

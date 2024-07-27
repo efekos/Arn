@@ -47,7 +47,8 @@ public final class HndSenderInv implements CommandHandlerMethodArgumentResolver 
     /**
      * Creates a new resolver.
      */
-    public HndSenderInv() {}
+    public HndSenderInv() {
+    }
 
     /**
      * {@inheritDoc}

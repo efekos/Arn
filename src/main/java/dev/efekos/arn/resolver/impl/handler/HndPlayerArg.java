@@ -51,7 +51,8 @@ public final class HndPlayerArg implements CommandHandlerMethodArgumentResolver 
     /**
      * Creates a new resolver.
      */
-    public HndPlayerArg() {}
+    public HndPlayerArg() {
+    }
 
     /**
      * {@inheritDoc}

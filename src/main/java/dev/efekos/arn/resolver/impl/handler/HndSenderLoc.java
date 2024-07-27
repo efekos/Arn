@@ -48,7 +48,8 @@ public class HndSenderLoc implements CommandHandlerMethodArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public HndSenderLoc() {}
+    public HndSenderLoc() {
+    }
 
     /**
      * {@inheritDoc}

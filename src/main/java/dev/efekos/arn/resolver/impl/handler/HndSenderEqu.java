@@ -49,7 +49,8 @@ public final class HndSenderEqu implements CommandHandlerMethodArgumentResolver 
     /**
      * Creates a new resolver.
      */
-    public HndSenderEqu() {}
+    public HndSenderEqu() {
+    }
 
     /**
      * {@inheritDoc}
@@ -73,8 +74,7 @@ public final class HndSenderEqu implements CommandHandlerMethodArgumentResolver 
     @Override
     public ItemStack resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         CommandSender sender = context.getSource().getBukkitSender();
-        if (!(sender instanceof Player)) return null;
-        Player player = (Player) sender;
+        if (!(sender instanceof Player player)) return null;
 
         if (parameter.isAnnotationPresent(OffHand.class)) return player.getInventory().getItemInOffHand();
         if (parameter.isAnnotationPresent(Helmet.class)) return player.getInventory().getHelmet();

@@ -45,7 +45,8 @@ public final class HndBooleanArg implements CommandHandlerMethodArgumentResolver
     /**
      * Creates a new resolver.
      */
-    public HndBooleanArg() {}
+    public HndBooleanArg() {
+    }
 
     /**
      * {@inheritDoc}

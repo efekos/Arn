@@ -44,7 +44,8 @@ public final class HndSender implements CommandHandlerMethodArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public HndSender() {}
+    public HndSender() {
+    }
 
     /**
      * {@inheritDoc}

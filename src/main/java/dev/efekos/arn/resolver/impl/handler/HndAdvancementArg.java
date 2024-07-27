@@ -50,7 +50,8 @@ public final class HndAdvancementArg implements CommandHandlerMethodArgumentReso
     /**
      * Creates a new resolver.
      */
-    public HndAdvancementArg() {}
+    public HndAdvancementArg() {
+    }
 
     /**
      * {@inheritDoc}

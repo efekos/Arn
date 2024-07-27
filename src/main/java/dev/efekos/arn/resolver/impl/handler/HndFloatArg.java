@@ -44,7 +44,8 @@ public final class HndFloatArg implements CommandHandlerMethodArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public HndFloatArg() {}
+    public HndFloatArg() {
+    }
 
     /**
      * {@inheritDoc}

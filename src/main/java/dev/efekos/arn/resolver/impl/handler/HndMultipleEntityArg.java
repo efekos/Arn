@@ -54,7 +54,8 @@ public final class HndMultipleEntityArg implements CommandHandlerMethodArgumentR
     /**
      * Creates a new resolver.
      */
-    public HndMultipleEntityArg() {}
+    public HndMultipleEntityArg() {
+    }
 
     /**
      * {@inheritDoc}

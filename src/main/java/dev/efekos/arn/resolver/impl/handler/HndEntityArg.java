@@ -49,7 +49,8 @@ public final class HndEntityArg implements CommandHandlerMethodArgumentResolver 
     /**
      * Creates a new resolver.
      */
-    public HndEntityArg() {}
+    public HndEntityArg() {
+    }
 
     /**
      * {@inheritDoc}

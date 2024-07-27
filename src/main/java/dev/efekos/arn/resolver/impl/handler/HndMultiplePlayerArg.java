@@ -52,7 +52,8 @@ public final class HndMultiplePlayerArg implements CommandHandlerMethodArgumentR
     /**
      * Creates a new resolver.
      */
-    public HndMultiplePlayerArg() {}
+    public HndMultiplePlayerArg() {
+    }
 
     /**
      * {@inheritDoc}

@@ -50,7 +50,8 @@ public final class HndSenderStat implements CommandHandlerMethodArgumentResolver
     /**
      * Creates a new resolver.
      */
-    public HndSenderStat() {}
+    public HndSenderStat() {
+    }
 
     /**
      * {@inheritDoc}
@@ -74,8 +75,7 @@ public final class HndSenderStat implements CommandHandlerMethodArgumentResolver
     @Override
     public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         CommandSender sender = context.getSource().getBukkitSender();
-        if (!(sender instanceof Player)) return null;
-        Player player = (Player) sender;
+        if (!(sender instanceof Player player)) return null;
 
         if (parameter.isAnnotationPresent(Experience.class)) return caster(parameter.getType(), player.getExp());
         if (parameter.isAnnotationPresent(ExpLevel.class)) return caster(parameter.getType(), player.getLevel());
@@ -94,9 +94,9 @@ public final class HndSenderStat implements CommandHandlerMethodArgumentResolver
      * @return Same value that might be cast to another class.
      */
     private Object caster(Class<?> paramType, Object value) {
-        if (paramType.equals(int.class) || paramType.equals(Integer.class)) return (int)value;
-        if (paramType.equals(float.class) || paramType.equals(Float.class)) return (float)value;
-        if (paramType.equals(double.class) || paramType.equals(Double.class)) return (double)value;
+        if (paramType.equals(int.class) || paramType.equals(Integer.class)) return value;
+        if (paramType.equals(float.class) || paramType.equals(Float.class)) return value;
+        if (paramType.equals(double.class) || paramType.equals(Double.class)) return value;
         return value;
     }
 }

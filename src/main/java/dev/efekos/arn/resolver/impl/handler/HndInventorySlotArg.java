@@ -46,7 +46,8 @@ public final class HndInventorySlotArg implements CommandHandlerMethodArgumentRe
     /**
      * Creates a new resolver.
      */
-    public HndInventorySlotArg() {}
+    public HndInventorySlotArg() {
+    }
 
     /**
      * {@inheritDoc}

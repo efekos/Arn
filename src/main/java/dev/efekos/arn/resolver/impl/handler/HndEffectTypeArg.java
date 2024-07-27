@@ -51,7 +51,8 @@ public final class HndEffectTypeArg implements CommandHandlerMethodArgumentResol
     /**
      * Creates a new resolver.
      */
-    public HndEffectTypeArg() {}
+    public HndEffectTypeArg() {
+    }
 
     /**
      * {@inheritDoc}
