@@ -44,7 +44,8 @@ public final class CmdEntityArg implements CommandArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public CmdEntityArg() {}
+    public CmdEntityArg() {
+    }
 
     /**
      * {@inheritDoc}

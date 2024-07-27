@@ -44,7 +44,8 @@ public final class CmdLongArg implements CommandArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public CmdLongArg() {}
+    public CmdLongArg() {
+    }
 
     /**
      * {@inheritDoc}

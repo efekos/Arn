@@ -44,7 +44,8 @@ public final class CmdLocationArg implements CommandArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public CmdLocationArg() {}
+    public CmdLocationArg() {
+    }
 
     /**
      * {@inheritDoc}

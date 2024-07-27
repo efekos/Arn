@@ -45,7 +45,8 @@ public final class CmdVectorArg implements CommandArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public CmdVectorArg() {}
+    public CmdVectorArg() {
+    }
 
     /**
      * {@inheritDoc}

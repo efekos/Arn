@@ -44,7 +44,8 @@ public final class CmdMultiplePlayerArg implements CommandArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public CmdMultiplePlayerArg() {}
+    public CmdMultiplePlayerArg() {
+    }
 
     /**
      * {@inheritDoc}

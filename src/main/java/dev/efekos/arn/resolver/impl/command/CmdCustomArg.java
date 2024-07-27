@@ -70,7 +70,7 @@ public final class CmdCustomArg implements CommandArgumentResolver {
     public ArgumentBuilder apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         return Commands.argument(s.isEmpty() ? parameter.getName() : s, customArgumentType.getRegistration().getFunc()).suggests((context, builder) ->
-            SharedSuggestionProvider.suggest(customArgumentType.suggest(context.getSource().getBukkitSender()),builder)
+                SharedSuggestionProvider.suggest(customArgumentType.suggest(context.getSource().getBukkitSender()), builder)
         );
     }
 }

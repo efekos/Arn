@@ -44,7 +44,8 @@ public final class CmdPlayerArg implements CommandArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public CmdPlayerArg() {}
+    public CmdPlayerArg() {
+    }
 
     /**
      * {@inheritDoc}

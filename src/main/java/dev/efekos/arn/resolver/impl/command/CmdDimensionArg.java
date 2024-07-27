@@ -47,7 +47,8 @@ public final class CmdDimensionArg implements CommandArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public CmdDimensionArg() {}
+    public CmdDimensionArg() {
+    }
 
     /**
      * {@inheritDoc}

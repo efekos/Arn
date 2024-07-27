@@ -48,23 +48,15 @@ import java.lang.reflect.Parameter;
 public final class CmdItemStackArg implements CommandArgumentResolver {
 
     /**
-     * Creates a new resolver.
-     */
-    public CmdItemStackArg() {}
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(ItemStack.class);
-    }
-
-
-    /**
      * A context that is needed to resolve an argument.
      */
     private static CommandBuildContext context;
+
+    /**
+     * Creates a new resolver.
+     */
+    public CmdItemStackArg() {
+    }
 
     /**
      * Initializes {@link #context}.
@@ -73,6 +65,14 @@ public final class CmdItemStackArg implements CommandArgumentResolver {
         FeatureFlagSet flagSet = FeatureFlagSet.of(FeatureFlags.VANILLA);
         HolderLookup.Provider holderlookup = ((CraftServer) Bukkit.getServer()).getHandle().getServer().registryAccess();
         context = CommandBuildContext.simple(holderlookup, flagSet);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isApplicable(Parameter parameter) {
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(ItemStack.class);
     }
 
     /**

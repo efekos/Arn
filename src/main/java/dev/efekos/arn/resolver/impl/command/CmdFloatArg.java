@@ -44,7 +44,8 @@ public final class CmdFloatArg implements CommandArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public CmdFloatArg() {}
+    public CmdFloatArg() {
+    }
 
     /**
      * {@inheritDoc}

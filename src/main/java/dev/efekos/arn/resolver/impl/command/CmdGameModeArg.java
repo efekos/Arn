@@ -44,7 +44,8 @@ public final class CmdGameModeArg implements CommandArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public CmdGameModeArg() {}
+    public CmdGameModeArg() {
+    }
 
     /**
      * {@inheritDoc}

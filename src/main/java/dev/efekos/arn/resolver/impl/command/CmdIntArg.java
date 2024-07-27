@@ -44,7 +44,8 @@ public final class CmdIntArg implements CommandArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public CmdIntArg() {}
+    public CmdIntArg() {
+    }
 
     /**
      * {@inheritDoc}

@@ -49,22 +49,15 @@ import java.lang.reflect.Parameter;
 public class CmdAttributeArg implements CommandArgumentResolver {
 
     /**
-     * Creates a new resolver.
-     */
-    public CmdAttributeArg() {}
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Attribute.class);
-    }
-
-    /**
      * A context that is needed to resolve an argument.
      */
     private static CommandBuildContext context;
+
+    /**
+     * Creates a new resolver.
+     */
+    public CmdAttributeArg() {
+    }
 
     /**
      * Initializes {@link #context}.
@@ -73,6 +66,14 @@ public class CmdAttributeArg implements CommandArgumentResolver {
         FeatureFlagSet flagSet = FeatureFlagSet.of(FeatureFlags.VANILLA);
         HolderLookup.Provider holderlookup = ((CraftServer) Bukkit.getServer()).getHandle().getServer().registryAccess();
         context = CommandBuildContext.simple(holderlookup, flagSet);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isApplicable(Parameter parameter) {
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Attribute.class);
     }
 
     /**

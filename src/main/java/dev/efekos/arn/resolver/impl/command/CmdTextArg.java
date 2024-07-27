@@ -48,23 +48,15 @@ import java.lang.reflect.Parameter;
 public final class CmdTextArg implements CommandArgumentResolver {
 
     /**
-     * Creates a new resolver.
-     */
-    public CmdTextArg() {}
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(BaseComponent.class);
-    }
-
-
-    /**
      * A context that is needed to resolve an argument.
      */
     private static CommandBuildContext context;
+
+    /**
+     * Creates a new resolver.
+     */
+    public CmdTextArg() {
+    }
 
     /**
      * Initializes {@link #context}.
@@ -75,6 +67,13 @@ public final class CmdTextArg implements CommandArgumentResolver {
         context = CommandBuildContext.simple(holderlookup, flagSet);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isApplicable(Parameter parameter) {
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(BaseComponent.class);
+    }
 
     /**
      * {@inheritDoc}
@@ -82,7 +81,7 @@ public final class CmdTextArg implements CommandArgumentResolver {
     @Override
     public ArgumentBuilder<?, ?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        if(context==null) initializeContext();
+        if (context == null) initializeContext();
         return Commands.argument(s.isEmpty() ? parameter.getName() : s, ComponentArgument.textComponent(context));
     }
 

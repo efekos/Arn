@@ -44,7 +44,8 @@ public final class CmdMultipleEntityArg implements CommandArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public CmdMultipleEntityArg() {}
+    public CmdMultipleEntityArg() {
+    }
 
     /**
      * {@inheritDoc}

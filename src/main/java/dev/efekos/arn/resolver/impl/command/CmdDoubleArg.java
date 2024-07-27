@@ -44,7 +44,8 @@ public final class CmdDoubleArg implements CommandArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public CmdDoubleArg() {}
+    public CmdDoubleArg() {
+    }
 
     /**
      * {@inheritDoc}

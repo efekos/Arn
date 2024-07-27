@@ -45,7 +45,8 @@ public final class CmdInventorySlotArg implements CommandArgumentResolver {
     /**
      * Creates a new resolver.
      */
-    public CmdInventorySlotArg() {}
+    public CmdInventorySlotArg() {
+    }
 
     /**
      * {@inheritDoc}

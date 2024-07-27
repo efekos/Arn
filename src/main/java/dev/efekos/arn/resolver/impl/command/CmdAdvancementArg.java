@@ -48,9 +48,18 @@ import java.util.Collection;
 public final class CmdAdvancementArg implements CommandArgumentResolver {
 
     /**
+     * A suggestion provider that provides all advancements loaded in the game.
+     */
+    private static final SuggestionProvider<CommandSourceStack> c = (var0, var1) -> {
+        Collection<AdvancementHolder> var2 = var0.getSource().getServer().getAdvancements().getAllAdvancements();
+        return SharedSuggestionProvider.suggestResource(var2.stream().map(AdvancementHolder::id), var1);
+    };
+
+    /**
      * Creates a new resolver.
      */
-    public CmdAdvancementArg() {}
+    public CmdAdvancementArg() {
+    }
 
     /**
      * {@inheritDoc}
@@ -59,14 +68,6 @@ public final class CmdAdvancementArg implements CommandArgumentResolver {
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Advancement.class);
     }
-
-    /**
-     * A suggestion provider that provides all advancements loaded in the game.
-     */
-    private static final SuggestionProvider<CommandSourceStack> c = (var0, var1) -> {
-        Collection<AdvancementHolder> var2 = var0.getSource().getServer().getAdvancements().getAllAdvancements();
-        return SharedSuggestionProvider.suggestResource(var2.stream().map(AdvancementHolder::id), var1);
-    };
 
     /**
      * {@inheritDoc}
