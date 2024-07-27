@@ -88,76 +88,75 @@ import java.util.stream.IntStream;
 public final class Arn {
 
     /**
-     * Creates a new instance of Arn.
-     */
-    private Arn() {}
-
-    /**
-     * Local instance of {@link Arn}, used by {@link #run(Class)}.
-     */
-    private static final Arn instance = new Arn();
-
-    /**
-     * A list of {@link CommandHandlerMethodArgumentResolver}s that can provide values to parameters of a {@link CommandHandlerMethod}.
-     */
-    private final List<CommandHandlerMethodArgumentResolver> handlerMethodArgumentResolvers = new ArrayList<>();
-
-    /**
-     * A list of {@link CommandArgumentResolver} that can provide {@link ArgumentBuilder}s using parameters of a command
-     * handler method to create command structures.
-     */
-    private final List<CommandArgumentResolver> commandArgumentResolvers = new ArrayList<>();
-
-    /**
-     * A list of scanned {@link CommandHandlerMethod}s. Used to detect duplicate {@link CommandHandlerMethod}s and register
-     * commands.
-     */
-    private final List<CommandHandlerMethod> handlers = new ArrayList<>();
-
-    /**
-     * An {@link ExceptionMap} storing annotation exceptions of {@link CommandArgumentResolver}s.
-     */
-    private final ExceptionMap<CommandArgumentResolver> commandArgumentResolverExceptions = new ExceptionMap<>();
-
-
-    /**
-     * An {@link ExceptionMap} storing annotation exceptions of {@link CommandHandlerMethodArgumentResolver}s.
-     */
-    private final ExceptionMap<CommandHandlerMethodArgumentResolver> handlerExceptions = new ExceptionMap<>();
-
-    /**
-     * A map containing an instance of every type annotated with {@link Container}. Used to instantiate {@link ArnConfigurer}s.
-     */
-    private final Map<String, Object> containerInstanceMap = new HashMap<>();
-
-    /**
      * An exception type thrown by command handler when a command is blocked to {@link ConsoleCommandSender}s, but the
      * command sender is a {@link ConsoleCommandSender}.
      */
     public static final SimpleCommandExceptionType CONSOLE_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(Component.literal("This command can't be used by the console."));
-
     /**
      * An exception type thrown by command handler when a command is blocked to {@link BlockCommandSender}s, but the
      * command sender is a {@link BlockCommandSender}.
      */
     public static final SimpleCommandExceptionType CM_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(Component.literal("This command can't be used by command blocks."));
-
     /**
      * An exception type thrown by command handler when a command is blocked to {@link Player}s, but the command sender
      * is a {@link Player}.
      */
     public static final SimpleCommandExceptionType PLAYER_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(Component.literal("This command can't be used by players."));
-
     /**
      * Generic exception type used to handle {@link ArnSyntaxException}s.
      */
     public static final DynamicCommandExceptionType GENERIC = new DynamicCommandExceptionType(o -> Component.literal((String) o));
-
+    /**
+     * Local instance of {@link Arn}, used by {@link #run(Class)}.
+     */
+    private static final Arn instance = new Arn();
+    /**
+     * A list of classes that are a sender. There can't be more than one parameter with one of these classes in a
+     * {@link CommandHandlerMethod}, excluding ones annotated with {@link CommandArgument}.
+     */
+    private static final List<Class<? extends CommandSender>> REQUIRED_SENDER_CLASSES = Arrays.asList(CommandSender.class, Player.class, ConsoleCommandSender.class, BlockCommandSender.class);
+    /**
+     * Argument formatting colors. When executing helper methods, argument colors will be in this order of colors. When
+     * there is more than 5 arguments, color goes back to the first element and repeats the same colors.
+     */
+    private static final List<ChatColor> ARGUMENT_DISPLAY_COLORS = Arrays.asList(ChatColor.AQUA, ChatColor.YELLOW, ChatColor.GREEN, ChatColor.LIGHT_PURPLE, ChatColor.GOLD);
+    /**
+     * A list of {@link CommandHandlerMethodArgumentResolver}s that can provide values to parameters of a {@link CommandHandlerMethod}.
+     */
+    private final List<CommandHandlerMethodArgumentResolver> handlerMethodArgumentResolvers = new ArrayList<>();
+    /**
+     * A list of {@link CommandArgumentResolver} that can provide {@link ArgumentBuilder}s using parameters of a command
+     * handler method to create command structures.
+     */
+    private final List<CommandArgumentResolver> commandArgumentResolvers = new ArrayList<>();
+    /**
+     * A list of scanned {@link CommandHandlerMethod}s. Used to detect duplicate {@link CommandHandlerMethod}s and register
+     * commands.
+     */
+    private final List<CommandHandlerMethod> handlers = new ArrayList<>();
+    /**
+     * An {@link ExceptionMap} storing annotation exceptions of {@link CommandArgumentResolver}s.
+     */
+    private final ExceptionMap<CommandArgumentResolver> commandArgumentResolverExceptions = new ExceptionMap<>();
+    /**
+     * An {@link ExceptionMap} storing annotation exceptions of {@link CommandHandlerMethodArgumentResolver}s.
+     */
+    private final ExceptionMap<CommandHandlerMethodArgumentResolver> handlerExceptions = new ExceptionMap<>();
+    /**
+     * A map containing an instance of every type annotated with {@link Container}. Used to instantiate {@link ArnConfigurer}s.
+     */
+    private final Map<String, Object> containerInstanceMap = new HashMap<>();
     /**
      * Whether was {@link #configure()} called or not. Used to prevent {@link #configure()} from being called more than
      * once.
      */
     private boolean configured;
+
+    /**
+     * Creates a new instance of Arn.
+     */
+    private Arn() {
+    }
 
     /**
      * Main method used to run Arn. Scans every class under the package of {@code mainClass}, applies {@link ArnConfigurer}s
@@ -183,6 +182,45 @@ public final class Arn {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Chains given argument builders into one {@link ArgumentBuilder} that can be used to register the command.
+     *
+     * @param nodes    List of the nodes to chain.
+     * @param executes execute function to handle the command. Added to the last argument in the chain.
+     * @param data     {@link CommandAnnotationData} associated with the nodes. If there is a permission required, it will
+     *                 be applied to first literal of the chain.
+     * @return {@code nodes[0]} with rest of the nodes attached to it.
+     */
+    private static ArgumentBuilder<?, ?> chainArgumentBuilders(List<ArgumentBuilder> nodes, com.mojang.brigadier.Command<CommandSourceStack> executes, CommandAnnotationData data) {
+        if (nodes.isEmpty()) return null;
+
+        ArgumentBuilder chainedBuilder = nodes.get(nodes.size() - 1).executes(executes);
+
+        for (int i = nodes.size() - 2; i >= 0; i--)
+            chainedBuilder = nodes.get(i).then(chainedBuilder.requires(o -> ((CommandSourceStack) o).hasPermission(0, data.getPermission()))).requires(o -> ((CommandSourceStack) o).hasPermission(0, data.getPermission()));
+
+        if (!data.getPermission().isEmpty())
+            chainedBuilder = chainedBuilder.requires(o -> ((CommandSourceStack) o).hasPermission(0, data.getPermission()));
+        return chainedBuilder;
+    }
+
+    /**
+     * Finds last element that matches the given condition.
+     *
+     * @param list      Any list.
+     * @param condition A condition.
+     * @param <T>       Type of the elements in the list.
+     * @return Last element that matches the given condition in the list.
+     */
+    private static <T> int findLastIndex(List<T> list, Predicate<T> condition) {
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (condition.test(list.get(i))) {
+                return i;
+            }
+        }
+        return -1; // Return null if no match is found
     }
 
     /**
@@ -295,12 +333,6 @@ public final class Arn {
                     instance.command(method.getAnnotation(Command.class), method);
 
     }
-
-    /**
-     * A list of classes that are a sender. There can't be more than one parameter with one of these classes in a
-     * {@link CommandHandlerMethod}, excluding ones annotated with {@link CommandArgument}.
-     */
-    private static final List<Class<? extends CommandSender>> REQUIRED_SENDER_CLASSES = Arrays.asList(CommandSender.class, Player.class, ConsoleCommandSender.class, BlockCommandSender.class);
 
     /**
      * Checks errors to ensure the command is valid.
@@ -438,7 +470,8 @@ public final class Arn {
                 }
 
                 for (CommandAnnotationLiteral lit : literals)
-                    if(lit.getOffset()==nonnullResolvers.size()&&lit.getOffset()!=0) nodes.add(Commands.literal(lit.getLiteral()));
+                    if (lit.getOffset() == nonnullResolvers.size() && lit.getOffset() != 0)
+                        nodes.add(Commands.literal(lit.getLiteral()));
 
                 com.mojang.brigadier.Command<CommandSourceStack> lambda = commandContext -> {
 
@@ -555,51 +588,6 @@ public final class Arn {
         }
 
 
-    }
-
-    /**
-     * Argument formatting colors. When executing helper methods, argument colors will be in this order of colors. When
-     * there is more than 5 arguments, color goes back to the first element and repeats the same colors.
-     */
-    private static final List<ChatColor> ARGUMENT_DISPLAY_COLORS = Arrays.asList(ChatColor.AQUA, ChatColor.YELLOW, ChatColor.GREEN, ChatColor.LIGHT_PURPLE, ChatColor.GOLD);
-
-    /**
-     * Chains given argument builders into one {@link ArgumentBuilder} that can be used to register the command.
-     *
-     * @param nodes    List of the nodes to chain.
-     * @param executes execute function to handle the command. Added to the last argument in the chain.
-     * @param data     {@link CommandAnnotationData} associated with the nodes. If there is a permission required, it will
-     *                 be applied to first literal of the chain.
-     * @return {@code nodes[0]} with rest of the nodes attached to it.
-     */
-    private static ArgumentBuilder<?, ?> chainArgumentBuilders(List<ArgumentBuilder> nodes, com.mojang.brigadier.Command<CommandSourceStack> executes, CommandAnnotationData data) {
-        if (nodes.isEmpty()) return null;
-
-        ArgumentBuilder chainedBuilder = nodes.get(nodes.size() - 1).executes(executes);
-
-        for (int i = nodes.size() - 2; i >= 0; i--)
-            chainedBuilder = nodes.get(i).then(chainedBuilder.requires(o -> ((CommandSourceStack) o).hasPermission(0, data.getPermission()))).requires(o -> ((CommandSourceStack) o).hasPermission(0, data.getPermission()));
-
-        if (!data.getPermission().isEmpty())
-            chainedBuilder = chainedBuilder.requires(o -> ((CommandSourceStack) o).hasPermission(0,data.getPermission()));
-        return chainedBuilder;
-    }
-
-    /**
-     * Finds last element that matches the given condition.
-     *
-     * @param list      Any list.
-     * @param condition A condition.
-     * @param <T>       Type of the elements in the list.
-     * @return Last element that matches the given condition in the list.
-     */
-    private static <T> int findLastIndex(List<T> list, Predicate<T> condition) {
-        for (int i = list.size() - 1; i >= 0; i--) {
-            if (condition.test(list.get(i))) {
-                return i;
-            }
-        }
-        return -1; // Return null if no match is found
     }
 
 }

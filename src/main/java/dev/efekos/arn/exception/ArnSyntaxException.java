@@ -29,6 +29,7 @@ package dev.efekos.arn.exception;
  * you don't have to include nms in your plugin to use Arn. Methods annotated with {@link dev.efekos.arn.annotation.Command}
  * and {@link dev.efekos.arn.argument.CustomArgumentType} can throw this exception with a message that will pop up to the
  * player with red color by default.
+ *
  * @author efekos
  * @since 0.3
  */

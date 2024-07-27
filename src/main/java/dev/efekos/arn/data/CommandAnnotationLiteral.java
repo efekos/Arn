@@ -39,10 +39,21 @@ public class CommandAnnotationLiteral {
     // instance
 
     /**
+     * Character that is used to separate multiple literals while parsing a {@link String}.
+     */
+    public static final char SEPARATOR_CHAR = '.';
+    /**
+     * {@link #SEPARATOR_CHAR} as a {@link String}.
+     */
+    public static final String SEPARATOR_CHAR_STRING = ".";
+    /**
+     * {@link Pattern} of a literal with offset, used while parsing a {@link String} into a literal.
+     */
+    public static final Pattern OFFSET_REGEX = Pattern.compile("^([ba]):(\\d*):([a-z]+)$");
+    /**
      * Actual literal that will be used in command structures.
      */
     private String literal;
-
     /**
      * Offset of the literal. Can't be a negative value. {@link dev.efekos.arn.Arn} will place this literal before the
      * argument that has the same index value with this offset.
@@ -59,6 +70,24 @@ public class CommandAnnotationLiteral {
     public CommandAnnotationLiteral(String literal, int offset) {
         this.literal = literal;
         this.offset = offset;
+    }
+
+    /**
+     * Parses {@code input} into a {@link CommandAnnotationLiteral}. An offset will be included if {@code input}
+     * matches {@link #OFFSET_REGEX}. A literal must be made of lowercase alphabetical characters.
+     *
+     * @param input Input {@link String}.
+     * @return Parsed {@link CommandAnnotationLiteral}.
+     */
+    public static CommandAnnotationLiteral parse(String input) {
+        Matcher matcher = OFFSET_REGEX.matcher(input);
+        if (!matcher.matches()) return new CommandAnnotationLiteral(input, 0);
+
+        boolean isAfter = matcher.group(1).equals("a");
+        int offset = Integer.parseInt(matcher.group(2));
+        String actualLiteral = matcher.group(3);
+
+        return new CommandAnnotationLiteral(actualLiteral, isAfter ? offset + 1 : offset);
     }
 
     @Override
@@ -81,6 +110,8 @@ public class CommandAnnotationLiteral {
     public int hashCode() {
         return Objects.hash(literal, offset);
     }
+
+    // static
 
     /**
      * Getter for {@link #literal}
@@ -116,40 +147,5 @@ public class CommandAnnotationLiteral {
      */
     public void setOffset(int offset) {
         this.offset = offset;
-    }
-
-    // static
-
-    /**
-     * Character that is used to separate multiple literals while parsing a {@link String}.
-     */
-    public static final char SEPARATOR_CHAR = '.';
-
-    /**
-     * {@link #SEPARATOR_CHAR} as a {@link String}.
-     */
-    public static final String SEPARATOR_CHAR_STRING = ".";
-
-    /**
-     * {@link Pattern} of a literal with offset, used while parsing a {@link String} into a literal.
-     */
-    public static final Pattern OFFSET_REGEX = Pattern.compile("^([ba]):(\\d*):([a-z]+)$");
-
-    /**
-     * Parses {@code input} into a {@link CommandAnnotationLiteral}. An offset will be included if {@code input}
-     * matches {@link #OFFSET_REGEX}. A literal must be made of lowercase alphabetical characters.
-     *
-     * @param input Input {@link String}.
-     * @return Parsed {@link CommandAnnotationLiteral}.
-     */
-    public static CommandAnnotationLiteral parse(String input) {
-        Matcher matcher = OFFSET_REGEX.matcher(input);
-        if (!matcher.matches()) return new CommandAnnotationLiteral(input, 0);
-
-        boolean isAfter = matcher.group(1).equals("a");
-        int offset = Integer.parseInt(matcher.group(2));
-        String actualLiteral = matcher.group(3);
-
-        return new CommandAnnotationLiteral(actualLiteral, isAfter ? offset + 1 : offset);
     }
 }

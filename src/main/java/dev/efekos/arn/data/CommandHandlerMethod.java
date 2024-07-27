@@ -44,40 +44,29 @@ import java.util.Objects;
 public class CommandHandlerMethod {
 
     /**
-     * Creates a new handler method.
-     */
-    public CommandHandlerMethod() {}
-
-    /**
      * Value of the {@link Command#value()} on {@link #method}.
      */
     private String command;
-
     /**
      * Main method from Java Reflection API.
      */
     private Method method;
-
     /**
      * An annotation data created from the {@link Command} annotation on {@link #method}.
      */
     private CommandAnnotationData annotationData;
-
     /**
      * {@link Method#getParameters()} of {@link #method} converted into an {@link java.util.ArrayList}.
      */
     private List<Parameter> parameters;
-
     /**
      * A list of {@link CommandArgumentResolver}s found and used by {@link dev.efekos.arn.Arn}.
      */
     private List<CommandArgumentResolver> argumentResolvers;
-
     /**
      * A list of {@link CommandHandlerMethodArgumentResolver}s found and used by {@link dev.efekos.arn.Arn}.
      */
     private List<CommandHandlerMethodArgumentResolver> handlerMethodResolvers;
-
     /**
      * A signature string that represents what this command is. Unlike a method signature, this signature starts with
      * {@link Command#value()} of {@link #method} instead of the actual method game gathered through {@link Method#getName()}.
@@ -85,23 +74,18 @@ public class CommandHandlerMethod {
      * {@link dev.efekos.arn.exception.ArnCommandException} when found.
      */
     private String signature;
-
     /**
      * Determines is this command blocked to console. When a command is blocked to console, the console will receive an
      * error message while trying to execute the command. {@link dev.efekos.arn.Arn} makes this value {@code true} if
      * {@link #method} has a {@link dev.efekos.arn.annotation.block.BlockConsole} annotation.
      */
     private boolean blocksConsole;
-
-
     /**
      * Determines is this command blocked to command blocks. When a command is blocked to command blocks, a command block
      * will receive an error message while trying to execute the command. {@link dev.efekos.arn.Arn} makes this value
      * {@code true} if {@link #method} has a {@link dev.efekos.arn.annotation.block.BlockCommandBlock} annotation.
      */
     private boolean blocksCommandBlock;
-
-
     /**
      * Determines is this command blocked to players. When a command is blocked to players, a player will receive an
      * error message while trying to execute the command. {@link dev.efekos.arn.Arn} makes this value {@code true} if
@@ -109,6 +93,12 @@ public class CommandHandlerMethod {
      */
     private boolean blocksPlayer;
 
+
+    /**
+     * Creates a new handler method.
+     */
+    public CommandHandlerMethod() {
+    }
 
     @Override
     public String toString() {

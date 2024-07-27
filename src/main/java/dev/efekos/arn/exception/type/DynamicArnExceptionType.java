@@ -33,7 +33,7 @@ import java.util.function.Function;
  * Basic exception creator that uses one argument.
  *
  * @param <T> Type of the argument.
- * @param <E>  Type of the actual exception.
+ * @param <E> Type of the actual exception.
  * @author efekos
  * @since 0.3
  */

@@ -45,7 +45,8 @@ public final class BaseArnConfigurer implements ArnConfigurer {
     /***
      * Creates a new configurer.
      */
-    public BaseArnConfigurer() {}
+    public BaseArnConfigurer() {
+    }
 
     /**
      * {@inheritDoc}

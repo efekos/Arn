@@ -34,6 +34,7 @@ import java.util.function.Supplier;
 /**
  * Represents registration type of a {@link CustomArgumentType}. This registration type affects which characters you can
  * use in your argument and when Minecraft will throw an error before the flow gets to your command handling.
+ *
  * @author efekos
  * @since 0.3.4
  */
@@ -44,36 +45,36 @@ public enum ArgumentRegistration {
      * suggestions are a list of ids that are made out of a namespace, a {@code :} and a key, this registration type
      * will be useful.
      */
-    ID(ResourceLocationArgument::id,(context, name) -> ResourceLocationArgument.getId(context,name).toString()),
+    ID(ResourceLocationArgument::id, (context, name) -> ResourceLocationArgument.getId(context, name).toString()),
 
     /**
      * Uses word arguments. If your suggestions are a list of words made out of lowercase English characters, this
      * registration type will be useful.
      */
-    WORD(StringArgumentType::word,StringArgumentType::getString),
+    WORD(StringArgumentType::word, StringArgumentType::getString),
 
     /**
      * Similar to {@link #WORD}, but allows symbols and spaces using quotation marks.
      */
-    STRING(StringArgumentType::string,StringArgumentType::getString),
+    STRING(StringArgumentType::string, StringArgumentType::getString),
 
     /**
      * Uses integer argument type. If your argument is going to parse an integer in a specific way, this registration
      * type will be useful.
      */
-    INTEGER(IntegerArgumentType::integer,(context, name) -> IntegerArgumentType.getInteger(context,name)+""),
+    INTEGER(IntegerArgumentType::integer, (context, name) -> IntegerArgumentType.getInteger(context, name) + ""),
 
     /**
      * Uses double argument type. If your argument is going to parse a double in a specific way, this registration
      * type will be useful.
      */
-    DOUBLE(DoubleArgumentType::doubleArg,(context, name) -> DoubleArgumentType.getDouble(context,name)+""),
+    DOUBLE(DoubleArgumentType::doubleArg, (context, name) -> DoubleArgumentType.getDouble(context, name) + ""),
 
     /**
      * Uses boolean argument type. If your argument is going to parse a bool in a specific way, this registration type
      * will be useful.
      */
-    BOOLEAN(BoolArgumentType::bool,(context, name) -> BoolArgumentType.getBool(context,name)+"");
+    BOOLEAN(BoolArgumentType::bool, (context, name) -> BoolArgumentType.getBool(context, name) + "");
 
     /**
      * A {@link Supplier} for the {@link ArgumentType} needed for this registration.
@@ -88,7 +89,8 @@ public enum ArgumentRegistration {
 
     /**
      * Creates a new argument registration.
-     * @param func {@link #func}.
+     *
+     * @param func        {@link #func}.
      * @param getFunction {@link #getFunction}.
      */
     ArgumentRegistration(Supplier<ArgumentType<?>> func, GetFunction getFunction) {
@@ -98,6 +100,7 @@ public enum ArgumentRegistration {
 
     /**
      * Returns {@link ArgumentType} supplied into this registration type.
+     *
      * @return What was supplied to {@link #func}.
      */
     public ArgumentType<?> getFunc() {
@@ -106,8 +109,9 @@ public enum ArgumentRegistration {
 
     /**
      * Returns value of the argument as a string using {@link #getFunction}.
+     *
      * @param context Context of the command.
-     * @param name Name of the argument.
+     * @param name    Name of the argument.
      * @return A {@link String} that represents or is the value of the argument.
      */
     public String getV(CommandContext<CommandSourceStack> context, String name) {
@@ -116,19 +120,21 @@ public enum ArgumentRegistration {
 
     /**
      * A small interface used to specify getter functions of {@link ArgumentRegistration} types.
-     * @since 0.3.4
+     *
      * @author efekos
+     * @since 0.3.4
      */
     @FunctionalInterface
     interface GetFunction {
 
         /**
          * Returns value of the argument as a {@link String}.
+         *
          * @param context Context of the command.
-         * @param name Name of the argument.
+         * @param name    Name of the argument.
          * @return A {@link String} that represents or is the value of the argument.
          */
-        String get(CommandContext<CommandSourceStack> context,String name);
+        String get(CommandContext<CommandSourceStack> context, String name);
 
     }
 }
