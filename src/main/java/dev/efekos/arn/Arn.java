@@ -196,7 +196,7 @@ public final class Arn {
     private static ArgumentBuilder<?, ?> chainArgumentBuilders(List<ArgumentBuilder> nodes, com.mojang.brigadier.Command<CommandSourceStack> executes, CommandAnnotationData data) {
         if (nodes.isEmpty()) return null;
 
-        ArgumentBuilder chainedBuilder = nodes.get(nodes.size() - 1).executes(executes);
+        ArgumentBuilder chainedBuilder = nodes.getLast().executes(executes);
 
         for (int i = nodes.size() - 2; i >= 0; i--)
             chainedBuilder = nodes.get(i).then(chainedBuilder.requires(o -> ((CommandSourceStack) o).hasPermission(0, data.getPermission()))).requires(o -> ((CommandSourceStack) o).hasPermission(0, data.getPermission()));
@@ -536,11 +536,12 @@ public final class Arn {
                 CommandSender sender = s.getSource().getBukkitSender();
 
                 for (CommandHandlerMethod helperMethod : associatedHelperMethods) {
-                    Supplier<Boolean> isDisabled;
-                    if (sender instanceof Player) isDisabled = helperMethod::isBlocksPlayer;
-                    else if (sender instanceof BlockCommandSender) isDisabled = helperMethod::isBlocksCommandBlock;
-                    else if (sender instanceof ConsoleCommandSender) isDisabled = helperMethod::isBlocksConsole;
-                    else isDisabled = () -> false;
+                    Supplier<Boolean> isDisabled = switch (sender) {
+                        case Player ignored1 -> helperMethod::isBlocksPlayer;
+                        case BlockCommandSender ignored -> helperMethod::isBlocksCommandBlock;
+                        case ConsoleCommandSender ignored -> helperMethod::isBlocksConsole;
+                        case null, default -> () -> false;
+                    };
                     if (isDisabled.get()) continue;
 
                     String permission = helperMethod.getAnnotationData().getPermission();
