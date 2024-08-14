@@ -6,7 +6,7 @@
 
     <groupId>dev.efekos</groupId>
     <artifactId>Arn</artifactId>
-    <version>0.3.4</version>
+    <version>0.4-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Arn</name>
