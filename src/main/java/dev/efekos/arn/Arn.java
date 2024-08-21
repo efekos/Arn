@@ -37,10 +37,7 @@ import dev.efekos.arn.annotation.block.BlockPlayer;
 import dev.efekos.arn.argument.CustomArgumentType;
 import dev.efekos.arn.config.ArnConfigurer;
 import dev.efekos.arn.config.BaseArnConfigurer;
-import dev.efekos.arn.data.CommandAnnotationData;
-import dev.efekos.arn.data.CommandAnnotationLiteral;
-import dev.efekos.arn.data.CommandHandlerMethod;
-import dev.efekos.arn.data.ExceptionMap;
+import dev.efekos.arn.data.*;
 import dev.efekos.arn.exception.*;
 import dev.efekos.arn.exception.type.ArnExceptionTypes;
 import dev.efekos.arn.resolver.CommandArgumentResolver;
@@ -72,7 +69,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -85,7 +81,7 @@ import java.util.stream.IntStream;
  * @author efekos
  * @since 0.1
  */
-public final class Arn {
+public final class Arn extends MethodDump {
 
     /**
      * An exception type thrown by command handler when a command is blocked to {@link ConsoleCommandSender}s, but the
@@ -152,6 +148,7 @@ public final class Arn {
      */
     private boolean configured;
 
+
     /**
      * Creates a new instance of Arn.
      */
@@ -175,6 +172,7 @@ public final class Arn {
 
             instance.scanEnumArguments(reflections);
             instance.scanCustomArguments(reflections);
+            instance.scanExceptionHandlerMethods(reflections);
 
             instance.scanCommands(reflections);
             instance.registerCommands();
@@ -184,44 +182,6 @@ public final class Arn {
         }
     }
 
-    /**
-     * Chains given argument builders into one {@link ArgumentBuilder} that can be used to register the command.
-     *
-     * @param nodes    List of the nodes to chain.
-     * @param executes execute function to handle the command. Added to the last argument in the chain.
-     * @param data     {@link CommandAnnotationData} associated with the nodes. If there is a permission required, it will
-     *                 be applied to first literal of the chain.
-     * @return {@code nodes[0]} with rest of the nodes attached to it.
-     */
-    private static ArgumentBuilder<?, ?> chainArgumentBuilders(List<ArgumentBuilder> nodes, com.mojang.brigadier.Command<CommandSourceStack> executes, CommandAnnotationData data) {
-        if (nodes.isEmpty()) return null;
-
-        ArgumentBuilder chainedBuilder = nodes.getLast().executes(executes);
-
-        for (int i = nodes.size() - 2; i >= 0; i--)
-            chainedBuilder = nodes.get(i).then(chainedBuilder.requires(o -> ((CommandSourceStack) o).hasPermission(0, data.getPermission()))).requires(o -> ((CommandSourceStack) o).hasPermission(0, data.getPermission()));
-
-        if (!data.getPermission().isEmpty())
-            chainedBuilder = chainedBuilder.requires(o -> ((CommandSourceStack) o).hasPermission(0, data.getPermission()));
-        return chainedBuilder;
-    }
-
-    /**
-     * Finds last element that matches the given condition.
-     *
-     * @param list      Any list.
-     * @param condition A condition.
-     * @param <T>       Type of the elements in the list.
-     * @return Last element that matches the given condition in the list.
-     */
-    private static <T> int findLastIndex(List<T> list, Predicate<T> condition) {
-        for (int i = list.size() - 1; i >= 0; i--) {
-            if (condition.test(list.get(i))) {
-                return i;
-            }
-        }
-        return -1; // Return null if no match is found
-    }
 
     /**
      * Scans {@link Container}s annotated with {@link CustomArgumentType} and creates a resolver for them.
@@ -380,9 +340,7 @@ public final class Arn {
      */
     private CommandHandlerMethod createHandlerMethod(Command annotation, Method method) throws ArnException {
         CommandHandlerMethod commandHandlerMethod = new CommandHandlerMethod();
-        StringBuilder signatureBuilder = new StringBuilder();
 
-        signatureBuilder.append(annotation.value()).append(" ");
 
         commandHandlerMethod.setCommand(annotation.value());
         commandHandlerMethod.setMethod(method);
@@ -405,6 +363,18 @@ public final class Arn {
 
         ArrayList<CommandArgumentResolver> argumentResolvers = new ArrayList<>();
         ArrayList<CommandHandlerMethodArgumentResolver> handlerMethodResolvers = new ArrayList<>();
+        StringBuilder signature = buildSignature(method, handlerMethodResolvers, argumentResolvers);
+
+        commandHandlerMethod.setArgumentResolvers(argumentResolvers);
+        commandHandlerMethod.setHandlerMethodResolvers(handlerMethodResolvers);
+
+        commandHandlerMethod.setSignature(signature.toString());
+        return commandHandlerMethod;
+    }
+
+
+    private StringBuilder buildSignature(Method method, ArrayList<CommandHandlerMethodArgumentResolver> handlerMethodResolvers, ArrayList<CommandArgumentResolver> argumentResolvers) throws ArnCommandException {
+        StringBuilder signatureBuilder = new StringBuilder();
         signatureBuilder.append("(");
         for (int i = 0; i < method.getParameters().length; i++) {
             Parameter parameter = method.getParameters()[i];
@@ -424,13 +394,9 @@ public final class Arn {
             else argumentResolvers.add(null);
         }
         signatureBuilder.append(")");
-
-        commandHandlerMethod.setArgumentResolvers(argumentResolvers);
-        commandHandlerMethod.setHandlerMethodResolvers(handlerMethodResolvers);
-
-        commandHandlerMethod.setSignature(signatureBuilder.toString());
-        return commandHandlerMethod;
+        return signatureBuilder;
     }
+
 
     /**
      * Registers every {@link CommandHandlerMethod} in {@link #handlers}.
@@ -472,43 +438,7 @@ public final class Arn {
                 for (CommandAnnotationLiteral lit : literals)
                     if (lit.getOffset() == nonnullResolvers.size() && lit.getOffset() != 0)
                         nodes.add(Commands.literal(lit.getLiteral()));
-
-                com.mojang.brigadier.Command<CommandSourceStack> lambda = commandContext -> {
-
-                    CommandSender sender = commandContext.getSource().getBukkitSender();
-                    if (!method.getAnnotationData().getPermission().isEmpty() && !sender.hasPermission(method.getAnnotationData().getPermission()))
-                        return 1;
-                    if (method.isBlocksConsole() && sender instanceof ConsoleCommandSender)
-                        throw CONSOLE_BLOCKED_EXCEPTION.create();
-                    if (method.isBlocksCommandBlock() && sender instanceof BlockCommandSender)
-                        throw CM_BLOCKED_EXCEPTION.create();
-                    if (method.isBlocksPlayer() && sender instanceof Player) throw PLAYER_BLOCKED_EXCEPTION.create();
-
-                    List<Object> objects = new ArrayList<>();
-
-                    for (int i = 0; i < method.getHandlerMethodResolvers().size(); i++) {
-                        CommandHandlerMethodArgumentResolver resolver = method.getHandlerMethodResolvers().get(i);
-                        objects.add(resolver.resolve(method.getParameters().get(i), method, commandContext));
-                    }
-
-                    Method actualMethodToInvoke = method.getMethod();
-
-                    try {
-                        actualMethodToInvoke.setAccessible(true);
-                        return (int) actualMethodToInvoke.invoke(containerInstanceMap.get(method.getMethod().getDeclaringClass().getName()), objects.toArray());
-                    } catch (InvocationTargetException e) {
-                        if (e.getCause() == null) return 1;
-                        if (e.getCause() instanceof CommandSyntaxException) throw (CommandSyntaxException) e.getCause();
-                        else if (e.getCause() instanceof ArnSyntaxException)
-                            throw GENERIC.create(e.getCause().getMessage());
-                        else ArnExceptionTypes.COMMAND_ERROR.create(e.getCause()).printStackTrace();
-                        return 1;
-                    } catch (IllegalAccessException e) {
-                        ArnExceptionTypes.COMMAND_NO_ACCESS.create().initCause(e).printStackTrace();
-                        return 1;
-                    }
-
-                };
+                com.mojang.brigadier.Command<CommandSourceStack> lambda = createCommandLambda(method);
 
                 LiteralArgumentBuilder<CommandSourceStack> builder = (LiteralArgumentBuilder<CommandSourceStack>) chainArgumentBuilders(nodes, lambda, method.getAnnotationData());
 
@@ -519,6 +449,49 @@ public final class Arn {
             }
 
         }
+    }
+
+    private com.mojang.brigadier.Command<CommandSourceStack> createCommandLambda(CommandHandlerMethod method) {
+        return commandContext -> {
+
+            CommandSender sender = commandContext.getSource().getBukkitSender();
+            if (!method.getAnnotationData().getPermission().isEmpty() && !sender.hasPermission(method.getAnnotationData().getPermission()))
+                return 1;
+            if (method.isBlocksConsole() && sender instanceof ConsoleCommandSender)
+                throw CONSOLE_BLOCKED_EXCEPTION.create();
+            if (method.isBlocksCommandBlock() && sender instanceof BlockCommandSender)
+                throw CM_BLOCKED_EXCEPTION.create();
+            if (method.isBlocksPlayer() && sender instanceof Player) throw PLAYER_BLOCKED_EXCEPTION.create();
+
+            List<Object> objects = fillResolvers(method, commandContext);
+
+            Method actualMethodToInvoke = method.getMethod();
+
+            try {
+                actualMethodToInvoke.setAccessible(true);
+                return (int) actualMethodToInvoke.invoke(containerInstanceMap.get(method.getMethod().getDeclaringClass().getName()), objects.toArray());
+            } catch (InvocationTargetException e) {
+                Throwable ex = e.getCause();
+                if (ex == null) return 1;
+                if (ex instanceof CommandSyntaxException) throw (CommandSyntaxException) ex;
+                else if (ex instanceof ArnSyntaxException) throw GENERIC.create(ex.getMessage());
+                else try {
+
+                        Optional<ExceptionHandlerMethod> handlerMethodOptional = findHandlerMethod(ex);
+                        if(handlerMethodOptional.isEmpty()) throw GENERIC.create(ex.getMessage());
+                        ExceptionHandlerMethod handlerMethod = handlerMethodOptional.get();
+                        List<Object> list = handlerMethod.fillParams(ex, commandContext);
+                        Method actualHandlerMethod = handlerMethod.getMethod();
+                        actualHandlerMethod.invoke(containerInstanceMap.get(actualHandlerMethod.getDeclaringClass().getName()),list.toArray());
+
+                } catch (Exception exe) {throw GENERIC.create(exe.getMessage());}
+                return 1;
+            } catch (IllegalAccessException e) {
+                ArnExceptionTypes.COMMAND_NO_ACCESS.create().initCause(e).printStackTrace();
+                return 1;
+            }
+
+        };
     }
 
     /**
@@ -585,9 +558,7 @@ public final class Arn {
 
             dispatcher.register(((LiteralArgumentBuilder) finalNode));
 
-
         }
-
 
     }
 

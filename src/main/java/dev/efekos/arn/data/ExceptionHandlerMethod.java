@@ -24,7 +24,15 @@
 
 package dev.efekos.arn.data;
 
+import com.mojang.brigadier.context.CommandContext;
+import net.minecraft.commands.CommandSourceStack;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExceptionHandlerMethod {
     private Method method;
@@ -49,6 +57,18 @@ public class ExceptionHandlerMethod {
 
     public void setExceptionClass(Class<? extends Exception> exceptionClass) {
         this.exceptionClass = exceptionClass;
+    }
+
+    public List<Object> fillParams(Throwable ex, CommandContext<CommandSourceStack> commandContext) {
+        List<Object> objects = new ArrayList<>();
+
+        for (Parameter parameter : method.getParameters()) {
+            if(parameter.getType().isAssignableFrom(Player.class)) objects.add(commandContext.getSource().getPlayer());
+            if(parameter.getType().isAssignableFrom(CommandSender.class)) objects.add(commandContext.getSource().getBukkitSender());
+            if(parameter.getType().isAssignableFrom(exceptionClass)) objects.add(ex);
+        }
+
+        return objects;
     }
 
 }
