@@ -375,6 +375,7 @@ public final class Arn extends MethodDump {
 
     private StringBuilder buildSignature(Method method, ArrayList<CommandHandlerMethodArgumentResolver> handlerMethodResolvers, ArrayList<CommandArgumentResolver> argumentResolvers) throws ArnCommandException {
         StringBuilder signatureBuilder = new StringBuilder();
+        signatureBuilder.append(method.getAnnotation(Command.class).value());
         signatureBuilder.append("(");
         for (int i = 0; i < method.getParameters().length; i++) {
             Parameter parameter = method.getParameters()[i];
@@ -509,12 +510,7 @@ public final class Arn extends MethodDump {
                 CommandSender sender = s.getSource().getBukkitSender();
 
                 for (CommandHandlerMethod helperMethod : associatedHelperMethods) {
-                    Supplier<Boolean> isDisabled = switch (sender) {
-                        case Player ignored1 -> helperMethod::isBlocksPlayer;
-                        case BlockCommandSender ignored -> helperMethod::isBlocksCommandBlock;
-                        case ConsoleCommandSender ignored -> helperMethod::isBlocksConsole;
-                        case null, default -> () -> false;
-                    };
+                    Supplier<Boolean> isDisabled = sender instanceof Player ? helperMethod::isBlocksPlayer : (sender instanceof ConsoleCommandSender ? helperMethod::isBlocksConsole : helperMethod::isBlocksCommandBlock);
                     if (isDisabled.get()) continue;
 
                     String permission = helperMethod.getAnnotationData().getPermission();
