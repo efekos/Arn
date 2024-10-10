@@ -22,43 +22,17 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.exception.type;
+package dev.efekos.arn.data;
 
-import java.util.function.Function;
+import java.lang.reflect.Method;
+import java.util.List;
 
+public interface ExceptionHandlerMethod<Context> {
 
-/**
- * Basic exception creator that uses one argument.
- *
- * @param <T> Type of the argument.
- * @param <E> Type of the actual exception.
- * @author efekos
- * @since 0.3
- */
-public final class DynamicArnExceptionType<E extends ArnException, T> {
-
-    /**
-     * Lambda method that takes one argument
-     */
-    private final Function<T, E> lambda;
-
-    /**
-     * Creates a new exception type.
-     *
-     * @param lambda A function to create the exception.
-     */
-    public DynamicArnExceptionType(Function<T, E> lambda) {
-        this.lambda = lambda;
-    }
-
-    /**
-     * Creates an exception using {@link #lambda}.
-     *
-     * @param o Argument object.
-     * @return Created exception.
-     */
-    public E create(T o) {
-        return lambda.apply(o);
-    }
+    Method getMethod();
+    void setMethod(final Method method);
+    Class<? extends Exception> getExceptionClass();
+    void setExceptionClass(final Class<? extends Exception> exceptionClass);
+    List<Object> fillParams(Throwable throwable, Context context);
 
 }

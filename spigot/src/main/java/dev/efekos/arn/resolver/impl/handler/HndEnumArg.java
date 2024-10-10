@@ -30,7 +30,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.annotation.CustomArgument;
 import dev.efekos.arn.data.CommandHandlerMethod;
-import dev.efekos.arn.exception.ArnCommandException;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.ResourceArgument;

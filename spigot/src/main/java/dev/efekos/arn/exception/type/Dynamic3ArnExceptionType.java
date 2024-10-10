@@ -24,8 +24,6 @@
 
 package dev.efekos.arn.exception.type;
 
-import dev.efekos.arn.exception.ArnException;
-
 /**
  * Dynamic exception creator that takes three arguments.
  *

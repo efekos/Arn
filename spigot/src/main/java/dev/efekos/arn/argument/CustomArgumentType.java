@@ -24,7 +24,6 @@
 
 package dev.efekos.arn.argument;
 
-import dev.efekos.arn.exception.ArnSyntaxException;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;

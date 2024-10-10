@@ -30,7 +30,6 @@ import dev.efekos.arn.Arn;
 import dev.efekos.arn.annotation.CommandArgument;
 import dev.efekos.arn.argument.CustomArgumentType;
 import dev.efekos.arn.data.CommandHandlerMethod;
-import dev.efekos.arn.exception.ArnSyntaxException;
 import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
 import net.minecraft.commands.CommandSourceStack;
 
