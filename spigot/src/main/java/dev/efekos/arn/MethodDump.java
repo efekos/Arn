@@ -27,12 +27,10 @@ package dev.efekos.arn;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.efekos.arn.annotation.Container;
-import dev.efekos.arn.annotation.ExceptionHandler;
-import dev.efekos.arn.data.CommandAnnotationData;
-import dev.efekos.arn.data.CommandHandlerMethod;
-import dev.efekos.arn.data.ExceptionHandlerMethod;
-import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.common.annotation.Container;
+import dev.efekos.arn.common.annotation.ExceptionHandler;
+import dev.efekos.arn.common.data.ExceptionHandlerMethod;
+import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import net.minecraft.commands.CommandSourceStack;
 import org.reflections.Reflections;
 

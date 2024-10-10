@@ -26,8 +26,7 @@ package dev.efekos.arn.resolver.impl.handler;
 
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.efekos.arn.data.CommandHandlerMethod;
-import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import net.minecraft.commands.CommandSourceStack;
 import org.bukkit.command.CommandSender;
 

@@ -1,4 +1,4 @@
 /**
- * {@link dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver} implementations.
+ * {@link dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver} implementations.
  */
 package dev.efekos.arn.resolver.impl.handler;

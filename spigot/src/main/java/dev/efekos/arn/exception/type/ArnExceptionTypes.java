@@ -24,9 +24,15 @@
 
 package dev.efekos.arn.exception.type;
 
-import dev.efekos.arn.annotation.Command;
-import dev.efekos.arn.data.CommandAnnotationLiteral;
-import dev.efekos.arn.data.CommandHandlerMethod;
+import dev.efekos.arn.common.annotation.Command;
+import dev.efekos.arn.common.annotation.CustomArgument;
+import dev.efekos.arn.common.data.CommandAnnotationLiteral;
+import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.common.resolver.CommandArgumentResolver;
+import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.common.exception.ArnArgumentException;
+import dev.efekos.arn.common.exception.ArnCommandException;
+import dev.efekos.arn.common.exception.ArnContainerException;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -41,21 +47,21 @@ import java.util.List;
 public final class ArnExceptionTypes {
 
     /**
-     * Thrown when a something that isn't an enum is annotated with {@link dev.efekos.arn.annotation.CustomArgument}.
+     * Thrown when a something that isn't an enum is annotated with {@link CustomArgument}.
      */
     public static final DynamicArnExceptionType<ArnArgumentException, Class<?>> CA_NOT_ENUM = new DynamicArnExceptionType<>(o -> new ArnArgumentException(o.getName() + "is not an enum but is annotated with CustomArgument."));
 
     // CustomArgument
     /**
-     * Thrown when a value given to a {@link dev.efekos.arn.annotation.CustomArgument} annotation isn't a key.
+     * Thrown when a value given to a {@link CustomArgument} annotation isn't a key.
      */
     public static final DynamicArnExceptionType<ArnArgumentException, Class<?>> CA_VALUE_NOT_KEY = new DynamicArnExceptionType<>(o -> new ArnArgumentException("CustomArgument value of " + o.getName() + " is not a valid namespaced key."));
     /**
-     * Thrown when an enum annotated with {@link dev.efekos.arn.annotation.CustomArgument} doesn't have any constants.
+     * Thrown when an enum annotated with {@link CustomArgument} doesn't have any constants.
      */
     public static final DynamicArnExceptionType<ArnArgumentException, Class<? extends Enum<?>>> CA_NO_CONSTANTS = new DynamicArnExceptionType<>(o -> new ArnArgumentException(o.getName() + " must have at least one constant tobe a CustomArgument."));
     /**
-     * Thrown when an enum annotated with {@link dev.efekos.arn.annotation.CustomArgument} has a constant that isn't
+     * Thrown when an enum annotated with {@link CustomArgument} has a constant that isn't
      * properly cased.
      */
     public static final DynamicArnExceptionType<ArnArgumentException, Class<? extends Enum<?>>> CA_LOWERCASE = new DynamicArnExceptionType<>(o -> new ArnArgumentException(o.getName() + " can't have constants with lower-case letters when annotated with CustomArgument."));
@@ -82,7 +88,7 @@ public final class ArnExceptionTypes {
     public static final Dynamic2ArnExceptionType<ArnCommandException, Method, Command> HM_MULTIPLE_SENDERS = new Dynamic2ArnExceptionType<>((o, o2) -> new ArnCommandException("Handler method '" + o.getName() + "' for command '" + o2.value() + "' must contain maximum one parameter that is a CommandSender."));
     /**
      * Thrown when a method annotated with {@link Command} has a parameter that can't be linked with any
-     * {@link dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver} or {@link dev.efekos.arn.resolver.CommandArgumentResolver}.
+     * {@link CommandHandlerMethodArgumentResolver} or {@link CommandArgumentResolver}.
      */
     public static final Dynamic3ArnExceptionType<ArnCommandException, Method, Command, Parameter> HM_NOT_APPLICABLE = new Dynamic3ArnExceptionType<>((o, o2, o3) -> new ArnCommandException("Handler method '" + o.getName() + "' for command '" + o2.value() + "' has a parameter '" + o3.getName() + "' that isn't applicable for anything."));
     /**
@@ -90,7 +96,7 @@ public final class ArnExceptionTypes {
      */
     public static final DynamicArnExceptionType<ArnCommandException, CommandHandlerMethod> HM_DUPLICATE = new DynamicArnExceptionType<>(o -> new ArnCommandException("Duplicate command '" + o.getSignature() + "'"));
     /**
-     * Thrown when a guaranteed nonnull {@link dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver} somehow
+     * Thrown when a guaranteed nonnull {@link CommandHandlerMethodArgumentResolver} somehow
      * becomes null.
      */
     public static final DynamicArnExceptionType<ArnCommandException, String> HM_NO_RESOLVER_ACCESS = new DynamicArnExceptionType<>(o -> new ArnCommandException("Checked handlerMethodArgumentResolver isn't present on command '" + o + "'. This might be an issue related to Arn, please create an issue on GitHub: https://github.com/efekos/Arn/issues"));

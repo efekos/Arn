@@ -34,7 +34,7 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExceptionHandlerMethod {
+public class ExceptionHandlerMethod implements dev.efekos.arn.common.data.ExceptionHandlerMethod<CommandContext<CommandSourceStack>> {
     private Method method;
     private Class<? extends Exception> exceptionClass;
 

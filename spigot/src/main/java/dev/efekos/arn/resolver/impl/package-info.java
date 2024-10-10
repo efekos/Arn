@@ -1,5 +1,5 @@
 /**
- * Implementations of {@link dev.efekos.arn.resolver.CommandArgumentResolver} and
- * {@link dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver}.
+ * Implementations of {@link dev.efekos.arn.common.resolver.CommandArgumentResolver} and
+ * {@link dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver}.
  */
 package dev.efekos.arn.resolver.impl;

@@ -27,8 +27,8 @@ package dev.efekos.arn.resolver.impl.command;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
-import dev.efekos.arn.annotation.CommandArgument;
-import dev.efekos.arn.resolver.CommandArgumentResolver;
+import dev.efekos.arn.common.annotation.CommandArgument;
+import dev.efekos.arn.common.resolver.CommandArgumentResolver;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

@@ -25,9 +25,9 @@
 package dev.efekos.arn.resolver.impl.command;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
-import dev.efekos.arn.annotation.CommandArgument;
-import dev.efekos.arn.annotation.modifier.Vector;
-import dev.efekos.arn.resolver.CommandArgumentResolver;
+import dev.efekos.arn.common.annotation.CommandArgument;
+import dev.efekos.arn.common.annotation.modifier.Vector;
+import dev.efekos.arn.common.resolver.CommandArgumentResolver;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 import org.bukkit.Location;

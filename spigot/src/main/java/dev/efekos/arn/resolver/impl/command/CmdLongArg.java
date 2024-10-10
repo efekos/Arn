@@ -26,9 +26,9 @@ package dev.efekos.arn.resolver.impl.command;
 
 import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
-import dev.efekos.arn.annotation.CommandArgument;
-import dev.efekos.arn.annotation.modifier.NumberLimitations;
-import dev.efekos.arn.resolver.CommandArgumentResolver;
+import dev.efekos.arn.common.annotation.CommandArgument;
+import dev.efekos.arn.common.annotation.modifier.NumberLimitations;
+import dev.efekos.arn.common.resolver.CommandArgumentResolver;
 import net.minecraft.commands.Commands;
 
 import java.lang.reflect.Parameter;

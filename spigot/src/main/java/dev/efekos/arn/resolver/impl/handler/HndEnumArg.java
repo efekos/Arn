@@ -27,10 +27,9 @@ package dev.efekos.arn.resolver.impl.handler;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.efekos.arn.annotation.CommandArgument;
-import dev.efekos.arn.annotation.CustomArgument;
-import dev.efekos.arn.data.CommandHandlerMethod;
-import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.common.annotation.CommandArgument;
+import dev.efekos.arn.common.annotation.CustomArgument;
+import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.ResourceArgument;
 import org.bukkit.Bukkit;
@@ -41,7 +40,7 @@ import java.util.Locale;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Enum} arguments annotated with
- * {@link dev.efekos.arn.annotation.CustomArgument}.
+ * {@link CustomArgument}.
  *
  * @author efekos
  * @since 0.1

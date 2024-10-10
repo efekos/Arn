@@ -26,7 +26,6 @@ package dev.efekos.arn.argument;
 
 import org.bukkit.command.CommandSender;
 
-import java.util.List;
 
 /**
  * An interface used to create custom argument types. When scanned by {@link dev.efekos.arn.Arn}, {@link T} becomes a
@@ -36,38 +35,4 @@ import java.util.List;
  * @author efekos
  * @since 0.3.1
  */
-public interface CustomArgumentType<T> {
-
-    /**
-     * Returns class instance of the custom argument.
-     *
-     * @return A {@link Class} instance.
-     */
-    Class<T> getType();
-
-    /**
-     * Returns an {@link ArgumentRegistration}, specifying how this argument should be registered.
-     *
-     * @return An {@link ArgumentRegistration}.
-     */
-    ArgumentRegistration getRegistration();
-
-    /**
-     * Suggests a list of strings to the given command sender.
-     *
-     * @param sender Any command sender.
-     * @return A list of suggestions.
-     */
-    List<String> suggest(CommandSender sender);
-
-    /**
-     * Parses the given argument.
-     *
-     * @param sender Sender who sent this argument.
-     * @param arg    The argument value.
-     * @return Parsed object.
-     * @throws ArnSyntaxException If {@code arg} is invalid.
-     */
-    T parse(CommandSender sender, String arg) throws ArnSyntaxException;
-
-}
+public interface CustomArgumentType<T> extends dev.efekos.arn.common.argument.CustomArgumentType<T,ArgumentRegistration,CommandSender> { }

@@ -24,6 +24,8 @@
 
 package dev.efekos.arn.exception.type;
 
+import dev.efekos.arn.common.exception.ArnException;
+
 import java.util.function.BiFunction;
 
 /**

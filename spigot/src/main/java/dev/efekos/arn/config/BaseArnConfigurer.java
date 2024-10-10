@@ -24,11 +24,12 @@
 
 package dev.efekos.arn.config;
 
-import dev.efekos.arn.annotation.modifier.InventorySlot;
-import dev.efekos.arn.annotation.modifier.Vector;
-import dev.efekos.arn.data.ExceptionMap;
-import dev.efekos.arn.resolver.CommandArgumentResolver;
-import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.common.annotation.modifier.InventorySlot;
+import dev.efekos.arn.common.annotation.modifier.Vector;
+import dev.efekos.arn.common.config.ArnConfigurer;
+import dev.efekos.arn.common.data.ExceptionMap;
+import dev.efekos.arn.common.resolver.CommandArgumentResolver;
+import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.resolver.impl.command.*;
 import dev.efekos.arn.resolver.impl.handler.*;
 

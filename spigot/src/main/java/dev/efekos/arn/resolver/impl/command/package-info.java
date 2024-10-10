@@ -1,4 +1,4 @@
 /**
- * {@link dev.efekos.arn.resolver.CommandArgumentResolver} implementations.
+ * {@link dev.efekos.arn.common.resolver.CommandArgumentResolver} implementations.
  */
 package dev.efekos.arn.resolver.impl.command;

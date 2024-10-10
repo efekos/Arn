@@ -27,10 +27,11 @@ package dev.efekos.arn.resolver.impl.handler;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.Arn;
-import dev.efekos.arn.annotation.CommandArgument;
+import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.argument.CustomArgumentType;
-import dev.efekos.arn.data.CommandHandlerMethod;
-import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.common.exception.ArnSyntaxException;
+import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import net.minecraft.commands.CommandSourceStack;
 
 import java.lang.reflect.Parameter;
@@ -42,7 +43,7 @@ import java.lang.reflect.Parameter;
  * @author efekos
  * @since 0.3.1
  */
-public final class HndCustomArg implements CommandHandlerMethodArgumentResolver {
+public final class HndCustomArg implements CommandHandlerMethodArgumentResolver<CommandContext<CommandSourceStack>> {
 
     /**
      * An instance of the {@link CustomArgumentType} this resolver resolves.
@@ -77,7 +78,6 @@ public final class HndCustomArg implements CommandHandlerMethodArgumentResolver 
     /**
      * {@inheritDoc}
      */
-    @Override
     public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         String string = customArgumentType.getRegistration().getV(context, s.isEmpty() ? parameter.getName() : s);
@@ -87,4 +87,5 @@ public final class HndCustomArg implements CommandHandlerMethodArgumentResolver 
             throw Arn.GENERIC.create(e.getMessage());
         }
     }
+
 }

@@ -30,18 +30,20 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import dev.efekos.arn.annotation.*;
-import dev.efekos.arn.annotation.block.BlockCommandBlock;
-import dev.efekos.arn.annotation.block.BlockConsole;
-import dev.efekos.arn.annotation.block.BlockPlayer;
+import dev.efekos.arn.common.annotation.*;
+import dev.efekos.arn.common.annotation.block.BlockCommandBlock;
+import dev.efekos.arn.common.annotation.block.BlockConsole;
+import dev.efekos.arn.common.annotation.block.BlockPlayer;
 import dev.efekos.arn.argument.CustomArgumentType;
-import dev.efekos.arn.config.ArnConfigurer;
+import dev.efekos.arn.common.config.ArnConfigurer;
+import dev.efekos.arn.common.data.ExceptionHandlerMethod;
+import dev.efekos.arn.common.data.ExceptionMap;
+import dev.efekos.arn.common.exception.*;
 import dev.efekos.arn.config.BaseArnConfigurer;
 import dev.efekos.arn.data.*;
-import dev.efekos.arn.exception.*;
 import dev.efekos.arn.exception.type.ArnExceptionTypes;
-import dev.efekos.arn.resolver.CommandArgumentResolver;
-import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.common.resolver.CommandArgumentResolver;
+import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.resolver.impl.command.CmdCustomArg;
 import dev.efekos.arn.resolver.impl.command.CmdEnumArg;
 import dev.efekos.arn.resolver.impl.handler.HndCustomArg;
@@ -478,7 +480,7 @@ public final class Arn extends MethodDump {
                 else if (ex instanceof ArnSyntaxException) throw GENERIC.create(ex.getMessage());
                 else try {
 
-                        Optional<ExceptionHandlerMethod> handlerMethodOptional = findHandlerMethod(ex);
+                        Optional<dev.efekos.arn.common.data.ExceptionHandlerMethod> handlerMethodOptional = findHandlerMethod(ex);
                         if(handlerMethodOptional.isEmpty()) throw GENERIC.create(ex.getMessage());
                         ExceptionHandlerMethod handlerMethod = handlerMethodOptional.get();
                         List<Object> list = handlerMethod.fillParams(ex, commandContext);
