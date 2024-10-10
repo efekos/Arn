@@ -29,8 +29,8 @@ import dev.efekos.arn.common.annotation.modifier.Vector;
 import dev.efekos.arn.common.data.ExceptionMap;
 import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
-import dev.efekos.arn.spigot.resolver.impl.command.*;
-import dev.efekos.arn.spigot.resolver.impl.handler.*;
+import dev.efekos.arn.spigot.resolver.command.*;
+import dev.efekos.arn.spigot.resolver.handler.*;
 
 import java.util.List;
 
