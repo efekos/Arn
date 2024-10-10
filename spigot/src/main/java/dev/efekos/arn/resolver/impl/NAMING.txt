@@ -1,2 +1,0 @@
-for CommandArgumentResolver implementations: Cmd<Type>(Arg)?
-for CommandHandlerMethodArgumentResolver implementations: Hnd<Type>(Arg)?

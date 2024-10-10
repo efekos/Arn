@@ -22,33 +22,44 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.common.exception;
+package dev.efekos.arn.spigot.resolver.impl.command;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.efekos.arn.common.annotation.Command;
+import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.builder.ArgumentBuilder;
+import dev.efekos.arn.common.annotation.CommandArgument;
+import dev.efekos.arn.common.resolver.CommandArgumentResolver;
+import net.minecraft.commands.Commands;
+
+import java.lang.reflect.Parameter;
 
 /**
- * An {@link ArnException} that is used to replace Brigadier's
- * {@link com.mojang.brigadier.exceptions.CommandSyntaxException} so you don't have to include NMS in your plugin to
- * use Arn. Methods annotated with {@link Command} and {@link dev.efekos.arn.common.argument.CustomArgumentType} can
- * throw this exception with a message that will pop up to the player with red color by default.
+ * An implementation of {@link CommandArgumentResolver}. Resolves {@link Boolean} and {@code boolean} arguments.
  *
  * @author efekos
- * @since 0.3
+ * @since 0.1
  */
-public class ArnSyntaxException extends ArnException {
+public final class CmdBooleanArg implements CommandArgumentResolver {
 
     /**
-     * Creates a new exception.
-     *
-     * @param message Exception message.
+     * Creates a new resolver.
      */
-    public ArnSyntaxException(String message) {
-        super(message);
+    public CmdBooleanArg() {
     }
 
-    public ArnSyntaxException(CommandSyntaxException e){
-        super(e.getMessage());
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isApplicable(Parameter parameter) {
+        return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(boolean.class) || parameter.getType().equals(Boolean.class));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ArgumentBuilder<?, ?> apply(Parameter parameter) {
+        String s = parameter.getAnnotation(CommandArgument.class).value();
+        return Commands.argument(s.isEmpty() ? parameter.getName() : s, BoolArgumentType.bool());
+    }
 }

@@ -28,7 +28,7 @@ import dev.efekos.arn.common.annotation.Container;
 import dev.efekos.arn.common.annotation.CustomArgument;
 
 /**
- * An exception type thrown by {@link dev.efekos.arn.Arn} if there is something wrong with
+ * An exception type thrown by Arn if there is something wrong with
  * {@link Container}s annotated with {@link CustomArgument}.
  *
  * @author efekos

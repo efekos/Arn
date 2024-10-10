@@ -22,33 +22,46 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.common.exception;
+package dev.efekos.arn.spigot.exception.type;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.efekos.arn.common.annotation.Command;
+import dev.efekos.arn.common.exception.ArnException;
+
+import java.util.function.BiFunction;
 
 /**
- * An {@link ArnException} that is used to replace Brigadier's
- * {@link com.mojang.brigadier.exceptions.CommandSyntaxException} so you don't have to include NMS in your plugin to
- * use Arn. Methods annotated with {@link Command} and {@link dev.efekos.arn.common.argument.CustomArgumentType} can
- * throw this exception with a message that will pop up to the player with red color by default.
+ * Dynamic exception creator that takes two arguments.
  *
+ * @param <T>  Type of the first argument.
+ * @param <T2> Type of the second argument.
+ * @param <E>  Type of the actual exception.
  * @author efekos
  * @since 0.3
  */
-public class ArnSyntaxException extends ArnException {
+public final class Dynamic2ArnExceptionType<E extends ArnException, T, T2> {
 
     /**
-     * Creates a new exception.
-     *
-     * @param message Exception message.
+     * Lambda method that takes two arguments.
      */
-    public ArnSyntaxException(String message) {
-        super(message);
+    private final BiFunction<T, T2, E> lambda;
+
+    /**
+     * Creates a new exception type.
+     *
+     * @param lambda Function to create an exception.
+     */
+    public Dynamic2ArnExceptionType(BiFunction<T, T2, E> lambda) {
+        this.lambda = lambda;
     }
 
-    public ArnSyntaxException(CommandSyntaxException e){
-        super(e.getMessage());
+    /**
+     * Creates an exception using {@link #lambda}.
+     *
+     * @param o  First object.
+     * @param o2 Second object.
+     * @return Created exception.
+     */
+    public E create(T o, T2 o2) {
+        return lambda.apply(o, o2);
     }
 
 }

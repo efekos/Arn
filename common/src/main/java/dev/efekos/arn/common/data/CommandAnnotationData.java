@@ -40,7 +40,7 @@ public class CommandAnnotationData {
 
     /**
      * Description of the command associated with this annotation data. If there isn't a description present by the
-     * original {@link Command} annotation, {@link dev.efekos.arn.Arn} defaults it to {@code "No description provided".}.
+     * original {@link Command} annotation, Arn defaults it to {@code "No description provided".}.
      */
     private String description;
 

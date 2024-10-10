@@ -22,33 +22,8 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.common.exception;
-
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.efekos.arn.common.annotation.Command;
-
 /**
- * An {@link ArnException} that is used to replace Brigadier's
- * {@link com.mojang.brigadier.exceptions.CommandSyntaxException} so you don't have to include NMS in your plugin to
- * use Arn. Methods annotated with {@link Command} and {@link dev.efekos.arn.common.argument.CustomArgumentType} can
- * throw this exception with a message that will pop up to the player with red color by default.
- *
- * @author efekos
- * @since 0.3
+ * Implementations of {@link dev.efekos.arn.common.resolver.CommandArgumentResolver} and
+ * {@link dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver}.
  */
-public class ArnSyntaxException extends ArnException {
-
-    /**
-     * Creates a new exception.
-     *
-     * @param message Exception message.
-     */
-    public ArnSyntaxException(String message) {
-        super(message);
-    }
-
-    public ArnSyntaxException(CommandSyntaxException e){
-        super(e.getMessage());
-    }
-
-}
+package dev.efekos.arn.spigot.resolver.impl;

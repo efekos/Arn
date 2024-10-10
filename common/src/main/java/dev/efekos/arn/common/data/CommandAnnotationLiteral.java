@@ -31,7 +31,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Represents a literal node of a command. {@link dev.efekos.arn.Arn} parses {@link Command}'s
+ * Represents a literal node of a command. Arn parses {@link Command}'s
  * value into a list of CommandAnnotationLiterals.
  *
  * @author efekos
@@ -57,7 +57,7 @@ public class CommandAnnotationLiteral {
      */
     private String literal;
     /**
-     * Offset of the literal. Can't be a negative value. {@link dev.efekos.arn.Arn} will place this literal before the
+     * Offset of the literal. Can't be a negative value. Arn will place this literal before the
      * argument that has the same index value with this offset.
      */
     private int offset;
@@ -66,7 +66,7 @@ public class CommandAnnotationLiteral {
      * Creates a new CommandAnnotationLiteral.
      *
      * @param literal Actual literal that will be used in command structures.
-     * @param offset  Offset of the literal. Can't be a negative value. {@link dev.efekos.arn.Arn} will place this
+     * @param offset  Offset of the literal. Can't be a negative value. Arn will place this
      *                literal before the argument that has the same index value with this offset.
      */
     public CommandAnnotationLiteral(String literal, int offset) {

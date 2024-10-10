@@ -53,8 +53,8 @@ public interface CommandHandlerMethodArgumentResolver<C> {
     /**
      * Should return true if there is a {@link CommandArgumentResolver} assigned to this resolver.
      *
-     * @return Whether {@link dev.efekos.arn.Arn} should search for a {@link CommandArgumentResolver} when a
-     * {@link Parameter} is resolvable by this resolver.
+     * @return Whether Arn should search for a {@link CommandArgumentResolver} when a {@link Parameter} is resolvable
+     * by this resolver.
      */
     boolean requireCommandArgument();
 

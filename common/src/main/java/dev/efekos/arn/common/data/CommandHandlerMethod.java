@@ -39,8 +39,7 @@ import java.util.Objects;
 
 /**
  * Represents a {@link Method} that is annotated with {@link Command}. Used to store data about
- * a command handler methods and register commands using those data. See {@link dev.efekos.arn.Arn#handlers} for more
- * information about how this class is used by {@link dev.efekos.arn.Arn}.
+ * a command handler methods and register commands using those data.
  *
  * @author efekos
  * @since 0.1
@@ -64,35 +63,35 @@ public class CommandHandlerMethod {
      */
     private List<Parameter> parameters;
     /**
-     * A list of {@link CommandArgumentResolver}s found and used by {@link dev.efekos.arn.Arn}.
+     * A list of {@link CommandArgumentResolver}s found and used by Arn.
      */
     private List<CommandArgumentResolver> argumentResolvers;
     /**
-     * A list of {@link CommandHandlerMethodArgumentResolver}s found and used by {@link dev.efekos.arn.Arn}.
+     * A list of {@link CommandHandlerMethodArgumentResolver}s found and used by Arn.
      */
     private List<CommandHandlerMethodArgumentResolver> handlerMethodResolvers;
     /**
      * A signature string that represents what this command is. Unlike a method signature, this signature starts with
      * {@link Command#value()} of {@link #method} instead of the actual method game gathered through {@link Method#getName()}.
-     * This signature is generated and used by {@link dev.efekos.arn.Arn} to detect multiple commands, and throw a
-     * {@link ArnCommandException} when found.
+     * This signature is generated and used by Arn to detect duplicate commands, and throw a {@link ArnCommandException}
+     * when found.
      */
     private String signature;
     /**
      * Determines is this command blocked to console. When a command is blocked to console, the console will receive an
-     * error message while trying to execute the command. {@link dev.efekos.arn.Arn} makes this value {@code true} if
+     * error message while trying to execute the command. Arn makes this value {@code true} if
      * {@link #method} has a {@link BlockConsole} annotation.
      */
     private boolean blocksConsole;
     /**
      * Determines is this command blocked to command blocks. When a command is blocked to command blocks, a command block
-     * will receive an error message while trying to execute the command. {@link dev.efekos.arn.Arn} makes this value
+     * will receive an error message while trying to execute the command. Arn makes this value
      * {@code true} if {@link #method} has a {@link BlockCommandBlock} annotation.
      */
     private boolean blocksCommandBlock;
     /**
      * Determines is this command blocked to players. When a command is blocked to players, a player will receive an
-     * error message while trying to execute the command. {@link dev.efekos.arn.Arn} makes this value {@code true} if
+     * error message while trying to execute the command. Arn makes this value {@code true} if
      * {@link #method} has a {@link BlockPlayer} annotation.
      */
     private boolean blocksPlayer;
@@ -262,7 +261,7 @@ public class CommandHandlerMethod {
     /**
      * Getter for {@link #argumentResolvers}.
      *
-     * @return List of {@link CommandArgumentResolver}s found by {@link dev.efekos.arn.Arn}.
+     * @return List of {@link CommandArgumentResolver}s found by Arn.
      */
     public List<CommandArgumentResolver> getArgumentResolvers() {
         return argumentResolvers;
@@ -281,7 +280,7 @@ public class CommandHandlerMethod {
     /**
      * Getter for {@link #argumentResolvers}.
      *
-     * @return List of {@link CommandHandlerMethodArgumentResolver}s found by {@link dev.efekos.arn.Arn}.
+     * @return List of {@link CommandHandlerMethodArgumentResolver}s found by Arn.
      */
     public List<CommandHandlerMethodArgumentResolver> getHandlerMethodResolvers() {
         return handlerMethodResolvers;

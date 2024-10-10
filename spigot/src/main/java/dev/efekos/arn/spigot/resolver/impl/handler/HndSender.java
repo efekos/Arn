@@ -22,51 +22,52 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.common.config;
+package dev.efekos.arn.spigot.resolver.impl.handler;
 
-import dev.efekos.arn.common.annotation.Container;
-import dev.efekos.arn.common.data.ExceptionMap;
-import dev.efekos.arn.common.resolver.CommandArgumentResolver;
+import com.mojang.brigadier.context.CommandContext;
+import dev.efekos.arn.common.data.CommandHandlerMethod;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
+import net.minecraft.commands.CommandSourceStack;
+import org.bukkit.command.CommandSender;
 
-import java.util.List;
+import java.lang.reflect.Parameter;
 
 /**
- * An interface that represents a configurer of Arn. When ran, Arn scans for {@link Container}s that is a configurer
- * and applies such configuration from found configuration classes. Implementations must have an empty constructor in
- * order to work.
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link CommandSender}s.
  *
  * @author efekos
  * @since 0.1
  */
-public interface ArnConfigurer {
+public final class HndSender implements SpigotHndResolver {
 
     /**
-     * Adds extra {@link CommandHandlerMethodArgumentResolver}s to the given list.
-     *
-     * @param resolvers A list.
+     * Creates a new resolver.
      */
-    void addHandlerMethodArgumentResolvers(List<CommandHandlerMethodArgumentResolver> resolvers);
+    public HndSender() {
+    }
 
     /**
-     * Adds extra {@link CommandArgumentResolver}s to the given list.
-     *
-     * @param resolvers A list.
+     * {@inheritDoc}
      */
-    void addArgumentResolvers(List<CommandArgumentResolver> resolvers);
+    @Override
+    public boolean isApplicable(Parameter parameter) {
+        return parameter.getType().equals(CommandSender.class);
+    }
 
     /**
-     * Adds extra annotation exceptions to the given map.
-     *
-     * @param map An {@link ExceptionMap}.
+     * {@inheritDoc}
      */
-    void putArgumentResolverExceptions(ExceptionMap<CommandArgumentResolver> map);
-
+    @Override
+    public boolean requireCommandArgument() {
+        return false;
+    }
 
     /**
-     * Adds extra annotation exceptions to the given map.
-     *
-     * @param map An {@link ExceptionMap}.
+     * {@inheritDoc}
      */
-    void putHandlerMethodArgumentResolverExceptions(ExceptionMap<CommandHandlerMethodArgumentResolver> map);
+    @Override
+    public CommandSender resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) {
+        return context.getSource().getBukkitSender();
+    }
 }

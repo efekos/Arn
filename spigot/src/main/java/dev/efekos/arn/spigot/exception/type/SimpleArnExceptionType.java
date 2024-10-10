@@ -22,33 +22,42 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.common.exception;
+package dev.efekos.arn.spigot.exception.type;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.efekos.arn.common.annotation.Command;
+import dev.efekos.arn.common.exception.ArnException;
+
+import java.util.function.Supplier;
 
 /**
- * An {@link ArnException} that is used to replace Brigadier's
- * {@link com.mojang.brigadier.exceptions.CommandSyntaxException} so you don't have to include NMS in your plugin to
- * use Arn. Methods annotated with {@link Command} and {@link dev.efekos.arn.common.argument.CustomArgumentType} can
- * throw this exception with a message that will pop up to the player with red color by default.
+ * An exception creator that creates a simple exception without using any arguments.
  *
+ * @param <E> Type of the actual exception.
  * @author efekos
  * @since 0.3
  */
-public class ArnSyntaxException extends ArnException {
+public final class SimpleArnExceptionType<E extends ArnException> {
 
     /**
-     * Creates a new exception.
-     *
-     * @param message Exception message.
+     * The function used to create the exception.
      */
-    public ArnSyntaxException(String message) {
-        super(message);
+    private final Supplier<E> lambda;
+
+    /**
+     * Creates a new exception type.
+     *
+     * @param lambda Supplier function to create the exception.
+     */
+    public SimpleArnExceptionType(Supplier<E> lambda) {
+        this.lambda = lambda;
     }
 
-    public ArnSyntaxException(CommandSyntaxException e){
-        super(e.getMessage());
+    /**
+     * Creates an exception using {@link #lambda}.
+     *
+     * @return Created exception.
+     */
+    public E create() {
+        return lambda.get();
     }
 
 }

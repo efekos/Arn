@@ -27,7 +27,7 @@ package dev.efekos.arn.common.exception;
 import dev.efekos.arn.common.data.CommandHandlerMethod;
 
 /**
- * An exception type thrown by {@link dev.efekos.arn.Arn} when there is something wrong with a
+ * An exception type thrown by Arn when there is something wrong with a
  * {@link CommandHandlerMethod}. It might be with the command itself, or something happening while executing the
  * {@link CommandHandlerMethod#getMethod()} method.
  *
