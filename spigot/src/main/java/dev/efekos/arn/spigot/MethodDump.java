@@ -26,14 +26,13 @@ package dev.efekos.arn.spigot;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.common.annotation.Container;
 import dev.efekos.arn.common.annotation.ExceptionHandler;
 import dev.efekos.arn.common.data.BaseExceptionHandlerMethod;
 import dev.efekos.arn.common.data.CommandAnnotationData;
-import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
-import dev.efekos.arn.spigot.data.ExceptionHandlerMethod;
+import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
+import dev.efekos.arn.spigot.data.ExceptionHandlerMethod;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
 import org.reflections.Reflections;
@@ -52,10 +51,10 @@ import java.util.function.Predicate;
  */
 class MethodDump {
 
-    private final List<BaseExceptionHandlerMethod> baseExceptionHandlerMethods = new ArrayList<>();
+    private final List<ExceptionHandlerMethod> baseExceptionHandlerMethods = new ArrayList<>();
 
-    protected Optional<BaseExceptionHandlerMethod> findHandlerMethod(Throwable e) {
-        for (BaseExceptionHandlerMethod method : baseExceptionHandlerMethods)
+    protected Optional<ExceptionHandlerMethod> findHandlerMethod(Throwable e) {
+        for (ExceptionHandlerMethod method : baseExceptionHandlerMethods)
             if (method.getExceptionClass().isAssignableFrom(e.getClass()))
                 return Optional.of(method);
         return Optional.empty();
@@ -67,7 +66,7 @@ class MethodDump {
                 if (!method.isAnnotationPresent(ExceptionHandler.class))
                     continue;
                 ExceptionHandler annotation = method.getAnnotation(ExceptionHandler.class);
-                BaseExceptionHandlerMethod handlerMethod = new ExceptionHandlerMethod(method, annotation.value());
+                ExceptionHandlerMethod handlerMethod = new ExceptionHandlerMethod(method, annotation.value());
                 baseExceptionHandlerMethods.add(handlerMethod);
             }
 
@@ -120,7 +119,7 @@ class MethodDump {
     }
 
     protected static List<Object> fillResolvers(SpigotCommandHandlerMethod method,
-            CommandContext<CommandSourceStack> commandContext) throws CommandSyntaxException {
+            CommandContext<CommandSourceStack> commandContext) throws ArnSyntaxException {
         List<Object> objects = new ArrayList<>();
 
         for (int i = 0; i < method.getHandlerMethodResolvers().size(); i++) {

@@ -37,9 +37,10 @@ import dev.efekos.arn.common.annotation.block.BlockPlayer;
 import dev.efekos.arn.spigot.argument.CustomArgumentType;
 import dev.efekos.arn.common.config.ArnConfigurer;
 import dev.efekos.arn.common.data.*;
-import dev.efekos.arn.common.data.BaseExceptionHandlerMethod;
 import dev.efekos.arn.common.exception.*;
 import dev.efekos.arn.spigot.config.BaseArnConfigurer;
+import dev.efekos.arn.spigot.config.SpArnConfig;
+import dev.efekos.arn.spigot.data.ExceptionHandlerMethod;
 import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.exception.type.ArnExceptionTypes;
 import dev.efekos.arn.common.resolver.CommandArgumentResolver;
@@ -80,7 +81,7 @@ import java.util.stream.IntStream;
 /**
  * Main class of Arn, used to run command scanning and registration. Handles
  * scanning {@link Container}s, applying
- * {@link ArnConfigurer}s, creating {@link SpigotCommandHandlerMethod}s and
+ * {@link SpArnConfig}s, creating {@link SpigotCommandHandlerMethod}s and
  * registering commands. {@link Arn#run(Class)} must
  * be called in {@link JavaPlugin#onEnable()} to register commands.
  *
@@ -164,7 +165,7 @@ public final class Arn extends MethodDump {
     private final ExceptionMap<SpigotHndResolver> handlerExceptions = new ExceptionMap<>();
     /**
      * A map containing an instance of every type annotated with {@link Container}.
-     * Used to instantiate {@link ArnConfigurer}s.
+     * Used to instantiate {@link SpArnConfig}s.
      */
     private final Map<String, Object> containerInstanceMap = new HashMap<>();
     /**
@@ -182,7 +183,7 @@ public final class Arn extends MethodDump {
 
     /**
      * Main method used to run Arn. Scans every class under the package of
-     * {@code mainClass}, applies {@link ArnConfigurer}s
+     * {@code mainClass}, applies {@link SpArnConfig}s
      * to base configuration, and registers found
      * {@link SpigotCommandHandlerMethod}s.
      *
@@ -305,12 +306,12 @@ public final class Arn extends MethodDump {
      */
     private void scanConfigurers(Reflections reflections) {
         Object[] configurers = reflections.getTypesAnnotatedWith(Container.class).stream()
-                .filter(aClass -> Arrays.asList(aClass.getInterfaces()).contains(ArnConfigurer.class)).toArray();
+                .filter(aClass -> Arrays.asList(aClass.getInterfaces()).contains(SpArnConfig.class)).toArray();
 
         for (Object configurer : configurers) {
-            Class<? extends ArnConfigurer> clazz = (Class<? extends ArnConfigurer>) configurer;
+            Class<? extends SpArnConfig> clazz = (Class<? extends SpArnConfig>) configurer;
 
-            ArnConfigurer configurerInstance = (ArnConfigurer) containerInstanceMap.get(clazz.getName());
+            SpArnConfig configurerInstance = (SpArnConfig) containerInstanceMap.get(clazz.getName());
             configurerInstance.addHandlerMethodArgumentResolvers(handlerMethodArgumentResolvers);
             configurerInstance.addArgumentResolvers(commandArgumentResolvers);
             configurerInstance.putArgumentResolverExceptions(commandArgumentResolverExceptions);
@@ -435,7 +436,7 @@ public final class Arn extends MethodDump {
             if (i != 0)
                 signatureBuilder.append(",");
             signatureBuilder.append(parameter.getType().getName());
-            CommandHandlerMethodArgumentResolver handlerMethodArgumentResolver = this.handlerMethodArgumentResolvers
+            SpigotHndResolver handlerMethodArgumentResolver = this.handlerMethodArgumentResolvers
                     .stream()
                     .filter(resolver -> resolver.isApplicable(parameter) && handlerExceptions.get(resolver.getClass())
                             .stream().noneMatch(parameter::isAnnotationPresent))
@@ -448,7 +449,7 @@ public final class Arn extends MethodDump {
                 argumentResolvers.add(this.commandArgumentResolvers.stream()
                         .filter(resolver -> resolver.isApplicable(parameter) && commandArgumentResolverExceptions
                                 .get(resolver.getClass()).stream().noneMatch(parameter::isAnnotationPresent))
-                        .findFirst().get());
+                        .findFirst().orElseThrow());
             else
                 argumentResolvers.add(null);
         }
@@ -533,7 +534,12 @@ public final class Arn extends MethodDump {
             if (method.isBlocksPlayer() && sender instanceof Player)
                 throw PLAYER_BLOCKED_EXCEPTION.create();
 
-            List<Object> objects = fillResolvers(method, commandContext);
+            List<Object> objects;
+            try {
+                objects = fillResolvers(method, commandContext);
+            } catch (ArnSyntaxException e) {
+                throw Arn.GENERIC.create(e.getMessage());
+            }
 
             Method actualMethodToInvoke = method.getMethod();
 
@@ -552,10 +558,10 @@ public final class Arn extends MethodDump {
                 else
                     try {
 
-                        Optional<BaseExceptionHandlerMethod> handlerMethodOptional = findHandlerMethod(ex);
+                        Optional<ExceptionHandlerMethod> handlerMethodOptional = findHandlerMethod(ex);
                         if (handlerMethodOptional.isEmpty())
                             throw GENERIC.create(ex.getMessage());
-                        BaseExceptionHandlerMethod handlerMethod = handlerMethodOptional.get();
+                        ExceptionHandlerMethod handlerMethod = handlerMethodOptional.get();
                         List<Object> list = handlerMethod.fillParams(ex, commandContext);
                         Method actualHandlerMethod = handlerMethod.getMethod();
                         actualHandlerMethod.invoke(
@@ -612,17 +618,17 @@ public final class Arn extends MethodDump {
 
                     for (CommandAnnotationLiteral lit : helperMethod.getAnnotationData().getLiterals())
                         if (lit.getOffset() == 0)
-                            builder.append(ChatColor.GRAY + lit.getLiteral() + " ");
+                            builder.append(ChatColor.GRAY).append(lit.getLiteral()).append(" ");
 
                     for (int i = 0; i < a.size(); i++) {
 
                         if (i != 0)
                             for (CommandAnnotationLiteral lit : helperMethod.getAnnotationData().getLiterals())
                                 if (lit.getOffset() == i)
-                                    builder.append(ChatColor.GRAY + lit.getLiteral() + " ");
+                                    builder.append(ChatColor.GRAY).append(lit.getLiteral()).append(" ");
 
                         Parameter parameter = a.get(i);
-                        builder.append(ARGUMENT_DISPLAY_COLORS.get((adcI++) % 5) + "<" + parameter.getName() + "> ");
+                        builder.append(ARGUMENT_DISPLAY_COLORS.get((adcI++) % 5)).append("<").append(parameter.getName()).append("> ");
                     }
 
                     BaseComponent component = TextComponent.fromLegacy(builder.toString());
@@ -640,13 +646,12 @@ public final class Arn extends MethodDump {
                     .split("\\" + CommandAnnotationLiteral.SEPARATOR_CHAR_STRING))
                 literals.add(CommandAnnotationLiteral.parse(s));
 
-            List<ArgumentBuilder> builders = literals.stream()
+            List<ArgumentBuilder<CommandSourceStack,?>> builders = literals.stream()
                     .map(commandAnnotationLiteral -> Commands.literal(commandAnnotationLiteral.getLiteral()))
                     .collect(Collectors.toList());
-            ArgumentBuilder<?, ?> finalNode = chainArgumentBuilders(builders, lambda, null);
+            ArgumentBuilder<CommandSourceStack, ?> finalNode = chainArgumentBuilders(builders, lambda, null);
 
             dispatcher.register(((LiteralArgumentBuilder) finalNode));
-
         }
 
     }

@@ -26,7 +26,6 @@ package dev.efekos.arn.spigot.config;
 
 import dev.efekos.arn.common.annotation.modifier.InventorySlot;
 import dev.efekos.arn.common.annotation.modifier.Vector;
-import dev.efekos.arn.common.config.ArnConfigurer;
 import dev.efekos.arn.common.data.ExceptionMap;
 import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
@@ -41,7 +40,7 @@ import java.util.List;
  * @author efekos
  * @since 0.2
  */
-public final class BaseArnConfigurer implements ArnConfigurer<SpigotCmdResolver,SpigotHndResolver> {
+public final class BaseArnConfigurer implements SpArnConfig {
 
     /***
      * Creates a new configurer.
