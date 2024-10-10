@@ -33,9 +33,8 @@ import java.lang.annotation.Target;
 
 
 /**
- * Specifies the a {@link String} argument annotated with {@link FromSender} should get the
- * name of the sender. This annotation is implicitly applied if the parameter name ends with {@code "name"}, ignoring
- * case.
+ * Specifies the {@link String} argument annotated with {@link FromSender} should get the name of the sender. This
+ * annotation is implicitly applied if the parameter name ends with {@code "name"}, ignoring case.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)

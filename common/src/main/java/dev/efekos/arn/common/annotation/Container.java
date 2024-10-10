@@ -31,8 +31,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Makes applied type able to be scanned by {@link dev.efekos.arn.Arn} while scanning for command handler methods,
- * configurers etc. Every class annotated with this annotation must have an empty constructor.
+ * Makes applied type able to be scanned by Arn while scanning for command handler methods, configurers etc. Every class
+ * annotated with this annotation must have an empty constructor.
  *
  * @author efekos
  * @since 0.1

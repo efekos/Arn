@@ -23,6 +23,6 @@
  */
 
 /**
- * Annotations related to {@link org.bukkit.Material} arguments.
+ * Annotations related to modifying command arguments.
  */
 package dev.efekos.arn.common.annotation.modifier;

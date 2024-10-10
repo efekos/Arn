@@ -29,8 +29,8 @@ import dev.efekos.arn.common.exception.ArnSyntaxException;
 import java.util.List;
 
 /**
- * An interface used to create custom argument types. When scanned by {@link dev.efekos.arn.Arn}, {@link Type} becomes a
- * usable argument type that is handled by the implementation of this interface.
+ * An interface used to create custom argument types. When scanned by Arn, {@link Type} becomes a usable argument type
+ * that is handled by the implementation of this interface.
  *
  * @param <Type> Type of the custom argument.
  * @author efekos

@@ -30,8 +30,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * If this annotation is applied to a {@link org.bukkit.Location} argument, the argument will be a Vec3 argument instead
- * of block pos, allowing players to enter doubles.
+ * If this annotation is applied to an argument that is a location (such as Spigot's {@code org.bukkit.Location}), the
+ * argument will be a Vec3 argument instead of BlockPos, allowing players to enter floats.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)

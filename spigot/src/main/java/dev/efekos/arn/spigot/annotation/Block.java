@@ -22,22 +22,23 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.common.annotation.modifier.sender;
+package dev.efekos.arn.spigot.annotation;
 
-
-import dev.efekos.arn.common.annotation.FromSender;
+import dev.efekos.arn.common.annotation.CommandArgument;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-
 /**
- * Specifies that an {@link org.bukkit.inventory.ItemStack} argument annotated with
- * {@link FromSender} should get the item in the chestplate slot of sender's equipment.
+ * Used together with {@link CommandArgument} {@link org.bukkit.Material} arguments. Specifies
+ * that this {@link org.bukkit.Material} argument must be a {@link org.bukkit.Material} that is a block.
+ *
+ * @author efekos
+ * @since 0.1
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-public @interface Chestplate {
+public @interface Block {
 }

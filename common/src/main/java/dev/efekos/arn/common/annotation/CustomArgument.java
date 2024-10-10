@@ -37,7 +37,7 @@ import java.lang.annotation.Target;
 public @interface CustomArgument {
 
     /**
-     * Returns name of this "registry". Must be a valid {@link org.bukkit.NamespacedKey}.
+     * Returns name of this "registry". Must be a valid Minecraft identifier.
      *
      * @return Value of this annotation.
      */

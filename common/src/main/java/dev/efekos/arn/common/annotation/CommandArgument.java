@@ -33,11 +33,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Specifies that applied parameter is a command argument. When a method parameter is a CommandArgument, {@link dev.efekos.arn.Arn}
- * will try to find an applicable {@link CommandHandlerMethodArgumentResolver} to provide a value
- * to the parameter when calling a command handler method. If there is a {@link CommandArgumentResolver}
- * associated with the type of the parameter, an argument node that represents the parameter will be added to command
- * structure.
+ * Specifies that applied parameter is a command argument. When a method parameter is a CommandArgument, Arn will try to
+ * find an applicable {@link CommandHandlerMethodArgumentResolver} to provide a value to the parameter when calling a
+ * command handler method. If there is a {@link CommandArgumentResolver} associated with the type of the parameter, an
+ * argument node that represents the parameter will be added to command structure.
  *
  * @author efekos
  * @since 0.1
@@ -47,7 +46,7 @@ import java.lang.annotation.Target;
 public @interface CommandArgument {
     /**
      * Name of the command argument that will be shown to user. Defaults to name of the parameter. If the plugin isn't
-     * compiled with {@code -parameters}, then the parameter name will be arg<i>N</i>, where <i>N</i> is the index of
+     * compiled with {@code -parameters}, then the parameter name will be arg <i>N</i>, where <i>N</i> is the index of
      * the parameter in the descriptor of the method which declares the parameter.
      *
      * @return Name of this argument.

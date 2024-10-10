@@ -156,12 +156,12 @@ public final class Arn extends MethodDump {
      */
     private final List<SpigotCommandHandlerMethod> handlers = new ArrayList<>();
     /**
-     * An {@link ExceptionMap} storing annotation exceptions of
+     * An {@link ExceptionMap} storing annotation exceptions to
      * {@link CommandArgumentResolver}s.
      */
     private final ExceptionMap<SpigotCmdResolver> commandArgumentResolverExceptions = new ExceptionMap<>();
     /**
-     * An {@link ExceptionMap} storing annotation exceptions of
+     * An {@link ExceptionMap} storing annotation exceptions to
      * {@link CommandHandlerMethodArgumentResolver}s.
      */
     private final ExceptionMap<SpigotHndResolver> handlerExceptions = new ExceptionMap<>();
@@ -612,7 +612,7 @@ public final class Arn extends MethodDump {
                     if (permission != null && !sender.hasPermission(permission))
                         continue;
 
-                    StringBuilder builder = new StringBuilder().append(ChatColor.GRAY + "/");
+                    StringBuilder builder = new StringBuilder().append(ChatColor.GRAY).append("/");
 
                     int adcI = 0;
                     List<Parameter> a = helperMethod.getParameters().stream()
@@ -653,7 +653,7 @@ public final class Arn extends MethodDump {
                     .collect(Collectors.toList());
             ArgumentBuilder<CommandSourceStack, ?> finalNode = chainArgumentBuilders(builders, lambda, null);
 
-            dispatcher.register(((LiteralArgumentBuilder) finalNode));
+            dispatcher.register(((LiteralArgumentBuilder<CommandSourceStack>) finalNode));
         }
 
     }

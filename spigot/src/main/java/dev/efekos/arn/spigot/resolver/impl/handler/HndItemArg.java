@@ -27,7 +27,7 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.common.annotation.modifier.Item;
+import dev.efekos.arn.spigot.annotation.Item;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;

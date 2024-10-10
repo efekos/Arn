@@ -31,8 +31,7 @@ import java.lang.annotation.Target;
 
 /**
  * Specifies a method to be a command handler method. When this annotation is present, the associated method will be
- * scanned by {@link dev.efekos.arn.Arn}, and be treated as a command method. {@link dev.efekos.arn.Arn} will call this
- * method on command execution.
+ * scanned by Arn, and be treated as a command method. Arn will call this method on command execution.
  *
  * @author efekos
  * @since 0.1
@@ -43,7 +42,7 @@ public @interface Command {
     /**
      * Literals of this command. There are a few rules about this value:
      * <ul>
-     *     <li>{@link dev.efekos.arn.data.CommandAnnotationLiteral#SEPARATOR_CHAR} can be used to separate multiple
+     *     <li>{@link dev.efekos.arn.common.data.CommandAnnotationLiteral#SEPARATOR_CHAR} can be used to separate multiple
      *     literals.</li>
      *     <li>{@code [ba]:\d:[a-z]} syntax can be used to offset literals. b stands for 'before', a stands for 'after'. Then a digit
      *     must be present to determine which argument the literal will be offset to, followed by the actual literal.</li>
@@ -60,7 +59,7 @@ public @interface Command {
 
     /**
      * A short description about this command, that can be used for generate help commands later. If a description isn't
-     * present, {@link dev.efekos.arn.Arn} will default it to "No description provided.".
+     * present, Arn will default it to "No description provided.".
      *
      * @return Description of this command.
      */

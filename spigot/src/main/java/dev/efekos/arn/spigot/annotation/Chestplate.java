@@ -22,7 +22,8 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.common.annotation.modifier.sender;
+package dev.efekos.arn.spigot.annotation;
+
 
 import dev.efekos.arn.common.annotation.FromSender;
 
@@ -31,11 +32,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
 /**
  * Specifies that an {@link org.bukkit.inventory.ItemStack} argument annotated with
- * {@link FromSender} should get the item in the boots slot of sender's equipment.
+ * {@link FromSender} should get the item in the chestplate slot of sender's equipment.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-public @interface Boots {
+public @interface Chestplate {
 }
