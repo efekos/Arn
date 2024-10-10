@@ -27,6 +27,7 @@ package dev.efekos.arn.spigot.resolver.impl.command;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.resolver.CommandArgumentResolver;
+import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.ResourceArgument;
@@ -46,7 +47,7 @@ import java.lang.reflect.Parameter;
  * @author efekos
  * @since 0.1
  */
-public class CmdAttributeArg implements CommandArgumentResolver {
+public class CmdAttributeArg implements SpigotCmdResolver {
 
     /**
      * A context that is needed to resolve an argument.

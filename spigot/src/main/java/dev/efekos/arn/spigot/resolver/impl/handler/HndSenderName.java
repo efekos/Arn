@@ -27,7 +27,7 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.FromSender;
 import dev.efekos.arn.common.annotation.modifier.sender.Name;
-import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
@@ -41,7 +41,8 @@ import java.lang.reflect.Parameter;
 import java.util.Locale;
 
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves names of {@link CommandSender}s.
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * names of {@link CommandSender}s.
  *
  * @author efekos
  * @since 0.2
@@ -59,7 +60,9 @@ public final class HndSenderName implements SpigotHndResolver {
      */
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(FromSender.class) && parameter.getType().equals(String.class) && (parameter.isAnnotationPresent(Name.class) || parameter.getName().toLowerCase(Locale.ENGLISH).endsWith("name"));
+        return parameter.isAnnotationPresent(FromSender.class) && parameter.getType().equals(String.class)
+                && (parameter.isAnnotationPresent(Name.class)
+                        || parameter.getName().toLowerCase(Locale.ENGLISH).endsWith("name"));
     }
 
     /**
@@ -74,13 +77,16 @@ public final class HndSenderName implements SpigotHndResolver {
      * {@inheritDoc}
      */
     @Override
-    public String resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) {
+    public String resolve(Parameter parameter, SpigotCommandHandlerMethod method,
+            CommandContext<CommandSourceStack> context) {
         CommandSender sender = context.getSource().getBukkitSender();
-        if (sender instanceof ConsoleCommandSender) return "CONSOLE";
+        if (sender instanceof ConsoleCommandSender)
+            return "CONSOLE";
         if (sender instanceof BlockCommandSender) {
             Block b = ((BlockCommandSender) sender).getBlock();
             Location location = b.getLocation();
-            return "[@" + b.getType().getKey().getKey() + ":" + location.getBlockX() + ":" + location.getBlockY() + ":" + location.getBlockZ() + "]";
+            return "[@" + b.getType().getKey().getKey() + ":" + location.getBlockX() + ":" + location.getBlockY() + ":"
+                    + location.getBlockZ() + "]";
         }
         return sender.getName();
     }

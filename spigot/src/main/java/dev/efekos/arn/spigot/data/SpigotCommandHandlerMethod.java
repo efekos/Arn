@@ -22,54 +22,22 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.spigot.resolver.impl.handler;
+package dev.efekos.arn.spigot.data;
 
-import com.mojang.brigadier.context.CommandContext;
-import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
-import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.common.annotation.Command;
+import dev.efekos.arn.common.data.BaseCommandHandlerMethod;
+import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
-import net.minecraft.commands.CommandSourceStack;
-import org.bukkit.command.CommandSender;
 
-import java.lang.reflect.Parameter;
+import java.lang.reflect.Method;
 
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
- * {@link CommandSender}s.
+ * Represents a {@link Method} that is annotated with {@link Command}. Used to
+ * store data about
+ * a command handler methods and register commands using those data.
  *
  * @author efekos
  * @since 0.1
  */
-public final class HndSender implements SpigotHndResolver {
-
-    /**
-     * Creates a new resolver.
-     */
-    public HndSender() {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isApplicable(Parameter parameter) {
-        return parameter.getType().equals(CommandSender.class);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean requireCommandArgument() {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CommandSender resolve(Parameter parameter, SpigotCommandHandlerMethod method,
-            CommandContext<CommandSourceStack> context) {
-        return context.getSource().getBukkitSender();
-    }
+public class SpigotCommandHandlerMethod extends BaseCommandHandlerMethod<SpigotCmdResolver, SpigotHndResolver> {
 }

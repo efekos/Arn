@@ -28,8 +28,8 @@ import dev.efekos.arn.common.annotation.modifier.InventorySlot;
 import dev.efekos.arn.common.annotation.modifier.Vector;
 import dev.efekos.arn.common.config.ArnConfigurer;
 import dev.efekos.arn.common.data.ExceptionMap;
-import dev.efekos.arn.common.resolver.CommandArgumentResolver;
-import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
+import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import dev.efekos.arn.spigot.resolver.impl.command.*;
 import dev.efekos.arn.spigot.resolver.impl.handler.*;
 
@@ -41,7 +41,7 @@ import java.util.List;
  * @author efekos
  * @since 0.2
  */
-public final class BaseArnConfigurer implements ArnConfigurer {
+public final class BaseArnConfigurer implements ArnConfigurer<SpigotCmdResolver,SpigotHndResolver> {
 
     /***
      * Creates a new configurer.
@@ -53,7 +53,7 @@ public final class BaseArnConfigurer implements ArnConfigurer {
      * {@inheritDoc}
      */
     @Override
-    public void addHandlerMethodArgumentResolvers(List<CommandHandlerMethodArgumentResolver> resolvers) {
+    public void addHandlerMethodArgumentResolvers(List<SpigotHndResolver> resolvers) {
         resolvers.add(new HndIntArg());
         resolvers.add(new HndStringArg());
         resolvers.add(new HndPlayerSender());
@@ -95,7 +95,7 @@ public final class BaseArnConfigurer implements ArnConfigurer {
      * {@inheritDoc}
      */
     @Override
-    public void addArgumentResolvers(List<CommandArgumentResolver> resolvers) {
+    public void addArgumentResolvers(List<SpigotCmdResolver> resolvers) {
         resolvers.add(new CmdBooleanArg());
         resolvers.add(new CmdDoubleArg());
         resolvers.add(new CmdLocationArg());
@@ -123,13 +123,13 @@ public final class BaseArnConfigurer implements ArnConfigurer {
     }
 
     @Override
-    public void putArgumentResolverExceptions(ExceptionMap<CommandArgumentResolver> map) {
+    public void putArgumentResolverExceptions(ExceptionMap<SpigotCmdResolver> map) {
         map.put(CmdLocationArg.class, Vector.class);
         map.put(CmdIntArg.class, InventorySlot.class);
     }
 
     @Override
-    public void putHandlerMethodArgumentResolverExceptions(ExceptionMap<CommandHandlerMethodArgumentResolver> map) {
+    public void putHandlerMethodArgumentResolverExceptions(ExceptionMap<SpigotHndResolver> map) {
         map.put(HndLocationArg.class, Vector.class);
         map.put(HndIntArg.class, InventorySlot.class);
     }

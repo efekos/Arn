@@ -27,21 +27,22 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.spigot.argument.CustomArgumentType;
-import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
 
 import java.lang.reflect.Parameter;
 
-
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link CustomArgumentType}s.
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * {@link CustomArgumentType}s.
  *
  * @author efekos
  * @since 0.3.1
  */
-public final class HndCustomArg implements CommandHandlerMethodArgumentResolver<CommandContext<CommandSourceStack>> {
+public final class HndCustomArg implements SpigotHndResolver {
 
     /**
      * An instance of the {@link CustomArgumentType} this resolver resolves.
@@ -51,7 +52,8 @@ public final class HndCustomArg implements CommandHandlerMethodArgumentResolver<
     /**
      * Creates a new resolver.
      *
-     * @param customArgumentType An instance of the {@link CustomArgumentType} this resolver resolves.
+     * @param customArgumentType An instance of the {@link CustomArgumentType} this
+     *                           resolver resolves.
      */
     public HndCustomArg(CustomArgumentType<?> customArgumentType) {
         this.customArgumentType = customArgumentType;
@@ -62,7 +64,8 @@ public final class HndCustomArg implements CommandHandlerMethodArgumentResolver<
      */
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(customArgumentType.getType());
+        return parameter.isAnnotationPresent(CommandArgument.class)
+                && parameter.getType().equals(customArgumentType.getType());
     }
 
     /**
@@ -76,7 +79,8 @@ public final class HndCustomArg implements CommandHandlerMethodArgumentResolver<
     /**
      * {@inheritDoc}
      */
-    public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
+    public Object resolve(Parameter parameter, SpigotCommandHandlerMethod method,
+            CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         String string = customArgumentType.getRegistration().getV(context, s.isEmpty() ? parameter.getName() : s);
         return customArgumentType.parse(context.getSource().getBukkitSender(), string);

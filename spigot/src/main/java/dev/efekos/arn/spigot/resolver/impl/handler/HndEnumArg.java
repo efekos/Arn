@@ -28,7 +28,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.annotation.CustomArgument;
-import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.exception.ArnCommandException;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
@@ -42,7 +42,8 @@ import java.lang.reflect.Parameter;
 import java.util.Locale;
 
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Enum} arguments annotated with
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * {@link Enum} arguments annotated with
  * {@link CustomArgument}.
  *
  * @author efekos
@@ -84,20 +85,24 @@ public final class HndEnumArg implements SpigotHndResolver {
      * {@inheritDoc}
      */
     @Override
-    public Enum<?> resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
+    public Enum<?> resolve(Parameter parameter, SpigotCommandHandlerMethod method,
+            CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
 
         String s = parameter.getAnnotation(CommandArgument.class).value();
         String string = StringArgumentType.getString(context, s.isEmpty() ? parameter.getName() : s);
         try {
             return Enum.valueOf(enumClass.getEnumConstants()[0].getClass(), string.toUpperCase(Locale.ENGLISH));
         } catch (IllegalArgumentException e) {
-            throw new ArnSyntaxException(ResourceArgument.ERROR_UNKNOWN_RESOURCE.create(string, enumClass.getAnnotation(CustomArgument.class).value()));
+            throw new ArnSyntaxException(ResourceArgument.ERROR_UNKNOWN_RESOURCE.create(string,
+                    enumClass.getAnnotation(CustomArgument.class).value()));
         } catch (NullPointerException e) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "ARN-ERROR");
             Bukkit.getConsoleSender().sendMessage(enumClass.toString());
             Bukkit.getConsoleSender().sendMessage(s);
             Bukkit.getConsoleSender().sendMessage(string);
-            throw new RuntimeException(new ArnCommandException("There is something wrong with HndEnumArg. Please report this issue to github: https://github.com/efekos/Arn", e));
+            throw new RuntimeException(new ArnCommandException(
+                    "There is something wrong with HndEnumArg. Please report this issue to github: https://github.com/efekos/Arn",
+                    e));
         }
     }
 }

@@ -27,7 +27,7 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
@@ -39,9 +39,12 @@ import org.bukkit.World;
 import java.lang.reflect.Parameter;
 
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link DimensionArgument} arguments.
- * <strong>Since this implementation uses {@link DimensionArgument}, which was only made for to dimensions of one world,
- * there isn't any conclusion that this resolver will work with different worlds, such as ones made by Multiverse plugin.
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * {@link DimensionArgument} arguments.
+ * <strong>Since this implementation uses {@link DimensionArgument}, which was
+ * only made for to dimensions of one world,
+ * there isn't any conclusion that this resolver will work with different
+ * worlds, such as ones made by Multiverse plugin.
  * </strong>
  *
  * @author efekos
@@ -67,7 +70,8 @@ public final class HndDimensionArg implements SpigotHndResolver {
      * {@inheritDoc}
      */
     @Override
-    public World resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
+    public World resolve(Parameter parameter, SpigotCommandHandlerMethod method,
+            CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         ServerLevel world;
         try {

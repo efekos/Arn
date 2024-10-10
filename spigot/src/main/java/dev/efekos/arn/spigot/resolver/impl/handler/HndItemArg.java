@@ -28,7 +28,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.annotation.modifier.Item;
-import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
@@ -45,7 +45,8 @@ import java.lang.reflect.Parameter;
 import java.util.Arrays;
 
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Material} arguments that is an
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * {@link Material} arguments that is an
  * {@link Item}.
  *
  * @author efekos
@@ -64,14 +65,16 @@ public final class HndItemArg implements SpigotHndResolver {
      */
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Material.class) && parameter.isAnnotationPresent(Item.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Material.class)
+                && parameter.isAnnotationPresent(Item.class);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Material resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
+    public Material resolve(Parameter parameter, SpigotCommandHandlerMethod method,
+            CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         Holder.Reference<net.minecraft.world.item.Item> itemc = null;
         try {
@@ -81,7 +84,9 @@ public final class HndItemArg implements SpigotHndResolver {
         }
         net.minecraft.world.item.Item item = itemc.value();
         ResourceLocation key = BuiltInRegistries.ITEM.getKey(item);
-        return Arrays.stream(Material.values()).filter(material -> material.getKey().equals(new NamespacedKey(key.getNamespace(), key.getPath()))).findFirst().orElse(null);
+        return Arrays.stream(Material.values())
+                .filter(material -> material.getKey().equals(new NamespacedKey(key.getNamespace(), key.getPath())))
+                .findFirst().orElse(null);
     }
 
     /**

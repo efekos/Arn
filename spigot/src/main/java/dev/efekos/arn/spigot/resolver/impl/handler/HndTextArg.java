@@ -26,7 +26,7 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -44,7 +44,8 @@ import org.bukkit.craftbukkit.v1_21_R1.CraftServer;
 import java.lang.reflect.Parameter;
 
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link BaseComponent} arguments.
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * {@link BaseComponent} arguments.
  *
  * @author efekos
  * @since 0.1
@@ -67,7 +68,8 @@ public final class HndTextArg implements SpigotHndResolver {
      */
     private static void initializeContext() {
         FeatureFlagSet flagSet = FeatureFlagSet.of(FeatureFlags.VANILLA);
-        HolderLookup.Provider holderlookup = ((CraftServer) Bukkit.getServer()).getHandle().getServer().registryAccess();
+        HolderLookup.Provider holderlookup = ((CraftServer) Bukkit.getServer()).getHandle().getServer()
+                .registryAccess();
         context = CommandBuildContext.simple(holderlookup, flagSet);
     }
 
@@ -83,10 +85,12 @@ public final class HndTextArg implements SpigotHndResolver {
      * {@inheritDoc}
      */
     @Override
-    public BaseComponent resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> ctx) {
+    public BaseComponent resolve(Parameter parameter, SpigotCommandHandlerMethod method,
+            CommandContext<CommandSourceStack> ctx) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         Component component = ComponentArgument.getComponent(ctx, s.isEmpty() ? parameter.getName() : s);
-        if (context == null) initializeContext();
+        if (context == null)
+            initializeContext();
         String json = Component.Serializer.toJson(component, context);
         return ComponentSerializer.deserialize(json);
     }

@@ -27,7 +27,7 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.FromSender;
 import dev.efekos.arn.common.annotation.modifier.sender.*;
-import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
@@ -37,9 +37,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Parameter;
 
-
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves equipment of {@link Player} senders.
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * equipment of {@link Player} senders.
  *
  * @author efekos
  * @since 0.2
@@ -72,15 +72,22 @@ public final class HndSenderEqu implements SpigotHndResolver {
      * {@inheritDoc}
      */
     @Override
-    public ItemStack resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) {
+    public ItemStack resolve(Parameter parameter, SpigotCommandHandlerMethod method,
+            CommandContext<CommandSourceStack> context) {
         CommandSender sender = context.getSource().getBukkitSender();
-        if (!(sender instanceof Player player)) return null;
+        if (!(sender instanceof Player player))
+            return null;
 
-        if (parameter.isAnnotationPresent(OffHand.class)) return player.getInventory().getItemInOffHand();
-        if (parameter.isAnnotationPresent(Helmet.class)) return player.getInventory().getHelmet();
-        if (parameter.isAnnotationPresent(Chestplate.class)) return player.getInventory().getChestplate();
-        if (parameter.isAnnotationPresent(Leggings.class)) return player.getInventory().getLeggings();
-        if (parameter.isAnnotationPresent(Boots.class)) return player.getInventory().getBoots();
+        if (parameter.isAnnotationPresent(OffHand.class))
+            return player.getInventory().getItemInOffHand();
+        if (parameter.isAnnotationPresent(Helmet.class))
+            return player.getInventory().getHelmet();
+        if (parameter.isAnnotationPresent(Chestplate.class))
+            return player.getInventory().getChestplate();
+        if (parameter.isAnnotationPresent(Leggings.class))
+            return player.getInventory().getLeggings();
+        if (parameter.isAnnotationPresent(Boots.class))
+            return player.getInventory().getBoots();
         return player.getInventory().getItemInMainHand();
     }
 }

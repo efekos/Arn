@@ -26,7 +26,7 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.FromSender;
-import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
@@ -37,7 +37,8 @@ import java.lang.reflect.Parameter;
 import java.util.UUID;
 
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link java.util.UUID}s of {@link CommandSender}s.
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * {@link java.util.UUID}s of {@link CommandSender}s.
  *
  * @author efekos
  * @since 0.2
@@ -70,9 +71,11 @@ public final class HndSenderId implements SpigotHndResolver {
      * {@inheritDoc}
      */
     @Override
-    public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) {
+    public Object resolve(Parameter parameter, SpigotCommandHandlerMethod method,
+            CommandContext<CommandSourceStack> context) {
         CommandSender sender = context.getSource().getBukkitSender();
-        if (sender instanceof Player) return ((Player) sender).getUniqueId();
+        if (sender instanceof Player)
+            return ((Player) sender).getUniqueId();
         return null;
     }
 

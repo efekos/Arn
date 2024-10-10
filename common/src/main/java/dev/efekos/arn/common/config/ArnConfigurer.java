@@ -39,28 +39,28 @@ import java.util.List;
  * @author efekos
  * @since 0.1
  */
-public interface ArnConfigurer {
+public interface ArnConfigurer<Cmd,Hnd> {
 
     /**
-     * Adds extra {@link CommandHandlerMethodArgumentResolver}s to the given list.
+     * Adds extra {@link Hnd}s to the given list.
      *
      * @param resolvers A list.
      */
-    void addHandlerMethodArgumentResolvers(List<CommandHandlerMethodArgumentResolver> resolvers);
+    void addHandlerMethodArgumentResolvers(List<Hnd> resolvers);
 
     /**
-     * Adds extra {@link CommandArgumentResolver}s to the given list.
+     * Adds extra {@link Cmd}s to the given list.
      *
      * @param resolvers A list.
      */
-    void addArgumentResolvers(List<CommandArgumentResolver> resolvers);
+    void addArgumentResolvers(List<Cmd> resolvers);
 
     /**
      * Adds extra annotation exceptions to the given map.
      *
      * @param map An {@link ExceptionMap}.
      */
-    void putArgumentResolverExceptions(ExceptionMap<CommandArgumentResolver> map);
+    void putArgumentResolverExceptions(ExceptionMap<Cmd> map);
 
 
     /**
@@ -68,5 +68,5 @@ public interface ArnConfigurer {
      *
      * @param map An {@link ExceptionMap}.
      */
-    void putHandlerMethodArgumentResolverExceptions(ExceptionMap<CommandHandlerMethodArgumentResolver> map);
+    void putHandlerMethodArgumentResolverExceptions(ExceptionMap<Hnd> map);
 }

@@ -29,6 +29,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.resolver.CommandArgumentResolver;
+import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -45,7 +46,7 @@ import java.util.Collection;
  * @author efekos
  * @since 0.1
  */
-public final class CmdAdvancementArg implements CommandArgumentResolver {
+public final class CmdAdvancementArg implements SpigotCmdResolver {
 
     /**
      * A suggestion provider that provides all advancements loaded in the game.
@@ -73,7 +74,7 @@ public final class CmdAdvancementArg implements CommandArgumentResolver {
      * {@inheritDoc}
      */
     @Override
-    public ArgumentBuilder apply(Parameter parameter) {
+    public ArgumentBuilder<CommandSourceStack,?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         return Commands.argument(s.isEmpty() ? parameter.getName() : s, ResourceLocationArgument.id()).suggests(c);
     }

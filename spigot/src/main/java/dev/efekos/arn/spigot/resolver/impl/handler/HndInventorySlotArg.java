@@ -27,7 +27,7 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.annotation.modifier.InventorySlot;
-import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
@@ -36,7 +36,8 @@ import net.minecraft.commands.arguments.SlotArgument;
 import java.lang.reflect.Parameter;
 
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Integer} arguments that are an
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * {@link Integer} arguments that are an
  * {@link InventorySlot}.
  *
  * @author efekos
@@ -55,14 +56,17 @@ public final class HndInventorySlotArg implements SpigotHndResolver {
      */
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(Integer.class) || parameter.getType().equals(int.class)) && parameter.isAnnotationPresent(InventorySlot.class);
+        return parameter.isAnnotationPresent(CommandArgument.class)
+                && (parameter.getType().equals(Integer.class) || parameter.getType().equals(int.class))
+                && parameter.isAnnotationPresent(InventorySlot.class);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Integer resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) {
+    public Integer resolve(Parameter parameter, SpigotCommandHandlerMethod method,
+            CommandContext<CommandSourceStack> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         return SlotArgument.getSlot(context, s.isEmpty() ? parameter.getName() : s);
     }

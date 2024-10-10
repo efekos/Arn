@@ -30,6 +30,8 @@ import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.annotation.modifier.Greedy;
 import dev.efekos.arn.common.annotation.modifier.Word;
 import dev.efekos.arn.common.resolver.CommandArgumentResolver;
+import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 
 import java.lang.reflect.Parameter;
@@ -40,7 +42,7 @@ import java.lang.reflect.Parameter;
  * @author efekos
  * @since 0.1
  */
-public final class CmdStringArg implements CommandArgumentResolver {
+public final class CmdStringArg implements SpigotCmdResolver {
 
     /**
      * Creates a new resolver.
@@ -60,7 +62,7 @@ public final class CmdStringArg implements CommandArgumentResolver {
      * {@inheritDoc}
      */
     @Override
-    public ArgumentBuilder<?, ?> apply(Parameter parameter) {
+    public ArgumentBuilder<CommandSourceStack, ?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         boolean b1 = parameter.isAnnotationPresent(Greedy.class);
         boolean b2 = parameter.isAnnotationPresent(Word.class);

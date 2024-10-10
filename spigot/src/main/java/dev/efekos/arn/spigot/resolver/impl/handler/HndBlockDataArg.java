@@ -26,7 +26,7 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
@@ -40,7 +40,8 @@ import org.bukkit.craftbukkit.v1_21_R1.block.data.CraftBlockData;
 import java.lang.reflect.Parameter;
 
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link BlockData} arguments.
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * {@link BlockData} arguments.
  *
  * @author efekos
  * @since 0.1
@@ -73,7 +74,8 @@ public final class HndBlockDataArg implements SpigotHndResolver {
      * {@inheritDoc}
      */
     @Override
-    public BlockData resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
+    public BlockData resolve(Parameter parameter, SpigotCommandHandlerMethod method,
+            CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         BlockInput tile = BlockStateArgument.getBlock(context, s.isEmpty() ? parameter.getName() : s);
         BlockState state = tile.getState();

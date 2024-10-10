@@ -27,7 +27,7 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
@@ -40,7 +40,8 @@ import java.lang.reflect.Parameter;
 import java.util.Locale;
 
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link GameMode} arguments.
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * {@link GameMode} arguments.
  *
  * @author efekos
  * @since 0.1
@@ -65,7 +66,8 @@ public final class HndGameModeArg implements SpigotHndResolver {
      * {@inheritDoc}
      */
     @Override
-    public GameMode resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
+    public GameMode resolve(Parameter parameter, SpigotCommandHandlerMethod method,
+            CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         GameType gamemode;
         try {

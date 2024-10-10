@@ -31,6 +31,7 @@ import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.annotation.CustomArgument;
 import dev.efekos.arn.common.resolver.CommandArgumentResolver;
 import dev.efekos.arn.spigot.Arn;
+import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
 import net.minecraft.commands.Commands;
 
 import java.lang.reflect.Parameter;
@@ -46,7 +47,7 @@ import java.util.stream.Collectors;
  * @author efekos
  * @since 0.1
  */
-public final class CmdEnumArg implements CommandArgumentResolver {
+public final class CmdEnumArg implements SpigotCmdResolver {
 
     /**
      * Main {@link Enum} class this resolver will handle.

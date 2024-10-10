@@ -27,6 +27,8 @@ package dev.efekos.arn.spigot.resolver.impl.command;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.resolver.CommandArgumentResolver;
+import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.DimensionArgument;
 import org.bukkit.World;
@@ -42,7 +44,7 @@ import java.lang.reflect.Parameter;
  * @author efekos
  * @since 0.1
  */
-public final class CmdDimensionArg implements CommandArgumentResolver {
+public final class CmdDimensionArg implements SpigotCmdResolver {
 
     /**
      * Creates a new resolver.
@@ -62,7 +64,7 @@ public final class CmdDimensionArg implements CommandArgumentResolver {
      * {@inheritDoc}
      */
     @Override
-    public ArgumentBuilder<?, ?> apply(Parameter parameter) {
+    public ArgumentBuilder<CommandSourceStack, ?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         return Commands.argument(s.isEmpty() ? parameter.getName() : s, DimensionArgument.dimension());
     }

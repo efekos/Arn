@@ -28,6 +28,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.spigot.argument.CustomArgumentType;
 import dev.efekos.arn.common.resolver.CommandArgumentResolver;
+import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 
@@ -39,7 +40,7 @@ import java.lang.reflect.Parameter;
  * @author efekos
  * @since 0.3.1
  */
-public final class CmdCustomArg implements CommandArgumentResolver {
+public final class CmdCustomArg implements SpigotCmdResolver {
 
     /**
      * An instance of the {@link CustomArgumentType} this resolver resolves.

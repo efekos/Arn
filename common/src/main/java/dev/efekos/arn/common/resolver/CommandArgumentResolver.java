@@ -24,12 +24,14 @@
 
 package dev.efekos.arn.common.resolver;
 
+import dev.efekos.arn.common.data.BaseCommandHandlerMethod;
+
 import java.lang.reflect.Parameter;
 
 
 /**
  * Represents a resolver that can create an {@link T} from a {@link Parameter} of a
- * {@link dev.efekos.arn.common.data.CommandHandlerMethod}. Unlike {@link CommandHandlerMethodArgumentResolver}s, there can be
+ * {@link BaseCommandHandlerMethod}. Unlike {@link CommandHandlerMethodArgumentResolver}s, there can be
  * {@link Parameter}s that doesn't have a CommandArgumentResolver. If
  * {@link CommandHandlerMethodArgumentResolver#requireCommandArgument()} returns {@code false} for a parameter, Arn
  * won't search for a CommandArgumentResolver for that parameter.
@@ -43,7 +45,7 @@ public interface CommandArgumentResolver<T> {
      * Returns whether this {@link CommandArgumentResolver} can resolve {@code parameter}. Keep in mind that there
      * shouldn't be more than one {@link CommandArgumentResolver} that can resolver the same parameter.
      *
-     * @param parameter A parameter of a {@link dev.efekos.arn.common.data.CommandHandlerMethod}.
+     * @param parameter A parameter of a {@link BaseCommandHandlerMethod}.
      * @return {@code true} if this {@link Parameter} should be resolved using this {@link CommandArgumentResolver},
      * {@code false} otherwise.
      */
@@ -52,7 +54,7 @@ public interface CommandArgumentResolver<T> {
     /**
      * Creates a {@link T} that will represent {@code parameter} in the command structure.
      *
-     * @param parameter A parameter of a {@link dev.efekos.arn.common.data.CommandHandlerMethod}.
+     * @param parameter A parameter of a {@link BaseCommandHandlerMethod}.
      * @return An {@link T} that represents {@code parameter}.
      */
     T apply(Parameter parameter);

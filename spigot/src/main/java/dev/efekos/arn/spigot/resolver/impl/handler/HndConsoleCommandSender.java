@@ -25,7 +25,7 @@
 package dev.efekos.arn.spigot.resolver.impl.handler;
 
 import com.mojang.brigadier.context.CommandContext;
-import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
@@ -35,7 +35,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import java.lang.reflect.Parameter;
 
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link ConsoleCommandSender}s.
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * {@link ConsoleCommandSender}s.
  *
  * @author efekos
  * @since 0.1
@@ -68,9 +69,11 @@ public final class HndConsoleCommandSender implements SpigotHndResolver {
      * {@inheritDoc}
      */
     @Override
-    public ConsoleCommandSender resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) {
+    public ConsoleCommandSender resolve(Parameter parameter, SpigotCommandHandlerMethod method,
+            CommandContext<CommandSourceStack> context) {
         CommandSender sender = context.getSource().getBukkitSender();
-        if (sender instanceof ConsoleCommandSender) return ((ConsoleCommandSender) sender);
+        if (sender instanceof ConsoleCommandSender)
+            return ((ConsoleCommandSender) sender);
         return null;
     }
 }

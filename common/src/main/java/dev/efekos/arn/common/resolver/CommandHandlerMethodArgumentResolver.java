@@ -24,19 +24,19 @@
 
 package dev.efekos.arn.common.resolver;
 
-import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.common.data.BaseCommandHandlerMethod;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 
 import java.lang.reflect.Parameter;
 
 /**
- * Represents a resolver that can take a {@link Parameter} from a {@link CommandHandlerMethod}, and figure out what
+ * Represents a resolver that can take a {@link Parameter} from a {@link BaseCommandHandlerMethod}, and figure out what
  * should be passed in to it while invoking the method.
  *
  * @author efekos
  * @since 0.1
  */
-public interface CommandHandlerMethodArgumentResolver<C> {
+public interface CommandHandlerMethodArgumentResolver<Ctx,Handler extends BaseCommandHandlerMethod<?,?>> {
 
 
     /**
@@ -44,7 +44,7 @@ public interface CommandHandlerMethodArgumentResolver<C> {
      * that there shouldn't be more than one {@link CommandHandlerMethodArgumentResolver} that can resolver the same
      * parameter.
      *
-     * @param parameter A parameter of a {@link dev.efekos.arn.common.data.CommandHandlerMethod}.
+     * @param parameter A parameter of a {@link BaseCommandHandlerMethod}.
      * @return {@code true} if this {@link Parameter} should be resolved using this
      * {@link CommandHandlerMethodArgumentResolver}, {@code false} otherwise.
      */
@@ -62,11 +62,11 @@ public interface CommandHandlerMethodArgumentResolver<C> {
      * Resolves value of an argument into an {@link Object}.
      *
      * @param parameter The {@link Parameter} that was associated with this resolver in the first place.
-     * @param method    Main {@link CommandHandlerMethod} in case something from there is needed.
+     * @param method    Main {@link BaseCommandHandlerMethod} in case something from there is needed.
      * @param context   Command context to get arguments from the executed command.
      * @return An object to be passed in to {@code parameter}.
      * @throws ArnSyntaxException if needed.
      */
-    Object resolve(Parameter parameter, CommandHandlerMethod method, C context) throws ArnSyntaxException;
+    Object resolve(Parameter parameter, Handler method, Ctx context) throws ArnSyntaxException;
 
 }

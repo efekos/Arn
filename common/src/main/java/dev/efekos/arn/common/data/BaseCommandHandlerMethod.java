@@ -44,7 +44,7 @@ import java.util.Objects;
  * @author efekos
  * @since 0.1
  */
-public class CommandHandlerMethod {
+public abstract class BaseCommandHandlerMethod<Cmd extends CommandArgumentResolver<?>,Hnd extends CommandHandlerMethodArgumentResolver<?>> {
 
     /**
      * Value of the {@link Command#value()} on {@link #method}.
@@ -63,13 +63,13 @@ public class CommandHandlerMethod {
      */
     private List<Parameter> parameters;
     /**
-     * A list of {@link CommandArgumentResolver}s found and used by Arn.
+     * A list of {@link Cmd}s found and used by Arn.
      */
-    private List<CommandArgumentResolver> argumentResolvers;
+    private List<Cmd> argumentResolvers;
     /**
-     * A list of {@link CommandHandlerMethodArgumentResolver}s found and used by Arn.
+     * A list of {@link Hnd}s found and used by Arn.
      */
-    private List<CommandHandlerMethodArgumentResolver> handlerMethodResolvers;
+    private List<Hnd> handlerMethodResolvers;
     /**
      * A signature string that represents what this command is. Unlike a method signature, this signature starts with
      * {@link Command#value()} of {@link #method} instead of the actual method game gathered through {@link Method#getName()}.
@@ -96,13 +96,6 @@ public class CommandHandlerMethod {
      */
     private boolean blocksPlayer;
 
-
-    /**
-     * Creates a new handler method.
-     */
-    public CommandHandlerMethod() {
-    }
-
     @Override
     public String toString() {
         return "CommandHandlerMethod{" +
@@ -123,7 +116,7 @@ public class CommandHandlerMethod {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CommandHandlerMethod that = (CommandHandlerMethod) o;
+        BaseCommandHandlerMethod that = (BaseCommandHandlerMethod) o;
         return blocksConsole == that.blocksConsole && blocksCommandBlock == that.blocksCommandBlock && blocksPlayer == that.blocksPlayer && Objects.equals(command, that.command) && Objects.equals(method, that.method) && Objects.equals(annotationData, that.annotationData) && Objects.equals(parameters, that.parameters) && Objects.equals(argumentResolvers, that.argumentResolvers) && Objects.equals(handlerMethodResolvers, that.handlerMethodResolvers) && Objects.equals(signature, that.signature);
     }
 
@@ -261,9 +254,9 @@ public class CommandHandlerMethod {
     /**
      * Getter for {@link #argumentResolvers}.
      *
-     * @return List of {@link CommandArgumentResolver}s found by Arn.
+     * @return List of {@link Cmd}s found by Arn.
      */
-    public List<CommandArgumentResolver> getArgumentResolvers() {
+    public List<Cmd> getArgumentResolvers() {
         return argumentResolvers;
     }
 
@@ -272,7 +265,7 @@ public class CommandHandlerMethod {
      *
      * @param argumentResolvers New value.
      */
-    public void setArgumentResolvers(List<CommandArgumentResolver> argumentResolvers) {
+    public void setArgumentResolvers(List<Cmd> argumentResolvers) {
         this.argumentResolvers = argumentResolvers;
     }
 
@@ -282,7 +275,7 @@ public class CommandHandlerMethod {
      *
      * @return List of {@link CommandHandlerMethodArgumentResolver}s found by Arn.
      */
-    public List<CommandHandlerMethodArgumentResolver> getHandlerMethodResolvers() {
+    public List<Hnd> getHandlerMethodResolvers() {
         return handlerMethodResolvers;
     }
 
@@ -291,7 +284,7 @@ public class CommandHandlerMethod {
      *
      * @param handlerMethodResolvers New value.
      */
-    public void setHandlerMethodResolvers(List<CommandHandlerMethodArgumentResolver> handlerMethodResolvers) {
+    public void setHandlerMethodResolvers(List<Hnd> handlerMethodResolvers) {
         this.handlerMethodResolvers = handlerMethodResolvers;
     }
 

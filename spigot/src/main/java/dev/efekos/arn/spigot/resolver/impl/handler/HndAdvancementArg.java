@@ -24,13 +24,13 @@
 
 package dev.efekos.arn.spigot.resolver.impl.handler;
 
-
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.commands.CommandSourceStack;
@@ -42,7 +42,8 @@ import org.bukkit.craftbukkit.v1_21_R1.advancement.CraftAdvancement;
 import java.lang.reflect.Parameter;
 
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link BlockData} arguments.
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * {@link BlockData} arguments.
  *
  * @author efekos
  * @since 0.1
@@ -75,10 +76,12 @@ public final class HndAdvancementArg implements SpigotHndResolver {
      * {@inheritDoc}
      */
     @Override
-    public Advancement resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
+    public Advancement resolve(Parameter parameter, SpigotCommandHandlerMethod method,
+            CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         try {
-            AdvancementHolder advancement = ResourceLocationArgument.getAdvancement(context, s.isEmpty() ? parameter.getName() : s);
+            AdvancementHolder advancement = ResourceLocationArgument.getAdvancement(context,
+                    s.isEmpty() ? parameter.getName() : s);
             return new CraftAdvancement(advancement);
         } catch (CommandSyntaxException e) {
             throw new ArnSyntaxException(e.getMessage());

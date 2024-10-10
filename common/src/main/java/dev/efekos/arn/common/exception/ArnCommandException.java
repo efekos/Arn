@@ -24,12 +24,12 @@
 
 package dev.efekos.arn.common.exception;
 
-import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.common.data.BaseCommandHandlerMethod;
 
 /**
  * An exception type thrown by Arn when there is something wrong with a
- * {@link CommandHandlerMethod}. It might be with the command itself, or something happening while executing the
- * {@link CommandHandlerMethod#getMethod()} method.
+ * {@link BaseCommandHandlerMethod}. It might be with the command itself, or something happening while executing the
+ * {@link BaseCommandHandlerMethod#getMethod()} method.
  *
  * @author efekos
  * @since 0.1

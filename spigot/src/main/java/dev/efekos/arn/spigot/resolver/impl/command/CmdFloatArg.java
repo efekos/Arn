@@ -29,6 +29,8 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.annotation.modifier.NumberLimitations;
 import dev.efekos.arn.common.resolver.CommandArgumentResolver;
+import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 
 import java.lang.reflect.Parameter;
@@ -39,7 +41,7 @@ import java.lang.reflect.Parameter;
  * @author efekos
  * @since 0.1
  */
-public final class CmdFloatArg implements CommandArgumentResolver {
+public final class CmdFloatArg implements SpigotCmdResolver {
 
     /**
      * Creates a new resolver.
@@ -59,7 +61,7 @@ public final class CmdFloatArg implements CommandArgumentResolver {
      * {@inheritDoc}
      */
     @Override
-    public ArgumentBuilder<?, ?> apply(Parameter parameter) {
+    public ArgumentBuilder<CommandSourceStack, ?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         NumberLimitations limitations = parameter.getAnnotation(NumberLimitations.class);
         boolean b = limitations != null;

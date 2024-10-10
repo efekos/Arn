@@ -27,7 +27,7 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.FromSender;
 import dev.efekos.arn.common.annotation.modifier.sender.*;
-import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
@@ -37,9 +37,9 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Parameter;
 
-
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves different kinds of number values
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * different kinds of number values
  * from a {@link Player} sender.
  *
  * @author efekos
@@ -58,7 +58,10 @@ public final class HndSenderStat implements SpigotHndResolver {
      */
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(FromSender.class) && ((parameter.getType().equals(Integer.class) || parameter.getType().equals(int.class)) || (parameter.getType().equals(Float.class) || parameter.getType().equals(float.class)) || (parameter.getType().equals(Double.class) || parameter.getType().equals(double.class)));
+        return parameter.isAnnotationPresent(FromSender.class)
+                && ((parameter.getType().equals(Integer.class) || parameter.getType().equals(int.class))
+                        || (parameter.getType().equals(Float.class) || parameter.getType().equals(float.class))
+                        || (parameter.getType().equals(Double.class) || parameter.getType().equals(double.class)));
     }
 
     /**
@@ -73,30 +76,40 @@ public final class HndSenderStat implements SpigotHndResolver {
      * {@inheritDoc}
      */
     @Override
-    public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) {
+    public Object resolve(Parameter parameter, SpigotCommandHandlerMethod method,
+            CommandContext<CommandSourceStack> context) {
         CommandSender sender = context.getSource().getBukkitSender();
-        if (!(sender instanceof Player player)) return null;
+        if (!(sender instanceof Player player))
+            return null;
 
-        if (parameter.isAnnotationPresent(Experience.class)) return caster(parameter.getType(), player.getExp());
-        if (parameter.isAnnotationPresent(ExpLevel.class)) return caster(parameter.getType(), player.getLevel());
-        if (parameter.isAnnotationPresent(FoodLevel.class)) return caster(parameter.getType(), player.getFoodLevel());
-        if (parameter.isAnnotationPresent(Health.class)) return caster(parameter.getType(), player.getHealth());
+        if (parameter.isAnnotationPresent(Experience.class))
+            return caster(parameter.getType(), player.getExp());
+        if (parameter.isAnnotationPresent(ExpLevel.class))
+            return caster(parameter.getType(), player.getLevel());
+        if (parameter.isAnnotationPresent(FoodLevel.class))
+            return caster(parameter.getType(), player.getFoodLevel());
+        if (parameter.isAnnotationPresent(Health.class))
+            return caster(parameter.getType(), player.getHealth());
         if (parameter.isAnnotationPresent(MaxHealth.class))
             return caster(parameter.getType(), player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
         return player.getHealth();
     }
 
     /**
-     * Casts given number to the correct type depending on what the parameter type is.
+     * Casts given number to the correct type depending on what the parameter type
+     * is.
      *
      * @param paramType Type of the parameter.
      * @param value     Value to cast.
      * @return Same value that might be cast to another class.
      */
     private Object caster(Class<?> paramType, Object value) {
-        if (paramType.equals(int.class) || paramType.equals(Integer.class)) return value;
-        if (paramType.equals(float.class) || paramType.equals(Float.class)) return value;
-        if (paramType.equals(double.class) || paramType.equals(Double.class)) return value;
+        if (paramType.equals(int.class) || paramType.equals(Integer.class))
+            return value;
+        if (paramType.equals(float.class) || paramType.equals(Float.class))
+            return value;
+        if (paramType.equals(double.class) || paramType.equals(Double.class))
+            return value;
         return value;
     }
 }

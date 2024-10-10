@@ -27,7 +27,7 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.annotation.modifier.Vector;
-import dev.efekos.arn.common.data.CommandHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
@@ -42,7 +42,8 @@ import org.bukkit.entity.Player;
 import java.lang.reflect.Parameter;
 
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves {@link Location} arguments using block
+ * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * {@link Location} arguments using block
  * position.
  *
  * @author efekos
@@ -61,14 +62,16 @@ public final class HndVectorArg implements SpigotHndResolver {
      */
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Location.class) && parameter.isAnnotationPresent(Vector.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Location.class)
+                && parameter.isAnnotationPresent(Vector.class);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Object resolve(Parameter parameter, CommandHandlerMethod method, CommandContext<CommandSourceStack> context) {
+    public Object resolve(Parameter parameter, SpigotCommandHandlerMethod method,
+            CommandContext<CommandSourceStack> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         Vec3 position = Vec3Argument.getVec3(context, s.isEmpty() ? parameter.getName() : s);
         double x = position.x();
@@ -76,9 +79,12 @@ public final class HndVectorArg implements SpigotHndResolver {
         double z = position.z();
 
         CommandSender sender = context.getSource().getBukkitSender();
-        if (sender instanceof Player p) return new Location(p.getWorld(), x, y, z);
-        else if (sender instanceof BlockCommandSender bc) return new Location(bc.getBlock().getWorld(), x, y, z);
-        else return new Location(Bukkit.getWorld("overworld"), x, y, z);
+        if (sender instanceof Player p)
+            return new Location(p.getWorld(), x, y, z);
+        else if (sender instanceof BlockCommandSender bc)
+            return new Location(bc.getBlock().getWorld(), x, y, z);
+        else
+            return new Location(Bukkit.getWorld("overworld"), x, y, z);
     }
 
     /**

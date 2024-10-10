@@ -22,47 +22,12 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.spigot.resolver.impl.command;
+package dev.efekos.arn.spigot.resolver;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
-import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.resolver.CommandArgumentResolver;
-import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
+import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
-import net.minecraft.commands.arguments.EntityArgument;
-import org.bukkit.entity.Player;
 
-import java.lang.reflect.Parameter;
-
-/**
- * An implementation of {@link CommandArgumentResolver}. Resolves {@link Player}[] arguments.
- *
- * @author efekos
- * @since 0.1
- */
-public final class CmdMultiplePlayerArg implements SpigotCmdResolver {
-
-    /**
-     * Creates a new resolver.
-     */
-    public CmdMultiplePlayerArg() {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Player[].class);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ArgumentBuilder<CommandSourceStack, ?> apply(Parameter parameter) {
-        String s = parameter.getAnnotation(CommandArgument.class).value();
-        return Commands.argument(s.isEmpty() ? parameter.getName() : s, EntityArgument.players());
-    }
+public interface SpigotCmdResolver extends CommandArgumentResolver<ArgumentBuilder<CommandSourceStack,?>> {
 }

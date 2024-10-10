@@ -31,8 +31,10 @@ import dev.efekos.arn.common.annotation.Container;
 import dev.efekos.arn.common.annotation.ExceptionHandler;
 import dev.efekos.arn.common.data.BaseExceptionHandlerMethod;
 import dev.efekos.arn.common.data.CommandAnnotationData;
-import dev.efekos.arn.common.data.CommandHandlerMethod;
-import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
+import dev.efekos.arn.spigot.data.ExceptionHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
+import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
 import org.reflections.Reflections;
 
@@ -43,47 +45,60 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
- * A class to dump utility methods used in {@link Arn} as a way to separate it into two classes.
+ * A class to dump utility methods used in {@link Arn} as a way to separate it
+ * into two classes.
+ * 
  * @since 0.4
  */
 class MethodDump {
 
     private final List<BaseExceptionHandlerMethod> baseExceptionHandlerMethods = new ArrayList<>();
 
-    protected Optional<BaseExceptionHandlerMethod> findHandlerMethod(Throwable e){
-        for (BaseExceptionHandlerMethod method : baseExceptionHandlerMethods) if(method.getExceptionClass().isAssignableFrom(e.getClass())) return Optional.of(method);
+    protected Optional<BaseExceptionHandlerMethod> findHandlerMethod(Throwable e) {
+        for (BaseExceptionHandlerMethod method : baseExceptionHandlerMethods)
+            if (method.getExceptionClass().isAssignableFrom(e.getClass()))
+                return Optional.of(method);
         return Optional.empty();
     }
 
     protected void scanExceptionHandlerMethods(Reflections reflections) {
-        for (Class<?> aClass : reflections.getTypesAnnotatedWith(Container.class)) for (Method method : aClass.getDeclaredMethods()) {
-            if(!method.isAnnotationPresent(ExceptionHandler.class))continue;
-            ExceptionHandler annotation = method.getAnnotation(ExceptionHandler.class);
-            BaseExceptionHandlerMethod handlerMethod = new BaseExceptionHandlerMethod(method, annotation.value());
-            baseExceptionHandlerMethods.add(handlerMethod);
-        }
+        for (Class<?> aClass : reflections.getTypesAnnotatedWith(Container.class))
+            for (Method method : aClass.getDeclaredMethods()) {
+                if (!method.isAnnotationPresent(ExceptionHandler.class))
+                    continue;
+                ExceptionHandler annotation = method.getAnnotation(ExceptionHandler.class);
+                BaseExceptionHandlerMethod handlerMethod = new ExceptionHandlerMethod(method, annotation.value());
+                baseExceptionHandlerMethods.add(handlerMethod);
+            }
 
     }
 
     /**
-     * Chains given argument builders into one {@link ArgumentBuilder} that can be used to register the command.
+     * Chains given argument builders into one {@link ArgumentBuilder} that can be
+     * used to register the command.
      *
      * @param nodes    List of the nodes to chain.
-     * @param executes execute function to handle the command. Added to the last argument in the chain.
-     * @param data     {@link CommandAnnotationData} associated with the nodes. If there is a permission required, it will
+     * @param executes execute function to handle the command. Added to the last
+     *                 argument in the chain.
+     * @param data     {@link CommandAnnotationData} associated with the nodes. If
+     *                 there is a permission required, it will
      *                 be applied to first literal of the chain.
      * @return {@code nodes[0]} with rest of the nodes attached to it.
      */
-    protected ArgumentBuilder<?, ?> chainArgumentBuilders(List<ArgumentBuilder> nodes, com.mojang.brigadier.Command<CommandSourceStack> executes, CommandAnnotationData data) {
-        if (nodes.isEmpty()) return null;
+    protected ArgumentBuilder<CommandSourceStack, ?> chainArgumentBuilders(
+            List<ArgumentBuilder<CommandSourceStack, ?>> nodes,
+            com.mojang.brigadier.Command<CommandSourceStack> executes, CommandAnnotationData data) {
+        if (nodes.isEmpty())
+            return null;
 
-        ArgumentBuilder chainedBuilder = nodes.getLast().executes(executes);
+        ArgumentBuilder<CommandSourceStack, ?> chainedBuilder = nodes.getLast().executes(executes);
 
         for (int i = nodes.size() - 2; i >= 0; i--)
-            chainedBuilder = nodes.get(i).then(chainedBuilder.requires(o -> ((CommandSourceStack) o).hasPermission(0, data.getPermission()))).requires(o -> ((CommandSourceStack) o).hasPermission(0, data.getPermission()));
+            chainedBuilder = nodes.get(i).then(chainedBuilder.requires(o -> o.hasPermission(0, data.getPermission())))
+                    .requires(o -> o.hasPermission(0, data.getPermission()));
 
         if (!data.getPermission().isEmpty())
-            chainedBuilder = chainedBuilder.requires(o -> ((CommandSourceStack) o).hasPermission(0, data.getPermission()));
+            chainedBuilder = chainedBuilder.requires(o -> o.hasPermission(0, data.getPermission()));
         return chainedBuilder;
     }
 
@@ -104,11 +119,12 @@ class MethodDump {
         return -1; // Return null if no match is found
     }
 
-    protected static List<Object> fillResolvers(CommandHandlerMethod method, CommandContext<CommandSourceStack> commandContext) throws CommandSyntaxException {
+    protected static List<Object> fillResolvers(SpigotCommandHandlerMethod method,
+            CommandContext<CommandSourceStack> commandContext) throws CommandSyntaxException {
         List<Object> objects = new ArrayList<>();
 
         for (int i = 0; i < method.getHandlerMethodResolvers().size(); i++) {
-            CommandHandlerMethodArgumentResolver resolver = method.getHandlerMethodResolvers().get(i);
+            SpigotHndResolver resolver = method.getHandlerMethodResolvers().get(i);
             objects.add(resolver.resolve(method.getParameters().get(i), method, commandContext));
         }
         return objects;
