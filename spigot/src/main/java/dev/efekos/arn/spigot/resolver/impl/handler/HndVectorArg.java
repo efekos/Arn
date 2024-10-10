@@ -27,8 +27,8 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.annotation.modifier.Vector;
-import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
@@ -40,6 +40,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Parameter;
+
+;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
@@ -71,7 +73,7 @@ public final class HndVectorArg implements SpigotHndResolver {
      */
     @Override
     public Object resolve(Parameter parameter, SpigotCommandHandlerMethod method,
-            CommandContext<CommandSourceStack> context) {
+                          CommandContext<CommandSourceStack> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         Vec3 position = Vec3Argument.getVec3(context, s.isEmpty() ? parameter.getName() : s);
         double x = position.x();

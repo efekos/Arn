@@ -36,4 +36,5 @@ import org.bukkit.command.CommandSender;
  * @author efekos
  * @since 0.3.1
  */
-public interface CustomArgumentType<T> extends dev.efekos.arn.common.argument.CustomArgumentType<T,ArgumentRegistration,CommandSender> { }
+public interface CustomArgumentType<T> extends dev.efekos.arn.common.argument.CustomArgumentType<T, ArgumentRegistration, CommandSender> {
+}

@@ -26,8 +26,6 @@ package dev.efekos.arn.common.config;
 
 import dev.efekos.arn.common.annotation.Container;
 import dev.efekos.arn.common.data.ExceptionMap;
-import dev.efekos.arn.common.resolver.CommandArgumentResolver;
-import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 
 import java.util.List;
 
@@ -39,7 +37,7 @@ import java.util.List;
  * @author efekos
  * @since 0.1
  */
-public interface ArnConfigurer<Cmd,Hnd> {
+public interface ArnConfigurer<Cmd, Hnd> {
 
     /**
      * Adds extra {@link Hnd}s to the given list.

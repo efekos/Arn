@@ -26,8 +26,8 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.FromSender;
-import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
 import org.bukkit.command.CommandSender;
@@ -35,6 +35,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import java.lang.reflect.Parameter;
+
+;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
@@ -72,7 +74,7 @@ public final class HndSenderInv implements SpigotHndResolver {
      */
     @Override
     public Inventory resolve(Parameter parameter, SpigotCommandHandlerMethod method,
-            CommandContext<CommandSourceStack> context) {
+                             CommandContext<CommandSourceStack> context) {
         CommandSender sender = context.getSource().getBukkitSender();
         if (!(sender instanceof Player))
             return null;

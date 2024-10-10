@@ -30,9 +30,13 @@ import java.util.List;
 public interface BaseExceptionHandlerMethod<Context> {
 
     Method getMethod();
+
     void setMethod(final Method method);
+
     Class<? extends Exception> getExceptionClass();
+
     void setExceptionClass(final Class<? extends Exception> exceptionClass);
+
     List<Object> fillParams(Throwable throwable, Context context);
 
 }

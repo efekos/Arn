@@ -27,12 +27,14 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
 
 import java.lang.reflect.Parameter;
+
+;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
@@ -64,7 +66,7 @@ public final class HndBooleanArg implements SpigotHndResolver {
      */
     @Override
     public Object resolve(Parameter parameter, SpigotCommandHandlerMethod method,
-            CommandContext<CommandSourceStack> context) {
+                          CommandContext<CommandSourceStack> context) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         return BoolArgumentType.getBool(context, s.isEmpty() ? parameter.getName() : s);
     }

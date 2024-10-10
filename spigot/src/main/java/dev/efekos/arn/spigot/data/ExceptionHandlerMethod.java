@@ -64,9 +64,10 @@ public class ExceptionHandlerMethod implements BaseExceptionHandlerMethod<Comman
         List<Object> objects = new ArrayList<>();
 
         for (Parameter parameter : method.getParameters()) {
-            if(parameter.getType().isAssignableFrom(Player.class)) objects.add(commandContext.getSource().getPlayer());
-            if(parameter.getType().isAssignableFrom(CommandSender.class)) objects.add(commandContext.getSource().getBukkitSender());
-            if(parameter.getType().isAssignableFrom(exceptionClass)) objects.add(ex);
+            if (parameter.getType().isAssignableFrom(Player.class)) objects.add(commandContext.getSource().getPlayer());
+            if (parameter.getType().isAssignableFrom(CommandSender.class))
+                objects.add(commandContext.getSource().getBukkitSender());
+            if (parameter.getType().isAssignableFrom(exceptionClass)) objects.add(ex);
         }
 
         return objects;

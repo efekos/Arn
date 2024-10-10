@@ -44,7 +44,7 @@ import java.util.Objects;
  * @author efekos
  * @since 0.1
  */
-public abstract class BaseCommandHandlerMethod<Cmd extends CommandArgumentResolver<?>,Hnd extends CommandHandlerMethodArgumentResolver<?>> {
+public abstract class BaseCommandHandlerMethod<Cmd extends CommandArgumentResolver<?>, Hnd extends CommandHandlerMethodArgumentResolver<?, ?>> {
 
     /**
      * Value of the {@link Command#value()} on {@link #method}.

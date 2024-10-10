@@ -36,7 +36,7 @@ import java.lang.reflect.Parameter;
  * @author efekos
  * @since 0.1
  */
-public interface CommandHandlerMethodArgumentResolver<Ctx,Handler extends BaseCommandHandlerMethod<?,?>> {
+public interface CommandHandlerMethodArgumentResolver<Ctx, Handler extends BaseCommandHandlerMethod<?, ?>> {
 
 
     /**

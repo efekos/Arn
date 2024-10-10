@@ -29,7 +29,6 @@ import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.resolver.CommandArgumentResolver;
 import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
 import net.minecraft.commands.CommandBuildContext;
-import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.ResourceArgument;

@@ -74,7 +74,7 @@ public final class CmdAdvancementArg implements SpigotCmdResolver {
      * {@inheritDoc}
      */
     @Override
-    public ArgumentBuilder<CommandSourceStack,?> apply(Parameter parameter) {
+    public ArgumentBuilder<CommandSourceStack, ?> apply(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         return Commands.argument(s.isEmpty() ? parameter.getName() : s, ResourceLocationArgument.id()).suggests(c);
     }

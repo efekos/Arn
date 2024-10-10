@@ -36,7 +36,7 @@ import java.util.List;
  * @author efekos
  * @since 0.3.1
  */
-public interface CustomArgumentType<Type,Registration,Sender> {
+public interface CustomArgumentType<Type, Registration, Sender> {
 
     /**
      * Returns class instance of the custom argument.

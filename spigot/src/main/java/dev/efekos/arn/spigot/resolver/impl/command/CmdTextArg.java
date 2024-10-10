@@ -30,7 +30,6 @@ import dev.efekos.arn.common.resolver.CommandArgumentResolver;
 import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.minecraft.commands.CommandBuildContext;
-import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.ComponentArgument;

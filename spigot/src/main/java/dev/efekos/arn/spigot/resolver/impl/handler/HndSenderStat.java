@@ -27,8 +27,8 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.FromSender;
 import dev.efekos.arn.common.annotation.modifier.sender.*;
-import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
 import org.bukkit.attribute.Attribute;
@@ -36,6 +36,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Parameter;
+
+;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
@@ -60,8 +62,8 @@ public final class HndSenderStat implements SpigotHndResolver {
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(FromSender.class)
                 && ((parameter.getType().equals(Integer.class) || parameter.getType().equals(int.class))
-                        || (parameter.getType().equals(Float.class) || parameter.getType().equals(float.class))
-                        || (parameter.getType().equals(Double.class) || parameter.getType().equals(double.class)));
+                || (parameter.getType().equals(Float.class) || parameter.getType().equals(float.class))
+                || (parameter.getType().equals(Double.class) || parameter.getType().equals(double.class)));
     }
 
     /**
@@ -77,7 +79,7 @@ public final class HndSenderStat implements SpigotHndResolver {
      */
     @Override
     public Object resolve(Parameter parameter, SpigotCommandHandlerMethod method,
-            CommandContext<CommandSourceStack> context) {
+                          CommandContext<CommandSourceStack> context) {
         CommandSender sender = context.getSource().getBukkitSender();
         if (!(sender instanceof Player player))
             return null;

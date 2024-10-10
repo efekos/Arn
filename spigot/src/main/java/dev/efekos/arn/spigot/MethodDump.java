@@ -28,11 +28,10 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.Container;
 import dev.efekos.arn.common.annotation.ExceptionHandler;
-import dev.efekos.arn.common.data.BaseExceptionHandlerMethod;
 import dev.efekos.arn.common.data.CommandAnnotationData;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
-import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.data.ExceptionHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
 import org.reflections.Reflections;
@@ -46,12 +45,40 @@ import java.util.function.Predicate;
 /**
  * A class to dump utility methods used in {@link Arn} as a way to separate it
  * into two classes.
- * 
+ *
  * @since 0.4
  */
 class MethodDump {
 
     private final List<ExceptionHandlerMethod> baseExceptionHandlerMethods = new ArrayList<>();
+
+    /**
+     * Finds last element that matches the given condition.
+     *
+     * @param list      Any list.
+     * @param condition A condition.
+     * @param <T>       Type of the elements in the list.
+     * @return Last element that matches the given condition in the list.
+     */
+    protected static <T> int findLastIndex(List<T> list, Predicate<T> condition) {
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (condition.test(list.get(i))) {
+                return i;
+            }
+        }
+        return -1; // Return null if no match is found
+    }
+
+    protected static List<Object> fillResolvers(SpigotCommandHandlerMethod method,
+                                                CommandContext<CommandSourceStack> commandContext) throws ArnSyntaxException {
+        List<Object> objects = new ArrayList<>();
+
+        for (int i = 0; i < method.getHandlerMethodResolvers().size(); i++) {
+            SpigotHndResolver resolver = method.getHandlerMethodResolvers().get(i);
+            objects.add(resolver.resolve(method.getParameters().get(i), method, commandContext));
+        }
+        return objects;
+    }
 
     protected Optional<ExceptionHandlerMethod> findHandlerMethod(Throwable e) {
         for (ExceptionHandlerMethod method : baseExceptionHandlerMethods)
@@ -99,34 +126,6 @@ class MethodDump {
         if (!data.getPermission().isEmpty())
             chainedBuilder = chainedBuilder.requires(o -> o.hasPermission(0, data.getPermission()));
         return chainedBuilder;
-    }
-
-    /**
-     * Finds last element that matches the given condition.
-     *
-     * @param list      Any list.
-     * @param condition A condition.
-     * @param <T>       Type of the elements in the list.
-     * @return Last element that matches the given condition in the list.
-     */
-    protected static <T> int findLastIndex(List<T> list, Predicate<T> condition) {
-        for (int i = list.size() - 1; i >= 0; i--) {
-            if (condition.test(list.get(i))) {
-                return i;
-            }
-        }
-        return -1; // Return null if no match is found
-    }
-
-    protected static List<Object> fillResolvers(SpigotCommandHandlerMethod method,
-            CommandContext<CommandSourceStack> commandContext) throws ArnSyntaxException {
-        List<Object> objects = new ArrayList<>();
-
-        for (int i = 0; i < method.getHandlerMethodResolvers().size(); i++) {
-            SpigotHndResolver resolver = method.getHandlerMethodResolvers().get(i);
-            objects.add(resolver.resolve(method.getParameters().get(i), method, commandContext));
-        }
-        return objects;
     }
 
 }

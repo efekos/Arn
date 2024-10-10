@@ -28,10 +28,10 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.annotation.CustomArgument;
-import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.exception.ArnCommandException;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.ResourceArgument;
@@ -40,6 +40,8 @@ import org.bukkit.ChatColor;
 
 import java.lang.reflect.Parameter;
 import java.util.Locale;
+
+;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
@@ -86,7 +88,7 @@ public final class HndEnumArg implements SpigotHndResolver {
      */
     @Override
     public Enum<?> resolve(Parameter parameter, SpigotCommandHandlerMethod method,
-            CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
+                           CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
 
         String s = parameter.getAnnotation(CommandArgument.class).value();
         String string = StringArgumentType.getString(context, s.isEmpty() ? parameter.getName() : s);

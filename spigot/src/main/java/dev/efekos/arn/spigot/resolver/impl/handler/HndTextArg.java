@@ -26,8 +26,8 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
@@ -42,6 +42,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_21_R1.CraftServer;
 
 import java.lang.reflect.Parameter;
+
+;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
@@ -86,7 +88,7 @@ public final class HndTextArg implements SpigotHndResolver {
      */
     @Override
     public BaseComponent resolve(Parameter parameter, SpigotCommandHandlerMethod method,
-            CommandContext<CommandSourceStack> ctx) {
+                                 CommandContext<CommandSourceStack> ctx) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         Component component = ComponentArgument.getComponent(ctx, s.isEmpty() ? parameter.getName() : s);
         if (context == null)

@@ -27,8 +27,8 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.FromSender;
 import dev.efekos.arn.common.annotation.modifier.sender.Name;
-import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
 import org.bukkit.Location;
@@ -39,6 +39,8 @@ import org.bukkit.command.ConsoleCommandSender;
 
 import java.lang.reflect.Parameter;
 import java.util.Locale;
+
+;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
@@ -62,7 +64,7 @@ public final class HndSenderName implements SpigotHndResolver {
     public boolean isApplicable(Parameter parameter) {
         return parameter.isAnnotationPresent(FromSender.class) && parameter.getType().equals(String.class)
                 && (parameter.isAnnotationPresent(Name.class)
-                        || parameter.getName().toLowerCase(Locale.ENGLISH).endsWith("name"));
+                || parameter.getName().toLowerCase(Locale.ENGLISH).endsWith("name"));
     }
 
     /**
@@ -78,7 +80,7 @@ public final class HndSenderName implements SpigotHndResolver {
      */
     @Override
     public String resolve(Parameter parameter, SpigotCommandHandlerMethod method,
-            CommandContext<CommandSourceStack> context) {
+                          CommandContext<CommandSourceStack> context) {
         CommandSender sender = context.getSource().getBukkitSender();
         if (sender instanceof ConsoleCommandSender)
             return "CONSOLE";

@@ -27,9 +27,9 @@ package dev.efekos.arn.spigot.resolver.impl.handler;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -42,6 +42,8 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Parameter;
 import java.util.Collection;
+
+;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
@@ -71,7 +73,7 @@ public final class HndMultiplePlayerArg implements SpigotHndResolver {
      */
     @Override
     public Player[] resolve(Parameter parameter, SpigotCommandHandlerMethod method,
-            CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
+                            CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         Collection<ServerPlayer> player;
         try {

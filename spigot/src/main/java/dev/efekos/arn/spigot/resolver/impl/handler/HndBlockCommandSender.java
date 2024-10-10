@@ -25,15 +25,17 @@
 package dev.efekos.arn.spigot.resolver.impl.handler;
 
 import com.mojang.brigadier.context.CommandContext;
-import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 
 import java.lang.reflect.Parameter;
+
+;
 
 /**
  * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
@@ -71,7 +73,7 @@ public final class HndBlockCommandSender implements SpigotHndResolver {
      */
     @Override
     public CommandSender resolve(Parameter parameter, SpigotCommandHandlerMethod method,
-            CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
+                                 CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
         CommandSender sender = context.getSource().getBukkitSender();
         if (sender instanceof BlockCommandSender)
             return sender;

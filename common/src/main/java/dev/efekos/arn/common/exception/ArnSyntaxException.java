@@ -47,7 +47,7 @@ public class ArnSyntaxException extends ArnException {
         super(message);
     }
 
-    public ArnSyntaxException(CommandSyntaxException e){
+    public ArnSyntaxException(CommandSyntaxException e) {
         super(e.getMessage());
     }
 
