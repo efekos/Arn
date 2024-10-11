@@ -33,7 +33,7 @@ public class Arn {
 
     }
 
-    public static boolean isAvailable(){
+    public static boolean isAvailable() {
         try {
             Class.forName("dev.efekos.arn.StaticArnBinder");
             return true;
@@ -42,21 +42,22 @@ public class Arn {
         }
     }
 
-    public static ArnInstance getInstance(){
-        if(!isAvailable())return null;
+    public static ArnInstance getInstance() {
+        if (!isAvailable()) return null;
         try {
             Class<?> clazz = Class.forName("dev.efekos.arn.StaticArnBinder");
             Method createArnInstance = clazz.getDeclaredMethod("createArnInstance");
             Object o = createArnInstance.invoke(null);
-            if(!(o instanceof ArnInstance i)) throw new RuntimeException("dev.efekos.arn.common.StaticArnBinder#createArnInstance does not return a dev.efekos.arn.common.ArnInstance. Please report this to github: https://github.com/efekos/Arn");
+            if (!(o instanceof ArnInstance i))
+                throw new RuntimeException("dev.efekos.arn.common.StaticArnBinder#createArnInstance does not return a dev.efekos.arn.common.ArnInstance. Please report this to github: https://github.com/efekos/Arn");
             return i;
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Could not find StaticArnBinder even though it is guaranteed to exist. Please report this to github: https://github.com/efekos/Arn",e);
-        } catch (NoSuchMethodException e){
-            throw new RuntimeException("Could not find the method #createArnInstance at StaticArnBinder. Please report this to github: https://github.com/efekos/Arn",e);
-        } catch (IllegalAccessException e){
-            throw new RuntimeException("Could not access #createArnInstance method of StaticArnBinder. Please report this to github: https://github.com/efekos/Arn",e);
-        } catch (InvocationTargetException e){
+            throw new RuntimeException("Could not find StaticArnBinder even though it is guaranteed to exist. Please report this to github: https://github.com/efekos/Arn", e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Could not find the method #createArnInstance at StaticArnBinder. Please report this to github: https://github.com/efekos/Arn", e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Could not access #createArnInstance method of StaticArnBinder. Please report this to github: https://github.com/efekos/Arn", e);
+        } catch (InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }

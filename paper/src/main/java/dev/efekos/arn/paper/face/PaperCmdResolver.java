@@ -28,5 +28,5 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.common.resolver.BaseCmdResolver;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 
-public interface PaperCmdResolver extends BaseCmdResolver<ArgumentBuilder<CommandSourceStack,?>> {
+public interface PaperCmdResolver extends BaseCmdResolver<ArgumentBuilder<CommandSourceStack, ?>> {
 }

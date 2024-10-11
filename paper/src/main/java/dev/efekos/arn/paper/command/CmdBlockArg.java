@@ -39,7 +39,7 @@ public class CmdBlockArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(BlockType.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(BlockType.class);
     }
 
     @Override

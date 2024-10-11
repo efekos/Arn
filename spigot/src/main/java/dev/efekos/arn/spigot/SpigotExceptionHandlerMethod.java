@@ -46,8 +46,10 @@ public class SpigotExceptionHandlerMethod extends BaseExceptionHandlerMethod<Com
 
         for (Parameter parameter : method.getParameters()) {
             if (Player.class.isAssignableFrom(parameter.getType())) objects.add(commandContext.getSource().getPlayer());
-            else if (CommandSender.class.isAssignableFrom(parameter.getType())) objects.add(commandContext.getSource().getBukkitSender());
-            else if (parameter.getType().isAssignableFrom(exceptionClass)||exceptionClass.equals(parameter.getType())) objects.add(ex);
+            else if (CommandSender.class.isAssignableFrom(parameter.getType()))
+                objects.add(commandContext.getSource().getBukkitSender());
+            else if (parameter.getType().isAssignableFrom(exceptionClass) || exceptionClass.equals(parameter.getType()))
+                objects.add(ex);
             else objects.add(null);
         }
 

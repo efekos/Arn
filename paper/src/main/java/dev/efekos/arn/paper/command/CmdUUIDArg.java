@@ -30,7 +30,6 @@ import dev.efekos.arn.paper.face.PaperCmdResolver;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import org.bukkit.GameMode;
 
 import java.lang.reflect.Parameter;
 import java.util.UUID;
@@ -39,7 +38,7 @@ public class CmdUUIDArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(UUID.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(UUID.class);
     }
 
     @Override

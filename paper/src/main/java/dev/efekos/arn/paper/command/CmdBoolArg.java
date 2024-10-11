@@ -25,10 +25,8 @@
 package dev.efekos.arn.paper.command;
 
 import com.mojang.brigadier.arguments.BoolArgumentType;
-import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.common.annotation.modifier.NumberLimitations;
 import dev.efekos.arn.paper.face.PaperCmdResolver;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -39,7 +37,7 @@ public class CmdBoolArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&(parameter.getType().equals(boolean.class)||parameter.getType().equals(Boolean.class));
+        return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(boolean.class) || parameter.getType().equals(Boolean.class));
     }
 
     @Override

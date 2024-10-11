@@ -38,13 +38,13 @@ public class CmdIntArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&(parameter.getType().equals(int.class)||parameter.getType().equals(Integer.class));
+        return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(int.class) || parameter.getType().equals(Integer.class));
     }
 
     @Override
     public ArgumentBuilder<CommandSourceStack, ?> apply(Parameter parameter) {
         boolean hasLimitations = parameter.isAnnotationPresent(NumberLimitations.class);
         NumberLimitations annotation = parameter.getAnnotation(NumberLimitations.class);
-        return Commands.argument(getName(parameter),hasLimitations? IntegerArgumentType.integer((int)annotation.min(),(int)annotation.max()):IntegerArgumentType.integer());
+        return Commands.argument(getName(parameter), hasLimitations ? IntegerArgumentType.integer((int) annotation.min(), (int) annotation.max()) : IntegerArgumentType.integer());
     }
 }

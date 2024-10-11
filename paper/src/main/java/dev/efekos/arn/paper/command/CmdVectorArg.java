@@ -39,7 +39,7 @@ public class CmdVectorArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(Location.class)&&parameter.isAnnotationPresent(Vector.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Location.class) && parameter.isAnnotationPresent(Vector.class);
     }
 
     @Override

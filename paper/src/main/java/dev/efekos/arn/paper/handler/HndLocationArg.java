@@ -24,7 +24,6 @@
 
 package dev.efekos.arn.paper.handler;
 
-import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.common.annotation.CommandArgument;
@@ -42,7 +41,7 @@ public class HndLocationArg implements PaperHndResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(Location.class)&&!parameter.isAnnotationPresent(Vector.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Location.class) && !parameter.isAnnotationPresent(Vector.class);
     }
 
     @Override
@@ -53,7 +52,7 @@ public class HndLocationArg implements PaperHndResolver {
     @Override
     public Object resolve(Parameter parameter, PaperCommandMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
         try {
-            return (Location)context.getArgument(getName(parameter), BlockPositionResolver.class).resolve(context.getSource());
+            return (Location) context.getArgument(getName(parameter), BlockPositionResolver.class).resolve(context.getSource());
         } catch (CommandSyntaxException e) {
             throw new ArnSyntaxException(e.getMessage());
         }

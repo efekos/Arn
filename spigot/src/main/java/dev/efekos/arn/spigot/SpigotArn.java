@@ -198,7 +198,7 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
             registerCommands();
             registerHelpers(reflections);
         } catch (Exception e) {
-            throw new RuntimeException("Unexpected SpigotArn error. Please report this to github: https://github.com/efekos/Arn",e);
+            throw new RuntimeException("Unexpected SpigotArn error. Please report this to github: https://github.com/efekos/Arn", e);
         }
     }
 

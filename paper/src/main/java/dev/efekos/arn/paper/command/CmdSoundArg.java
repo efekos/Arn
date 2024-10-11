@@ -32,7 +32,6 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.Sound;
-import org.bukkit.attribute.Attribute;
 
 import java.lang.reflect.Parameter;
 
@@ -40,7 +39,7 @@ public class CmdSoundArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(Sound.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Sound.class);
     }
 
     @Override

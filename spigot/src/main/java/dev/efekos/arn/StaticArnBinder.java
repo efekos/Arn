@@ -29,7 +29,7 @@ import dev.efekos.arn.spigot.SpigotArn;
 
 public class StaticArnBinder {
 
-    public static ArnInstance createArnInstance(){
+    public static ArnInstance createArnInstance() {
         return new SpigotArn();
     }
 

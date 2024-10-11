@@ -31,7 +31,6 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
 import java.lang.reflect.Parameter;
 
@@ -39,12 +38,12 @@ public class CmdEntityArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&& Entity.class.isAssignableFrom(parameter.getType());
+        return parameter.isAnnotationPresent(CommandArgument.class) && Entity.class.isAssignableFrom(parameter.getType());
     }
 
     @Override
     public ArgumentBuilder<CommandSourceStack, ?> apply(Parameter parameter) {
-        return Commands.argument(getName(parameter),ArgumentTypes.entity());
+        return Commands.argument(getName(parameter), ArgumentTypes.entity());
     }
 
 }

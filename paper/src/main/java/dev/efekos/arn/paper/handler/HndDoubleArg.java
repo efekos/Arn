@@ -25,7 +25,6 @@
 package dev.efekos.arn.paper.handler;
 
 import com.mojang.brigadier.arguments.DoubleArgumentType;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
@@ -39,7 +38,7 @@ public class HndDoubleArg implements PaperHndResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&(parameter.getType().equals(Double.class)||parameter.getType().equals(double.class));
+        return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(Double.class) || parameter.getType().equals(double.class));
     }
 
     @Override
@@ -49,7 +48,7 @@ public class HndDoubleArg implements PaperHndResolver {
 
     @Override
     public Object resolve(Parameter parameter, PaperCommandMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
-        return DoubleArgumentType.getDouble(context,getName(parameter));
+        return DoubleArgumentType.getDouble(context, getName(parameter));
     }
 
 }

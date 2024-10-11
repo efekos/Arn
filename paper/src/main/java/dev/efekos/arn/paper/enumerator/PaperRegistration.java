@@ -46,7 +46,7 @@ public enum PaperRegistration {
      * suggestions are a list of ids that are made out of a namespace, a {@code :} and a key, this registration type
      * will be useful.
      */
-    ID(ArgumentTypes::namespacedKey,(context, name) -> context.getArgument(name, NamespacedKey.class).toString()),
+    ID(ArgumentTypes::namespacedKey, (context, name) -> context.getArgument(name, NamespacedKey.class).toString()),
 
     /**
      * Uses word arguments. If your suggestions are a list of words made out of lowercase English characters, this

@@ -24,7 +24,6 @@
 
 package dev.efekos.arn.paper.handler;
 
-import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.CommandArgument;
@@ -39,7 +38,7 @@ public class HndLongArg implements PaperHndResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&(parameter.getType().equals(Long.class)||parameter.getType().equals(long.class));
+        return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(Long.class) || parameter.getType().equals(long.class));
     }
 
     @Override
@@ -49,7 +48,7 @@ public class HndLongArg implements PaperHndResolver {
 
     @Override
     public Object resolve(Parameter parameter, PaperCommandMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
-        return LongArgumentType.getLong(context,getName(parameter));
+        return LongArgumentType.getLong(context, getName(parameter));
     }
 
 }

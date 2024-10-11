@@ -38,12 +38,12 @@ public class CmdPlayersArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&& Player[].class.isAssignableFrom(parameter.getType());
+        return parameter.isAnnotationPresent(CommandArgument.class) && Player[].class.isAssignableFrom(parameter.getType());
     }
 
     @Override
     public ArgumentBuilder<CommandSourceStack, ?> apply(Parameter parameter) {
-        return Commands.argument(getName(parameter),ArgumentTypes.players());
+        return Commands.argument(getName(parameter), ArgumentTypes.players());
     }
 
 }

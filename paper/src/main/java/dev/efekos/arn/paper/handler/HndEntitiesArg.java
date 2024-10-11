@@ -40,7 +40,7 @@ public class HndEntitiesArg implements PaperHndResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(Entity[].class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Entity[].class);
     }
 
     @Override

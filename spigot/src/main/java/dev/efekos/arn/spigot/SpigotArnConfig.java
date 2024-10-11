@@ -73,10 +73,10 @@ public final class SpigotArnConfig implements SpArnConfig {
     public void addArgumentResolvers(List<SpigotCmdResolver> resolvers) {
         resolvers.addAll(List.of(
                 new CmdBooleanArg(), new CmdDoubleArg(), new CmdLocationArg(), new CmdLocationArg(), new CmdIntArg(),
-                new CmdStringArg(), new CmdTextArg(),new CmdEffectTypeArg(),new CmdGameModeArg(),new CmdPlayerArg(),
-                new CmdMultiplePlayerArg(),new CmdDimensionArg(),new CmdEntityArg(),new CmdMultipleEntityArg(),
-                new CmdFloatArg(),new CmdEnchantmentArg(),new CmdItemArg(),new CmdBlockArg(),new CmdItemStackArg(),
-                new CmdAdvancementArg(),new CmdAttributeArg(),new CmdVectorArg(),new CmdInventorySlotArg()
+                new CmdStringArg(), new CmdTextArg(), new CmdEffectTypeArg(), new CmdGameModeArg(), new CmdPlayerArg(),
+                new CmdMultiplePlayerArg(), new CmdDimensionArg(), new CmdEntityArg(), new CmdMultipleEntityArg(),
+                new CmdFloatArg(), new CmdEnchantmentArg(), new CmdItemArg(), new CmdBlockArg(), new CmdItemStackArg(),
+                new CmdAdvancementArg(), new CmdAttributeArg(), new CmdVectorArg(), new CmdInventorySlotArg()
         ));
     }
 

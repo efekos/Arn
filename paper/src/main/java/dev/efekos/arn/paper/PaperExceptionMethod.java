@@ -46,9 +46,12 @@ public class PaperExceptionMethod extends BaseExceptionHandlerMethod<CommandCont
         List<Object> objects = new ArrayList<>();
 
         for (Parameter parameter : method.getParameters()) {
-            if (Player.class.isAssignableFrom(parameter.getType())) objects.add((Player) commandContext.getSource().getSender());
-            else if (CommandSender.class.isAssignableFrom(parameter.getType())) objects.add(commandContext.getSource().getSender());
-            else if (parameter.getType().isAssignableFrom(exceptionClass)||exceptionClass.equals(parameter.getType())) objects.add(ex);
+            if (Player.class.isAssignableFrom(parameter.getType()))
+                objects.add((Player) commandContext.getSource().getSender());
+            else if (CommandSender.class.isAssignableFrom(parameter.getType()))
+                objects.add(commandContext.getSource().getSender());
+            else if (parameter.getType().isAssignableFrom(exceptionClass) || exceptionClass.equals(parameter.getType()))
+                objects.add(ex);
             else objects.add(null);
         }
 

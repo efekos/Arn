@@ -32,7 +32,6 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import org.bukkit.Location;
-import org.bukkit.block.BlockState;
 
 import java.lang.reflect.Parameter;
 
@@ -40,7 +39,7 @@ public class CmdBlockPosArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(Location.class)&&!parameter.isAnnotationPresent(Vector.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Location.class) && !parameter.isAnnotationPresent(Vector.class);
     }
 
     @Override

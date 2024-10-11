@@ -30,7 +30,6 @@ import dev.efekos.arn.paper.face.PaperCmdResolver;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import io.papermc.paper.command.brigadier.argument.predicate.ItemStackPredicate;
 import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.enchantments.Enchantment;
 
@@ -40,7 +39,7 @@ public class CmdEnchantmentArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(Enchantment.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Enchantment.class);
     }
 
     @Override

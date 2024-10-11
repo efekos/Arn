@@ -38,13 +38,13 @@ public class CmdFloatArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&(parameter.getType().equals(float.class)||parameter.getType().equals(Float.class));
+        return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(float.class) || parameter.getType().equals(Float.class));
     }
 
     @Override
     public ArgumentBuilder<CommandSourceStack, ?> apply(Parameter parameter) {
         boolean hasLimitations = parameter.isAnnotationPresent(NumberLimitations.class);
         NumberLimitations annotation = parameter.getAnnotation(NumberLimitations.class);
-        return Commands.argument(getName(parameter),hasLimitations? FloatArgumentType.floatArg(annotation.min(),annotation.max()): FloatArgumentType.floatArg());
+        return Commands.argument(getName(parameter), hasLimitations ? FloatArgumentType.floatArg(annotation.min(), annotation.max()) : FloatArgumentType.floatArg());
     }
 }

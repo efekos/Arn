@@ -31,7 +31,6 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.registry.RegistryKey;
-import org.bukkit.damage.DamageType;
 import org.bukkit.potion.PotionEffectType;
 
 import java.lang.reflect.Parameter;
@@ -40,7 +39,7 @@ public class CmdEffectArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(PotionEffectType.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(PotionEffectType.class);
     }
 
     @Override

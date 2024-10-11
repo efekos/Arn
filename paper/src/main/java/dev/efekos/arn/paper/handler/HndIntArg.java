@@ -25,14 +25,12 @@
 package dev.efekos.arn.paper.handler;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.paper.PaperCommandMethod;
 import dev.efekos.arn.paper.face.PaperHndResolver;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import org.checkerframework.common.value.qual.IntRangeFromGTENegativeOne;
 
 import java.lang.reflect.Parameter;
 
@@ -40,7 +38,7 @@ public class HndIntArg implements PaperHndResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&(parameter.getType().equals(Integer.class)||parameter.getType().equals(int.class));
+        return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(Integer.class) || parameter.getType().equals(int.class));
     }
 
     @Override
@@ -50,7 +48,7 @@ public class HndIntArg implements PaperHndResolver {
 
     @Override
     public Object resolve(Parameter parameter, PaperCommandMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
-        return IntegerArgumentType.getInteger(context,getName(parameter));
+        return IntegerArgumentType.getInteger(context, getName(parameter));
     }
 
 }

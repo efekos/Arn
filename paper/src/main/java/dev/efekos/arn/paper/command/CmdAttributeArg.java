@@ -32,7 +32,6 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.enchantments.Enchantment;
 
 import java.lang.reflect.Parameter;
 
@@ -40,7 +39,7 @@ public class CmdAttributeArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(Attribute.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Attribute.class);
     }
 
     @Override

@@ -71,7 +71,7 @@ public final class CmdCustomArg implements PaperCmdResolver {
     public ArgumentBuilder<CommandSourceStack, ?> apply(Parameter parameter) {
         return Commands.argument(getName(parameter), customArgumentType.getRegistration().getFunc()).suggests((context, builder) -> {
                     for (String s : customArgumentType.suggest(context.getSource().getSender())) {
-                        if(s.startsWith(builder.getRemainingLowerCase())) builder.suggest(s);
+                        if (s.startsWith(builder.getRemainingLowerCase())) builder.suggest(s);
                     }
                     return builder.buildFuture();
                 }

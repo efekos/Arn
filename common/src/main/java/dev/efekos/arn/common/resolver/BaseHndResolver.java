@@ -71,7 +71,7 @@ public interface BaseHndResolver<Ctx, Method extends BaseCommandHandlerMethod<?,
     Object resolve(Parameter parameter, Method method, Ctx context) throws ArnSyntaxException;
 
 
-    default String getName(Parameter parameter){
+    default String getName(Parameter parameter) {
         String s = parameter.getAnnotation(CommandArgument.class).value();
         return s.isEmpty() ? parameter.getName() : s;
     }

@@ -26,8 +26,8 @@ package dev.efekos.arn.spigot.resolver.command;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.spigot.annotation.Block;
 import dev.efekos.arn.common.resolver.BaseCmdResolver;
+import dev.efekos.arn.spigot.annotation.Block;
 import dev.efekos.arn.spigot.face.SpigotCmdResolver;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;

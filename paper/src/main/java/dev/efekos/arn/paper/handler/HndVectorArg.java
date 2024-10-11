@@ -41,7 +41,7 @@ public class HndVectorArg implements PaperHndResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(Location.class)&&parameter.isAnnotationPresent(Vector.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Location.class) && parameter.isAnnotationPresent(Vector.class);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class HndVectorArg implements PaperHndResolver {
     @Override
     public Object resolve(Parameter parameter, PaperCommandMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
         try {
-            return (Location)context.getArgument(getName(parameter), FinePositionResolver.class).resolve(context.getSource());
+            return (Location) context.getArgument(getName(parameter), FinePositionResolver.class).resolve(context.getSource());
         } catch (CommandSyntaxException e) {
             throw new ArnSyntaxException(e.getMessage());
         }

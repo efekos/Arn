@@ -38,20 +38,20 @@ public class PaperArnConfigurer implements PaperArnConfig {
     @Override
     public void addHandlerMethodArgumentResolvers(List<PaperHndResolver> resolvers) {
         resolvers.addAll(List.of(
-                new HndBoolArg(),new HndDoubleArg(),new HndEntitiesArg(),new HndEntityArg(), new HndFloatArg(),
-                new HndIntArg(),new HndLocationArg(),new HndLongArg(),new HndPlayerArg(),new HndPlayersArg(),
-                new HndStringArg(),new HndVectorArg()
+                new HndBoolArg(), new HndDoubleArg(), new HndEntitiesArg(), new HndEntityArg(), new HndFloatArg(),
+                new HndIntArg(), new HndLocationArg(), new HndLongArg(), new HndPlayerArg(), new HndPlayersArg(),
+                new HndStringArg(), new HndVectorArg()
         ));
     }
 
     @Override
     public void addArgumentResolvers(List<PaperCmdResolver> resolvers) {
         resolvers.addAll(List.of(
-                new CmdAttributeArg(),new CmdBiomeArg(),new CmdBlockArg(),new CmdBlockPosArg(),new CmdBlockStateArg(),
-                new CmdBoolArg(),new CmdComponentArg(),new CmdDamageTypeArg(),new CmdDoubleArg(),new CmdEffectArg(),
-                new CmdEnchantmentArg(), new CmdEntitiesArg(),new CmdEntityArg(),new CmdFloatArg(),new CmdGameModeArg(),
-                new CmdIntArg(),new CmdItemPredicateArg(),new CmdItemStackArg(),new CmdLongArg(),new CmdPlayerArg(),
-                new CmdPlayersArg(),new CmdSoundArg(),new CmdStringArg(),new CmdUUIDArg(),new CmdVectorArg()
+                new CmdAttributeArg(), new CmdBiomeArg(), new CmdBlockArg(), new CmdBlockPosArg(), new CmdBlockStateArg(),
+                new CmdBoolArg(), new CmdComponentArg(), new CmdDamageTypeArg(), new CmdDoubleArg(), new CmdEffectArg(),
+                new CmdEnchantmentArg(), new CmdEntitiesArg(), new CmdEntityArg(), new CmdFloatArg(), new CmdGameModeArg(),
+                new CmdIntArg(), new CmdItemPredicateArg(), new CmdItemStackArg(), new CmdLongArg(), new CmdPlayerArg(),
+                new CmdPlayersArg(), new CmdSoundArg(), new CmdStringArg(), new CmdUUIDArg(), new CmdVectorArg()
         ));
     }
 

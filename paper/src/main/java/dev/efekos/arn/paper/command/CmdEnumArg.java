@@ -50,14 +50,15 @@ public class CmdEnumArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(clazz);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(clazz);
     }
 
     @Override
     public ArgumentBuilder<CommandSourceStack, ?> apply(Parameter parameter) {
         return Commands.argument(getName(parameter), StringArgumentType.word()).suggests((commandContext, suggestionsBuilder) -> {
             for (String constant : constants)
-                if (constant.startsWith(suggestionsBuilder.getRemainingLowerCase())) suggestionsBuilder.suggest(constant);
+                if (constant.startsWith(suggestionsBuilder.getRemainingLowerCase()))
+                    suggestionsBuilder.suggest(constant);
             return suggestionsBuilder.buildFuture();
         });
     }

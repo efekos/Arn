@@ -26,22 +26,19 @@ package dev.efekos.arn.paper.command;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.common.annotation.modifier.Vector;
 import dev.efekos.arn.paper.face.PaperCmdResolver;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Location;
 
-import java.awt.*;
 import java.lang.reflect.Parameter;
 
 public class CmdComponentArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(Component.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Component.class);
     }
 
     @Override

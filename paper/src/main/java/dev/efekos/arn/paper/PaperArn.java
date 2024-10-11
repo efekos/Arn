@@ -76,26 +76,25 @@ public class PaperArn implements ArnInstance {
     private final ExceptionMap<PaperCmdResolver> commandResolverExceptions = new ExceptionMap<>();
     private final ExceptionMap<PaperHndResolver> handlerResolverExceptions = new ExceptionMap<>();
     private final List<PaperHndResolver> handlerResolvers = new ArrayList<>();
+    private boolean configured = false;
 
     private <T> T instantiate(Class<T> clazz) {
         try {
             return clazz.getConstructor().newInstance();
-        } catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
 
-    private boolean configured = false;
-
-    private void configure(Reflections reflections){
-        if(configured)return;
+    private void configure(Reflections reflections) {
+        if (configured) return;
         configured = true;
 
         List<PaperArnConfig> list = new ArrayList<>(List.of(new PaperArnConfigurer()));
 
         for (Class<? extends PaperArnConfig> aClass : reflections.getSubTypesOf(PaperArnConfig.class)) {
             PaperArnConfig instantiate = instantiate(aClass);
-            if(instantiate!=null)list.add(instantiate);
+            if (instantiate != null) list.add(instantiate);
         }
 
         for (PaperArnConfig config : list) {

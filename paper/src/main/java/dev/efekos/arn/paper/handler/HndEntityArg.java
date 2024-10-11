@@ -27,14 +27,11 @@ package dev.efekos.arn.paper.handler;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.common.annotation.modifier.Vector;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.paper.PaperCommandMethod;
 import dev.efekos.arn.paper.face.PaperHndResolver;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.EntitySelectorArgumentResolver;
-import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
-import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 
 import java.lang.reflect.Parameter;
@@ -43,7 +40,7 @@ public class HndEntityArg implements PaperHndResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(Entity.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Entity.class);
     }
 
     @Override

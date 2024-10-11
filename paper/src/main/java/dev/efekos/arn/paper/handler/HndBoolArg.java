@@ -25,7 +25,6 @@
 package dev.efekos.arn.paper.handler;
 
 import com.mojang.brigadier.arguments.BoolArgumentType;
-import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
@@ -39,7 +38,7 @@ public class HndBoolArg implements PaperHndResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&(parameter.getType().equals(Boolean.class)||parameter.getType().equals(boolean.class));
+        return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(Boolean.class) || parameter.getType().equals(boolean.class));
     }
 
     @Override
@@ -49,7 +48,7 @@ public class HndBoolArg implements PaperHndResolver {
 
     @Override
     public Object resolve(Parameter parameter, PaperCommandMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
-        return BoolArgumentType.getBool(context,getName(parameter));
+        return BoolArgumentType.getBool(context, getName(parameter));
     }
 
 }

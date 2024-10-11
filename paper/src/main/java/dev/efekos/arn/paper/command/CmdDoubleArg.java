@@ -25,7 +25,6 @@
 package dev.efekos.arn.paper.command;
 
 import com.mojang.brigadier.arguments.DoubleArgumentType;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.annotation.modifier.NumberLimitations;
@@ -39,13 +38,13 @@ public class CmdDoubleArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&(parameter.getType().equals(double.class)||parameter.getType().equals(Double.class));
+        return parameter.isAnnotationPresent(CommandArgument.class) && (parameter.getType().equals(double.class) || parameter.getType().equals(Double.class));
     }
 
     @Override
     public ArgumentBuilder<CommandSourceStack, ?> apply(Parameter parameter) {
         boolean hasLimitations = parameter.isAnnotationPresent(NumberLimitations.class);
         NumberLimitations annotation = parameter.getAnnotation(NumberLimitations.class);
-        return Commands.argument(getName(parameter),hasLimitations? DoubleArgumentType.doubleArg(annotation.min(),annotation.max()):DoubleArgumentType.doubleArg());
+        return Commands.argument(getName(parameter), hasLimitations ? DoubleArgumentType.doubleArg(annotation.min(), annotation.max()) : DoubleArgumentType.doubleArg());
     }
 }

@@ -38,7 +38,7 @@ public class HndStringArg implements PaperHndResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(String.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(String.class);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class HndStringArg implements PaperHndResolver {
 
     @Override
     public Object resolve(Parameter parameter, PaperCommandMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
-        return StringArgumentType.getString(context,getName(parameter));
+        return StringArgumentType.getString(context, getName(parameter));
     }
 
 }
