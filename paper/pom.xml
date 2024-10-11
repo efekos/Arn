@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>arn-paper</artifactId>
+    <version>0.4.0-SNAPSHOT</version>
+
+    <name>ArnPaper</name>
+
+    <parent>
+        <groupId>dev.efekos.arn</groupId>
+        <artifactId>arn-root</artifactId>
+        <version>0.4-SNAPSHOT</version>
+    </parent>
+
+    <repositories>
+        <repository>
+            <id>local</id>
+            <url>file://C:\EfekosDev\Maven</url>
+        </repository>
+        <repository>
+            <id>papermc-repo</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
+    <properties>
+        <java.version>17</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.21-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>dev.efekos.arn</groupId>
+            <artifactId>arn-common</artifactId>
+            <version>0.4.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+</project>
