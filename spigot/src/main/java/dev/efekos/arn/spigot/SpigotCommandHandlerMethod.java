@@ -22,11 +22,22 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.spigot.config;
+package dev.efekos.arn.spigot;
 
-import dev.efekos.arn.common.config.BaseArnConfigurer;
-import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
-import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
+import dev.efekos.arn.common.annotation.Command;
+import dev.efekos.arn.common.data.BaseCommandHandlerMethod;
+import dev.efekos.arn.spigot.face.SpigotCmdResolver;
+import dev.efekos.arn.spigot.face.SpigotHndResolver;
 
-public interface SpArnConfig extends BaseArnConfigurer<SpigotCmdResolver, SpigotHndResolver> {
+import java.lang.reflect.Method;
+
+/**
+ * Represents a {@link Method} that is annotated with {@link Command}. Used to
+ * store data about
+ * a command handler methods and register commands using those data.
+ *
+ * @author efekos
+ * @since 0.1
+ */
+public class SpigotCommandHandlerMethod extends BaseCommandHandlerMethod<SpigotCmdResolver, SpigotHndResolver> {
 }

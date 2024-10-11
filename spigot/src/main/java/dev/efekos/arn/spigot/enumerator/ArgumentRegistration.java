@@ -22,10 +22,11 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.spigot.argument;
+package dev.efekos.arn.spigot.enumerator;
 
 import com.mojang.brigadier.arguments.*;
 import com.mojang.brigadier.context.CommandContext;
+import dev.efekos.arn.spigot.face.CustomArgumentType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
 

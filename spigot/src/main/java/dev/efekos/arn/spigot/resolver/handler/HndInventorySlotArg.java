@@ -28,8 +28,8 @@ import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.annotation.modifier.InventorySlot;
 import dev.efekos.arn.common.resolver.BaseHndResolver;
-import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
-import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
+import dev.efekos.arn.spigot.SpigotCommandHandlerMethod;
+import dev.efekos.arn.spigot.face.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.SlotArgument;
 

@@ -22,22 +22,11 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.spigot.data;
+package dev.efekos.arn.spigot.face;
 
-import dev.efekos.arn.common.annotation.Command;
-import dev.efekos.arn.common.data.BaseCommandHandlerMethod;
-import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
-import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
+import com.mojang.brigadier.builder.ArgumentBuilder;
+import dev.efekos.arn.common.resolver.BaseCmdResolver;
+import net.minecraft.commands.CommandSourceStack;
 
-import java.lang.reflect.Method;
-
-/**
- * Represents a {@link Method} that is annotated with {@link Command}. Used to
- * store data about
- * a command handler methods and register commands using those data.
- *
- * @author efekos
- * @since 0.1
- */
-public class SpigotCommandHandlerMethod extends BaseCommandHandlerMethod<SpigotCmdResolver, SpigotHndResolver> {
+public interface SpigotCmdResolver extends BaseCmdResolver<ArgumentBuilder<CommandSourceStack, ?>> {
 }

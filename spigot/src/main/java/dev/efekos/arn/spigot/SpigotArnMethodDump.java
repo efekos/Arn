@@ -30,9 +30,7 @@ import dev.efekos.arn.common.annotation.Container;
 import dev.efekos.arn.common.annotation.ExceptionHandler;
 import dev.efekos.arn.common.data.CommandAnnotationData;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
-import dev.efekos.arn.spigot.data.SpigotExceptionHandlerMethod;
-import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
-import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
+import dev.efekos.arn.spigot.face.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
 import org.reflections.Reflections;
 

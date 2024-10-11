@@ -22,13 +22,14 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.spigot.config;
+package dev.efekos.arn.spigot;
 
 import dev.efekos.arn.common.annotation.modifier.InventorySlot;
 import dev.efekos.arn.common.annotation.modifier.Vector;
 import dev.efekos.arn.common.data.ExceptionMap;
-import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
-import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
+import dev.efekos.arn.spigot.face.SpArnConfig;
+import dev.efekos.arn.spigot.face.SpigotCmdResolver;
+import dev.efekos.arn.spigot.face.SpigotHndResolver;
 import dev.efekos.arn.spigot.resolver.command.*;
 import dev.efekos.arn.spigot.resolver.handler.*;
 

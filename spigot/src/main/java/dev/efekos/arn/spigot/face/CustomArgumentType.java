@@ -22,7 +22,21 @@
  * SOFTWARE.
  */
 
+package dev.efekos.arn.spigot.face;
+
+import dev.efekos.arn.common.argument.BaseCustomArgumentType;
+import dev.efekos.arn.spigot.SpigotArn;
+import dev.efekos.arn.spigot.enumerator.ArgumentRegistration;
+import org.bukkit.command.CommandSender;
+
+
 /**
- * Data classes used in Arn.
+ * An interface used to create custom argument types. When scanned by {@link SpigotArn}, {@link T} becomes a
+ * usable argument type that is handled by the implementation of this interface.
+ *
+ * @param <T> Type of the custom argument.
+ * @author efekos
+ * @since 0.3.1
  */
-package dev.efekos.arn.spigot.data;
+public interface CustomArgumentType<T> extends BaseCustomArgumentType<T, ArgumentRegistration, CommandSender> {
+}

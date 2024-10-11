@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.spigot.data;
+package dev.efekos.arn.spigot;
 
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.data.BaseExceptionHandlerMethod;

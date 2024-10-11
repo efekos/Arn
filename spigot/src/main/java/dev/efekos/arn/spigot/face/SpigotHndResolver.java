@@ -22,11 +22,12 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.spigot.resolver;
+package dev.efekos.arn.spigot.face;
 
-import com.mojang.brigadier.builder.ArgumentBuilder;
-import dev.efekos.arn.common.resolver.BaseCmdResolver;
+import com.mojang.brigadier.context.CommandContext;
+import dev.efekos.arn.common.resolver.BaseHndResolver;
+import dev.efekos.arn.spigot.SpigotCommandHandlerMethod;
 import net.minecraft.commands.CommandSourceStack;
 
-public interface SpigotCmdResolver extends BaseCmdResolver<ArgumentBuilder<CommandSourceStack, ?>> {
+public interface SpigotHndResolver extends BaseHndResolver<CommandContext<CommandSourceStack>, SpigotCommandHandlerMethod> {
 }
