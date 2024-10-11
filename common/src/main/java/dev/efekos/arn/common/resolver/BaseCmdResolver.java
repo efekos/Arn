@@ -24,9 +24,11 @@
 
 package dev.efekos.arn.common.resolver;
 
+import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.data.BaseCommandHandlerMethod;
 
 import java.lang.reflect.Parameter;
+import java.util.Optional;
 
 
 /**
@@ -58,5 +60,10 @@ public interface BaseCmdResolver<T> {
      * @return An {@link T} that represents {@code parameter}.
      */
     T apply(Parameter parameter);
+
+    default String getName(Parameter parameter){
+        String s = parameter.getAnnotation(CommandArgument.class).value();
+        return s.isEmpty() ? parameter.getName() : s;
+    }
 
 }
