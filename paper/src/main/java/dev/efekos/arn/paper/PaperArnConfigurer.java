@@ -30,37 +30,47 @@ import dev.efekos.arn.paper.face.PaperArnConfig;
 import dev.efekos.arn.paper.face.PaperCmdResolver;
 import dev.efekos.arn.paper.face.PaperHndResolver;
 import dev.efekos.arn.paper.handler.*;
+import io.papermc.paper.command.brigadier.argument.predicate.ItemStackPredicate;
 import io.papermc.paper.registry.RegistryKey;
+import net.kyori.adventure.text.Component;
+import org.bukkit.GameMode;
 import org.bukkit.JukeboxSong;
 import org.bukkit.MusicInstrument;
 import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Biome;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.BlockType;
 import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.generator.structure.Structure;
 import org.bukkit.generator.structure.StructureType;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
+import java.util.UUID;
 
 public class PaperArnConfigurer implements PaperArnConfig {
 
     @Override
     public void addHandlerMethodArgumentResolvers(List<PaperHndResolver> resolvers) {
         resolvers.addAll(List.of(
-                new HndBoolArg(), new HndDoubleArg(), new HndEntitiesArg(), new HndEntityArg(), new HndFloatArg(),
-                new HndIntArg(), new HndBlockPosArg(), new HndLongArg(), new HndPlayerArg(), new HndPlayersArg(),
-                new HndStringArg(), new HndVectorArg(),
+                new HndEntitiesArg(), new HndEntityArg(),  new HndBlockPosArg(), new HndPlayerArg(), new HndPlayersArg(),
+                new HndVectorArg(),
 
-                new HndResourceArg(Attribute.class),new HndResourceArg(Biome.class),new HndResourceArg(ItemType.class),
-                new HndResourceArg(EntityType.class),new HndResourceArg(BlockType.class),new HndResourceArg(DamageType.class),
-                new HndResourceArg(Sound.class),new HndResourceArg(JukeboxSong.class),new HndResourceArg(Enchantment.class),
-                new HndResourceArg(PotionEffectType.class),new HndResourceArg(Structure.class),new HndResourceArg(StructureType.class),
-                new HndResourceArg(MusicInstrument.class)
+                new HndNonResolverArg(Integer.class),new HndNonResolverArg(int.class),new HndNonResolverArg(Double.class),
+                new HndNonResolverArg(double.class),new HndNonResolverArg(Float.class),new HndNonResolverArg(float.class),
+                new HndNonResolverArg(String.class),new HndNonResolverArg(Boolean.class),new HndNonResolverArg(boolean.class),
+                new HndNonResolverArg(Long.class),new HndNonResolverArg(long.class), new HndNonResolverArg(Component.class),
+                new HndNonResolverArg(Attribute.class),new HndNonResolverArg(Biome.class),new HndNonResolverArg(ItemType.class),
+                new HndNonResolverArg(EntityType.class),new HndNonResolverArg(BlockType.class),new HndNonResolverArg(DamageType.class),
+                new HndNonResolverArg(Sound.class),new HndNonResolverArg(JukeboxSong.class),new HndNonResolverArg(Enchantment.class),
+                new HndNonResolverArg(PotionEffectType.class),new HndNonResolverArg(Structure.class),new HndNonResolverArg(StructureType.class),
+                new HndNonResolverArg(MusicInstrument.class), new HndNonResolverArg(ItemStack.class), new HndNonResolverArg(UUID.class),
+                new HndNonResolverArg(ItemStackPredicate.class), new HndNonResolverArg(GameMode.class), new HndNonResolverArg(BlockState.class)
         ));
     }
 
