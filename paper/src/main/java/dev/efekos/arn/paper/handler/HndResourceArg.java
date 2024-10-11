@@ -25,23 +25,25 @@
 package dev.efekos.arn.paper.handler;
 
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.common.annotation.modifier.Vector;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.paper.PaperCommandMethod;
 import dev.efekos.arn.paper.face.PaperHndResolver;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import io.papermc.paper.command.brigadier.argument.resolvers.BlockPositionResolver;
-import org.bukkit.Location;
 
 import java.lang.reflect.Parameter;
 
-public class HndLocationArg implements PaperHndResolver {
+public class HndResourceArg implements PaperHndResolver {
+
+    private final Class<?> clazz;
+
+    public HndResourceArg(Class<?> clazz) {
+        this.clazz = clazz;
+    }
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Location.class) && !parameter.isAnnotationPresent(Vector.class);
+        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(clazz);
     }
 
     @Override
@@ -51,11 +53,6 @@ public class HndLocationArg implements PaperHndResolver {
 
     @Override
     public Object resolve(Parameter parameter, PaperCommandMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
-        try {
-            return (Location) context.getArgument(getName(parameter), BlockPositionResolver.class).resolve(context.getSource());
-        } catch (CommandSyntaxException e) {
-            throw new ArnSyntaxException(e.getMessage());
-        }
+        return context.getArgument(getName(parameter),clazz);
     }
-
 }

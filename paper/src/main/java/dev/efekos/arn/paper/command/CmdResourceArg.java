@@ -31,19 +31,26 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.registry.RegistryKey;
-import org.bukkit.enchantments.Enchantment;
 
 import java.lang.reflect.Parameter;
 
-public class CmdEnchantmentArg implements PaperCmdResolver {
+public class CmdResourceArg implements PaperCmdResolver {
+
+    private final Class<?> clazz;
+    private final RegistryKey<?> registryKey;
+
+    public <T> CmdResourceArg(Class<T> clazz, RegistryKey<T> registryKey) {
+        this.clazz = clazz;
+        this.registryKey = registryKey;
+    }
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Enchantment.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(clazz);
     }
 
     @Override
     public ArgumentBuilder<CommandSourceStack, ?> apply(Parameter parameter) {
-        return Commands.argument(getName(parameter), ArgumentTypes.resource(RegistryKey.ENCHANTMENT));
+        return Commands.argument(getName(parameter), ArgumentTypes.resource(registryKey));
     }
 }

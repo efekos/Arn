@@ -22,28 +22,40 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.paper.command;
+package dev.efekos.arn.paper.handler;
 
-import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.paper.face.PaperCmdResolver;
+import dev.efekos.arn.common.annotation.modifier.Vector;
+import dev.efekos.arn.common.exception.ArnSyntaxException;
+import dev.efekos.arn.paper.PaperCommandMethod;
+import dev.efekos.arn.paper.face.PaperHndResolver;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import io.papermc.paper.command.brigadier.Commands;
-import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import io.papermc.paper.registry.RegistryKey;
-import org.bukkit.Sound;
+import io.papermc.paper.command.brigadier.argument.resolvers.BlockPositionResolver;
+import org.bukkit.Location;
 
 import java.lang.reflect.Parameter;
 
-public class CmdSoundArg implements PaperCmdResolver {
+public class HndBlockPosArg implements PaperHndResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Sound.class);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Location.class) && !parameter.isAnnotationPresent(Vector.class);
     }
 
     @Override
-    public ArgumentBuilder<CommandSourceStack, ?> apply(Parameter parameter) {
-        return Commands.argument(getName(parameter), ArgumentTypes.resource(RegistryKey.SOUND_EVENT));
+    public boolean requireCommandArgument() {
+        return true;
     }
+
+    @Override
+    public Object resolve(Parameter parameter, PaperCommandMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
+        try {
+            return context.getArgument(getName(parameter), BlockPositionResolver.class).resolve(context.getSource());
+        } catch (CommandSyntaxException e) {
+            throw new ArnSyntaxException(e.getMessage());
+        }
+    }
+
 }

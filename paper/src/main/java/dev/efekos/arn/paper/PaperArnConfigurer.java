@@ -30,6 +30,20 @@ import dev.efekos.arn.paper.face.PaperArnConfig;
 import dev.efekos.arn.paper.face.PaperCmdResolver;
 import dev.efekos.arn.paper.face.PaperHndResolver;
 import dev.efekos.arn.paper.handler.*;
+import io.papermc.paper.registry.RegistryKey;
+import org.bukkit.JukeboxSong;
+import org.bukkit.MusicInstrument;
+import org.bukkit.Sound;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.block.Biome;
+import org.bukkit.block.BlockType;
+import org.bukkit.damage.DamageType;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
+import org.bukkit.generator.structure.Structure;
+import org.bukkit.generator.structure.StructureType;
+import org.bukkit.inventory.ItemType;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
@@ -39,19 +53,32 @@ public class PaperArnConfigurer implements PaperArnConfig {
     public void addHandlerMethodArgumentResolvers(List<PaperHndResolver> resolvers) {
         resolvers.addAll(List.of(
                 new HndBoolArg(), new HndDoubleArg(), new HndEntitiesArg(), new HndEntityArg(), new HndFloatArg(),
-                new HndIntArg(), new HndLocationArg(), new HndLongArg(), new HndPlayerArg(), new HndPlayersArg(),
-                new HndStringArg(), new HndVectorArg()
+                new HndIntArg(), new HndBlockPosArg(), new HndLongArg(), new HndPlayerArg(), new HndPlayersArg(),
+                new HndStringArg(), new HndVectorArg(),
+
+                new HndResourceArg(Attribute.class),new HndResourceArg(Biome.class),new HndResourceArg(ItemType.class),
+                new HndResourceArg(EntityType.class),new HndResourceArg(BlockType.class),new HndResourceArg(DamageType.class),
+                new HndResourceArg(Sound.class),new HndResourceArg(JukeboxSong.class),new HndResourceArg(Enchantment.class),
+                new HndResourceArg(PotionEffectType.class),new HndResourceArg(Structure.class),new HndResourceArg(StructureType.class),
+                new HndResourceArg(MusicInstrument.class)
         ));
     }
 
     @Override
     public void addArgumentResolvers(List<PaperCmdResolver> resolvers) {
         resolvers.addAll(List.of(
-                new CmdAttributeArg(), new CmdBiomeArg(), new CmdBlockArg(), new CmdBlockPosArg(), new CmdBlockStateArg(),
-                new CmdBoolArg(), new CmdComponentArg(), new CmdDamageTypeArg(), new CmdDoubleArg(), new CmdEffectArg(),
-                new CmdEnchantmentArg(), new CmdEntitiesArg(), new CmdEntityArg(), new CmdFloatArg(), new CmdGameModeArg(),
+                new CmdResourceArg(Attribute.class, RegistryKey.ATTRIBUTE), new CmdResourceArg(Biome.class,RegistryKey.BIOME),
+                new CmdResourceArg(ItemType.class,RegistryKey.ITEM), new CmdResourceArg(EntityType.class,RegistryKey.ENTITY_TYPE),
+                new CmdResourceArg(BlockType.class,RegistryKey.BLOCK),new CmdResourceArg(DamageType.class,RegistryKey.DAMAGE_TYPE),
+                new CmdResourceArg(Sound.class,RegistryKey.SOUND_EVENT),new CmdResourceArg(JukeboxSong.class,RegistryKey.JUKEBOX_SONG),
+                new CmdResourceArg(Enchantment.class, RegistryKey.ENCHANTMENT), new CmdResourceArg(PotionEffectType.class,RegistryKey.MOB_EFFECT),
+                new CmdResourceArg(Structure.class,RegistryKey.STRUCTURE),new CmdResourceArg(StructureType.class,RegistryKey.STRUCTURE_TYPE),
+                new CmdResourceArg(MusicInstrument.class,RegistryKey.INSTRUMENT),
+
+                new CmdBlockPosArg(), new CmdBlockStateArg(),
+                new CmdBoolArg(), new CmdComponentArg(), new CmdDoubleArg(), new CmdEntitiesArg(), new CmdEntityArg(), new CmdFloatArg(), new CmdGameModeArg(),
                 new CmdIntArg(), new CmdItemPredicateArg(), new CmdItemStackArg(), new CmdLongArg(), new CmdPlayerArg(),
-                new CmdPlayersArg(), new CmdSoundArg(), new CmdStringArg(), new CmdUUIDArg(), new CmdVectorArg()
+                new CmdPlayersArg(), new CmdStringArg(), new CmdUUIDArg(), new CmdVectorArg()
         ));
     }
 
