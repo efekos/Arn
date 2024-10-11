@@ -24,25 +24,33 @@
 
 package dev.efekos.arn.paper.command;
 
+import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.paper.face.PaperCmdResolver;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import io.papermc.paper.command.brigadier.argument.predicate.ItemStackPredicate;
 
 import java.lang.reflect.Parameter;
+import java.util.function.Supplier;
 
-public class CmdItemPredicateArg implements PaperCmdResolver {
+public class CmdOneMethodArg implements PaperCmdResolver {
+
+    private final Class<?> clazz;
+    private final Supplier<ArgumentType<?>> type;
+
+    public CmdOneMethodArg(Class<?> clazz, Supplier<ArgumentType<?>> type) {
+        this.clazz = clazz;
+        this.type = type;
+    }
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(ItemStackPredicate.class);
+        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(clazz);
     }
 
     @Override
     public ArgumentBuilder<CommandSourceStack, ?> apply(Parameter parameter) {
-        return Commands.argument(getName(parameter), ArgumentTypes.itemPredicate());
+        return Commands.argument(parameter.getName(), type.get());
     }
 }

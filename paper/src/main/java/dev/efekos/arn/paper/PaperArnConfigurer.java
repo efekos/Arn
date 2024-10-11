@@ -24,12 +24,14 @@
 
 package dev.efekos.arn.paper;
 
+import com.mojang.brigadier.arguments.BoolArgumentType;
 import dev.efekos.arn.common.data.ExceptionMap;
 import dev.efekos.arn.paper.command.*;
 import dev.efekos.arn.paper.face.PaperArnConfig;
 import dev.efekos.arn.paper.face.PaperCmdResolver;
 import dev.efekos.arn.paper.face.PaperHndResolver;
 import dev.efekos.arn.paper.handler.*;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.predicate.ItemStackPredicate;
 import io.papermc.paper.registry.RegistryKey;
 import net.kyori.adventure.text.Component;
@@ -43,7 +45,9 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.BlockType;
 import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.generator.structure.Structure;
 import org.bukkit.generator.structure.StructureType;
 import org.bukkit.inventory.ItemStack;
@@ -85,10 +89,15 @@ public class PaperArnConfigurer implements PaperArnConfig {
                 new CmdResourceArg(Structure.class,RegistryKey.STRUCTURE),new CmdResourceArg(StructureType.class,RegistryKey.STRUCTURE_TYPE),
                 new CmdResourceArg(MusicInstrument.class,RegistryKey.INSTRUMENT),
 
-                new CmdBlockPosArg(), new CmdBlockStateArg(),
-                new CmdBoolArg(), new CmdComponentArg(), new CmdDoubleArg(), new CmdEntitiesArg(), new CmdEntityArg(), new CmdFloatArg(), new CmdGameModeArg(),
-                new CmdIntArg(), new CmdItemPredicateArg(), new CmdItemStackArg(), new CmdLongArg(), new CmdPlayerArg(),
-                new CmdPlayersArg(), new CmdStringArg(), new CmdUUIDArg(), new CmdVectorArg()
+                new CmdBlockPosArg(), new CmdVectorArg(),
+                new CmdFloatArg(),new CmdDoubleArg(), new CmdIntArg(),new CmdLongArg(),new CmdStringArg(),
+                new CmdOneMethodArg(Boolean.class, BoolArgumentType::bool), new CmdOneMethodArg(boolean.class, BoolArgumentType::bool),
+                new CmdOneMethodArg(UUID.class, ArgumentTypes::uuid), new CmdOneMethodArg(BlockState.class, ArgumentTypes::blockState),
+                new CmdOneMethodArg(Component.class,ArgumentTypes::component),
+                new CmdOneMethodArg(Entity[].class,ArgumentTypes::entities), new CmdOneMethodArg(Entity.class,ArgumentTypes::entity),
+                new CmdOneMethodArg(GameMode.class,ArgumentTypes::gameMode),
+                new CmdOneMethodArg(ItemStack.class,ArgumentTypes::itemStack),new CmdOneMethodArg(ItemStackPredicate.class,ArgumentTypes::itemPredicate),
+                new CmdOneMethodArg(Player.class,ArgumentTypes::player), new CmdOneMethodArg(Player[].class,ArgumentTypes::players)
         ));
     }
 
