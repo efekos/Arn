@@ -30,7 +30,7 @@ import dev.efekos.arn.common.annotation.Container;
 import dev.efekos.arn.common.annotation.ExceptionHandler;
 import dev.efekos.arn.common.data.CommandAnnotationData;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
-import dev.efekos.arn.spigot.data.ExceptionHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotExceptionHandlerMethod;
 import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
@@ -48,9 +48,9 @@ import java.util.function.Predicate;
  *
  * @since 0.4
  */
-class MethodDump {
+class SpigotArnMethodDump {
 
-    private final List<ExceptionHandlerMethod> baseExceptionHandlerMethods = new ArrayList<>();
+    private final List<SpigotExceptionHandlerMethod> baseSpigotExceptionHandlerMethods = new ArrayList<>();
 
     /**
      * Finds last element that matches the given condition.
@@ -80,8 +80,8 @@ class MethodDump {
         return objects;
     }
 
-    protected Optional<ExceptionHandlerMethod> findHandlerMethod(Throwable e) {
-        for (ExceptionHandlerMethod method : baseExceptionHandlerMethods)
+    protected Optional<SpigotExceptionHandlerMethod> findHandlerMethod(Throwable e) {
+        for (SpigotExceptionHandlerMethod method : baseSpigotExceptionHandlerMethods)
             if (method.getExceptionClass().isAssignableFrom(e.getClass()))
                 return Optional.of(method);
         return Optional.empty();
@@ -93,8 +93,8 @@ class MethodDump {
                 if (!method.isAnnotationPresent(ExceptionHandler.class))
                     continue;
                 ExceptionHandler annotation = method.getAnnotation(ExceptionHandler.class);
-                ExceptionHandlerMethod handlerMethod = new ExceptionHandlerMethod(method, annotation.value());
-                baseExceptionHandlerMethods.add(handlerMethod);
+                SpigotExceptionHandlerMethod handlerMethod = new SpigotExceptionHandlerMethod(method, annotation.value());
+                baseSpigotExceptionHandlerMethods.add(handlerMethod);
             }
 
     }

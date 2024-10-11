@@ -22,34 +22,33 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.spigot.exception.type;
+package dev.efekos.arn.common.exception.type;
 
 import dev.efekos.arn.common.exception.ArnException;
 
-import java.util.function.BiFunction;
-
 /**
- * Dynamic exception creator that takes two arguments.
+ * Dynamic exception creator that takes three arguments.
  *
  * @param <T>  Type of the first argument.
  * @param <T2> Type of the second argument.
+ * @param <T3> Type of the third argument.
  * @param <E>  Type of the actual exception.
  * @author efekos
  * @since 0.3
  */
-public final class Dynamic2ArnExceptionType<E extends ArnException, T, T2> {
+public final class Dynamic3ArnExceptionType<E extends ArnException, T, T2, T3> {
 
     /**
-     * Lambda method that takes two arguments.
+     * Lambda method that takes three arguments.
      */
-    private final BiFunction<T, T2, E> lambda;
+    private final Lambda<T, T2, T3, E> lambda;
 
     /**
      * Creates a new exception type.
      *
-     * @param lambda Function to create an exception.
+     * @param lambda Function used to create the exception.
      */
-    public Dynamic2ArnExceptionType(BiFunction<T, T2, E> lambda) {
+    public Dynamic3ArnExceptionType(Lambda<T, T2, T3, E> lambda) {
         this.lambda = lambda;
     }
 
@@ -58,10 +57,34 @@ public final class Dynamic2ArnExceptionType<E extends ArnException, T, T2> {
      *
      * @param o  First object.
      * @param o2 Second object.
+     * @param o3 Third object.
      * @return Created exception.
      */
-    public E create(T o, T2 o2) {
-        return lambda.apply(o, o2);
+    public E create(T o, T2 o2, T3 o3) {
+        return lambda.create(o, o2, o3);
+    }
+
+    /**
+     * Lambda method that takes three arguments and returns an {@link ArnException}.
+     *
+     * @param <T>  Type of the first argument.
+     * @param <T2> Type of the second argument.
+     * @param <T3> Type of the third argument.
+     * @param <E>  Type of the actual exception.
+     */
+    @FunctionalInterface
+    public interface Lambda<T, T2, T3, E extends ArnException> {
+
+        /**
+         * Creates an {@link ArnException}.
+         *
+         * @param o  First object.
+         * @param o2 Second object.
+         * @param o3 Third object.
+         * @return An {@link ArnException}.
+         */
+        E create(T o, T2 o2, T3 o3);
+
     }
 
 }

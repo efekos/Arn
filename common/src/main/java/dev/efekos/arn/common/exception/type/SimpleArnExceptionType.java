@@ -22,69 +22,42 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.spigot.exception.type;
+package dev.efekos.arn.common.exception.type;
 
 import dev.efekos.arn.common.exception.ArnException;
 
+import java.util.function.Supplier;
+
 /**
- * Dynamic exception creator that takes three arguments.
+ * An exception creator that creates a simple exception without using any arguments.
  *
- * @param <T>  Type of the first argument.
- * @param <T2> Type of the second argument.
- * @param <T3> Type of the third argument.
- * @param <E>  Type of the actual exception.
+ * @param <E> Type of the actual exception.
  * @author efekos
  * @since 0.3
  */
-public final class Dynamic3ArnExceptionType<E extends ArnException, T, T2, T3> {
+public final class SimpleArnExceptionType<E extends ArnException> {
 
     /**
-     * Lambda method that takes three arguments.
+     * The function used to create the exception.
      */
-    private final Lambda<T, T2, T3, E> lambda;
+    private final Supplier<E> lambda;
 
     /**
      * Creates a new exception type.
      *
-     * @param lambda Function used to create the exception.
+     * @param lambda Supplier function to create the exception.
      */
-    public Dynamic3ArnExceptionType(Lambda<T, T2, T3, E> lambda) {
+    public SimpleArnExceptionType(Supplier<E> lambda) {
         this.lambda = lambda;
     }
 
     /**
      * Creates an exception using {@link #lambda}.
      *
-     * @param o  First object.
-     * @param o2 Second object.
-     * @param o3 Third object.
      * @return Created exception.
      */
-    public E create(T o, T2 o2, T3 o3) {
-        return lambda.create(o, o2, o3);
-    }
-
-    /**
-     * Lambda method that takes three arguments and returns an {@link ArnException}.
-     *
-     * @param <T>  Type of the first argument.
-     * @param <T2> Type of the second argument.
-     * @param <T3> Type of the third argument.
-     * @param <E>  Type of the actual exception.
-     */
-    @FunctionalInterface
-    public interface Lambda<T, T2, T3, E extends ArnException> {
-
-        /**
-         * Creates an {@link ArnException}.
-         *
-         * @param o  First object.
-         * @param o2 Second object.
-         * @param o3 Third object.
-         * @return An {@link ArnException}.
-         */
-        E create(T o, T2 o2, T3 o3);
-
+    public E create() {
+        return lambda.get();
     }
 
 }

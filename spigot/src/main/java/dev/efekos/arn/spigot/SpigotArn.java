@@ -45,9 +45,8 @@ import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
 import dev.efekos.arn.spigot.argument.CustomArgumentType;
 import dev.efekos.arn.spigot.config.BaseArnConfigurer;
 import dev.efekos.arn.spigot.config.SpArnConfig;
-import dev.efekos.arn.spigot.data.ExceptionHandlerMethod;
+import dev.efekos.arn.spigot.data.SpigotExceptionHandlerMethod;
 import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
-import dev.efekos.arn.spigot.exception.type.ArnExceptionTypes;
 import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import dev.efekos.arn.spigot.resolver.command.CmdCustomArg;
@@ -91,7 +90,7 @@ import java.util.stream.IntStream;
  * @author efekos
  * @since 0.1
  */
-public final class SpigotArn extends MethodDump implements ArnInstance {
+public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance {
 
     /**
      * An exception type thrown by command handler when a command is blocked to
@@ -235,21 +234,21 @@ public final class SpigotArn extends MethodDump implements ArnInstance {
                 .filter(aClass -> aClass.isAnnotationPresent(CustomArgument.class)).toList();
         for (Class<?> aClass : classes) {
             if (!aClass.isEnum())
-                throw ArnExceptionTypes.CA_NOT_ENUM.create(aClass);
+                throw SpigotArnExceptions.CA_NOT_ENUM.create(aClass);
             Class<? extends Enum<?>> enumC = (Class<? extends Enum<?>>) aClass;
 
             CustomArgument customArgument = enumC.getAnnotation(CustomArgument.class);
             try {
                 NamespacedKey.fromString(customArgument.value());
             } catch (Exception e) {
-                throw ArnExceptionTypes.CA_VALUE_NOT_KEY.create(aClass);
+                throw SpigotArnExceptions.CA_VALUE_NOT_KEY.create(aClass);
             }
 
             if (enumC.getEnumConstants().length == 0)
-                throw ArnExceptionTypes.CA_NO_CONSTANTS.create(enumC);
+                throw SpigotArnExceptions.CA_NO_CONSTANTS.create(enumC);
             if (Arrays.stream(enumC.getEnumConstants())
                     .anyMatch(constant -> !constant.name().toUpperCase(Locale.ENGLISH).equals(constant.name())))
-                throw ArnExceptionTypes.CA_LOWERCASE.create(enumC);
+                throw SpigotArnExceptions.CA_LOWERCASE.create(enumC);
 
             handlerMethodArgumentResolvers.add(new HndEnumArg(enumC));
             commandArgumentResolvers.add(new CmdEnumArg(enumC));
@@ -274,7 +273,7 @@ public final class SpigotArn extends MethodDump implements ArnInstance {
                 Object o = ctor.newInstance();
                 containerInstanceMap.put(clazz.getName(), o);
             } catch (Exception e) {
-                throw ArnExceptionTypes.CONTAINER_INSTANTIATE.create(clazz, e);
+                throw SpigotArnExceptions.CONTAINER_INSTANTIATE.create(clazz, e);
             }
         }
     }
@@ -341,37 +340,37 @@ public final class SpigotArn extends MethodDump implements ArnInstance {
     private void command(Command annotation, Method method) throws ArnException {
         // Errors
         if (!method.getReturnType().equals(int.class))
-            throw ArnExceptionTypes.HM_NOT_INT.create(method, annotation);
+            throw SpigotArnExceptions.HM_NOT_INT.create(method, annotation);
         List<Class<?>> exceptions = Arrays.asList(method.getExceptionTypes());
         if (exceptions.size() > 1 || (!exceptions.isEmpty() && exceptions.stream().anyMatch(
                 aClass -> !aClass.equals(CommandSyntaxException.class) && !aClass.equals(ArnSyntaxException.class))))
-            throw ArnExceptionTypes.HM_THROWS.create(method, annotation, exceptions);
+            throw SpigotArnExceptions.HM_THROWS.create(method, annotation, exceptions);
 
         long count = Arrays.stream(method.getParameters())
                 .filter(parameter -> REQUIRED_SENDER_CLASSES.contains(parameter.getType())
                         && !parameter.isAnnotationPresent(CommandArgument.class))
                 .count();
         if (count > 1)
-            throw ArnExceptionTypes.HM_MULTIPLE_SENDERS.create(method, annotation);
+            throw SpigotArnExceptions.HM_MULTIPLE_SENDERS.create(method, annotation);
 
         for (Parameter parameter : method.getParameters()) {
             if (handlerMethodArgumentResolvers.stream().noneMatch(car -> car.isApplicable(parameter)))
-                throw ArnExceptionTypes.HM_NOT_APPLICABLE.create(method, annotation, parameter);
+                throw SpigotArnExceptions.HM_NOT_APPLICABLE.create(method, annotation, parameter);
             if (handlerMethodArgumentResolvers.stream()
                     .anyMatch(car -> car.isApplicable(parameter) && car.requireCommandArgument())
                     && commandArgumentResolvers.stream().noneMatch(car -> car.isApplicable(parameter)))
-                throw ArnExceptionTypes.HM_NOT_APPLICABLE.create(method, annotation, parameter);
+                throw SpigotArnExceptions.HM_NOT_APPLICABLE.create(method, annotation, parameter);
         }
 
         SpigotCommandHandlerMethod commandHandlerMethod = createHandlerMethod(annotation, method);
 
         if (handlers.stream().anyMatch(method1 -> commandHandlerMethod.getSignature().equals(method1.getSignature())))
-            throw ArnExceptionTypes.HM_DUPLICATE.create(commandHandlerMethod);
+            throw SpigotArnExceptions.HM_DUPLICATE.create(commandHandlerMethod);
         for (CommandAnnotationLiteral literal : commandHandlerMethod.getAnnotationData().getLiterals()) {
             if (literal.getOffset() < 0)
-                throw ArnExceptionTypes.LITERAL_NEG_OFFSET.create(annotation);
+                throw SpigotArnExceptions.LITERAL_NEG_OFFSET.create(annotation);
             if (!literal.getLiteral().matches("^[a-z]+$"))
-                throw ArnExceptionTypes.LITERAL_ILLEGAL.create(literal, annotation);
+                throw SpigotArnExceptions.LITERAL_ILLEGAL.create(literal, annotation);
         }
         handlers.add(commandHandlerMethod);
     }
@@ -383,7 +382,7 @@ public final class SpigotArn extends MethodDump implements ArnInstance {
      * @param annotation The {@link Command} annotation of {@code method}.
      * @param method     A {@link Method} that is annotated with {@code annotation}.
      * @return Created {@link SpigotCommandHandlerMethod}.
-     * @throws ArnException See {@link ArnExceptionTypes#HM_NO_RESOLVER_ACCESS}.
+     * @throws ArnException See {@link SpigotArnExceptions#HM_NO_RESOLVER_ACCESS}.
      */
     private SpigotCommandHandlerMethod createHandlerMethod(Command annotation, Method method) throws ArnException {
         SpigotCommandHandlerMethod commandHandlerMethod = new SpigotCommandHandlerMethod();
@@ -434,7 +433,7 @@ public final class SpigotArn extends MethodDump implements ArnInstance {
                     .stream()
                     .filter(resolver -> resolver.isApplicable(parameter) && handlerExceptions.get(resolver.getClass())
                             .stream().noneMatch(parameter::isAnnotationPresent))
-                    .findFirst().orElseThrow(() -> ArnExceptionTypes.HM_NO_RESOLVER_ACCESS
+                    .findFirst().orElseThrow(() -> SpigotArnExceptions.HM_NO_RESOLVER_ACCESS
                             .create(signatureBuilder.append(")").toString()));
 
             handlerMethodResolvers.add(handlerMethodArgumentResolver);
@@ -508,7 +507,7 @@ public final class SpigotArn extends MethodDump implements ArnInstance {
                 dispatcher.register(builder);
             } catch (Exception e) {
                 Bukkit.getConsoleSender().sendMessage(method.toString());
-                throw ArnExceptionTypes.COMMAND_REGISTER_ERROR.create(method, e);
+                throw SpigotArnExceptions.COMMAND_REGISTER_ERROR.create(method, e);
             }
 
         }
@@ -552,10 +551,10 @@ public final class SpigotArn extends MethodDump implements ArnInstance {
                 else
                     try {
 
-                        Optional<ExceptionHandlerMethod> handlerMethodOptional = findHandlerMethod(ex);
+                        Optional<SpigotExceptionHandlerMethod> handlerMethodOptional = findHandlerMethod(ex);
                         if (handlerMethodOptional.isEmpty())
                             throw GENERIC.create(ex.getMessage());
-                        ExceptionHandlerMethod handlerMethod = handlerMethodOptional.get();
+                        SpigotExceptionHandlerMethod handlerMethod = handlerMethodOptional.get();
                         List<Object> list = handlerMethod.fillParams(ex, commandContext);
                         Method actualHandlerMethod = handlerMethod.getMethod();
                         actualHandlerMethod.invoke(
@@ -567,7 +566,7 @@ public final class SpigotArn extends MethodDump implements ArnInstance {
                     }
                 return 1;
             } catch (IllegalAccessException e) {
-                ArnExceptionTypes.COMMAND_NO_ACCESS.create().initCause(e).printStackTrace();
+                SpigotArnExceptions.COMMAND_NO_ACCESS.create().initCause(e).printStackTrace();
                 return 1;
             }
 

@@ -35,29 +35,10 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExceptionHandlerMethod implements BaseExceptionHandlerMethod<CommandContext<CommandSourceStack>> {
-    private Method method;
-    private Class<? extends Exception> exceptionClass;
+public class SpigotExceptionHandlerMethod extends BaseExceptionHandlerMethod<CommandContext<CommandSourceStack>> {
 
-    public ExceptionHandlerMethod(Method method, Class<? extends Exception> exceptionClass) {
-        this.method = method;
-        this.exceptionClass = exceptionClass;
-    }
-
-    public Method getMethod() {
-        return method;
-    }
-
-    public void setMethod(Method method) {
-        this.method = method;
-    }
-
-    public Class<? extends Exception> getExceptionClass() {
-        return exceptionClass;
-    }
-
-    public void setExceptionClass(Class<? extends Exception> exceptionClass) {
-        this.exceptionClass = exceptionClass;
+    public SpigotExceptionHandlerMethod(Method method, Class<? extends Exception> exceptionClass) {
+        super(method, exceptionClass);
     }
 
     public List<Object> fillParams(Throwable ex, CommandContext<CommandSourceStack> commandContext) {

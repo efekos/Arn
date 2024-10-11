@@ -27,16 +27,31 @@ package dev.efekos.arn.common.data;
 import java.lang.reflect.Method;
 import java.util.List;
 
-public interface BaseExceptionHandlerMethod<Context> {
+public abstract class BaseExceptionHandlerMethod<Context> {
+    protected Method method;
+    protected Class<? extends Exception> exceptionClass;
 
-    Method getMethod();
+    public BaseExceptionHandlerMethod(Method method, Class<? extends Exception> exceptionClass) {
+        this.method = method;
+        this.exceptionClass = exceptionClass;
+    }
 
-    void setMethod(final Method method);
+    public Method getMethod() {
+        return method;
+    }
 
-    Class<? extends Exception> getExceptionClass();
+    public void setMethod(Method method) {
+        this.method = method;
+    }
 
-    void setExceptionClass(final Class<? extends Exception> exceptionClass);
+    public Class<? extends Exception> getExceptionClass() {
+        return exceptionClass;
+    }
 
-    List<Object> fillParams(Throwable throwable, Context context);
+    public void setExceptionClass(Class<? extends Exception> exceptionClass) {
+        this.exceptionClass = exceptionClass;
+    }
+
+    public abstract List<Object> fillParams(Throwable ex, Context commandContext);
 
 }

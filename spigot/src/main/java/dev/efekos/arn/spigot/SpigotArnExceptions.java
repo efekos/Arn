@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.spigot.exception.type;
+package dev.efekos.arn.spigot;
 
 import dev.efekos.arn.common.annotation.Command;
 import dev.efekos.arn.common.annotation.CustomArgument;
@@ -30,9 +30,12 @@ import dev.efekos.arn.common.data.CommandAnnotationLiteral;
 import dev.efekos.arn.common.exception.ArnArgumentException;
 import dev.efekos.arn.common.exception.ArnCommandException;
 import dev.efekos.arn.common.exception.ArnContainerException;
+import dev.efekos.arn.common.exception.type.Dynamic2ArnExceptionType;
+import dev.efekos.arn.common.exception.type.Dynamic3ArnExceptionType;
+import dev.efekos.arn.common.exception.type.DynamicArnExceptionType;
+import dev.efekos.arn.common.exception.type.SimpleArnExceptionType;
 import dev.efekos.arn.common.resolver.CommandArgumentResolver;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
-import dev.efekos.arn.spigot.SpigotArn;
 import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 
 import java.lang.reflect.Method;
@@ -47,7 +50,7 @@ import java.util.List;
  * @author efekos
  * @since 0.3
  */
-public final class ArnExceptionTypes {
+public final class SpigotArnExceptions {
 
     /**
      * Thrown when a something that isn't an enum is annotated with
@@ -188,6 +191,6 @@ public final class ArnExceptionTypes {
      * Creates a new instance of this class, but it is private because you don't
      * need to instantiate this class anyway.
      */
-    private ArnExceptionTypes() {
+    private SpigotArnExceptions() {
     }
 }

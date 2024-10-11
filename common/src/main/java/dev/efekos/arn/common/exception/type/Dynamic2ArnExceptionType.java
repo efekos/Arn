@@ -22,45 +22,46 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.spigot.exception.type;
+package dev.efekos.arn.common.exception.type;
 
 import dev.efekos.arn.common.exception.ArnException;
 
-import java.util.function.Function;
-
+import java.util.function.BiFunction;
 
 /**
- * Basic exception creator that uses one argument.
+ * Dynamic exception creator that takes two arguments.
  *
- * @param <T> Type of the argument.
- * @param <E> Type of the actual exception.
+ * @param <T>  Type of the first argument.
+ * @param <T2> Type of the second argument.
+ * @param <E>  Type of the actual exception.
  * @author efekos
  * @since 0.3
  */
-public final class DynamicArnExceptionType<E extends ArnException, T> {
+public final class Dynamic2ArnExceptionType<E extends ArnException, T, T2> {
 
     /**
-     * Lambda method that takes one argument
+     * Lambda method that takes two arguments.
      */
-    private final Function<T, E> lambda;
+    private final BiFunction<T, T2, E> lambda;
 
     /**
      * Creates a new exception type.
      *
-     * @param lambda A function to create the exception.
+     * @param lambda Function to create an exception.
      */
-    public DynamicArnExceptionType(Function<T, E> lambda) {
+    public Dynamic2ArnExceptionType(BiFunction<T, T2, E> lambda) {
         this.lambda = lambda;
     }
 
     /**
      * Creates an exception using {@link #lambda}.
      *
-     * @param o Argument object.
+     * @param o  First object.
+     * @param o2 Second object.
      * @return Created exception.
      */
-    public E create(T o) {
-        return lambda.apply(o);
+    public E create(T o, T2 o2) {
+        return lambda.apply(o, o2);
     }
 
 }
