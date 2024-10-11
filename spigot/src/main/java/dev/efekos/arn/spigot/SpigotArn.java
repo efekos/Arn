@@ -44,6 +44,7 @@ import dev.efekos.arn.common.resolver.BaseCmdResolver;
 import dev.efekos.arn.common.resolver.BaseHndResolver;
 import dev.efekos.arn.spigot.argument.CustomArgumentType;
 import dev.efekos.arn.spigot.config.SpArnConfig;
+import dev.efekos.arn.spigot.config.SpigotArnConfig;
 import dev.efekos.arn.spigot.data.SpigotExceptionHandlerMethod;
 import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
@@ -281,7 +282,7 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
      * Default configuration of {@link SpigotArn}.
      */
     private void configure() {
-        dev.efekos.arn.spigot.config.BaseArnConfigurer configurer = new dev.efekos.arn.spigot.config.BaseArnConfigurer();
+        SpigotArnConfig configurer = new SpigotArnConfig();
         configurer.addArgumentResolvers(commandArgumentResolvers);
         configurer.addHandlerMethodArgumentResolvers(handlerMethodArgumentResolvers);
         configurer.putArgumentResolverExceptions(commandArgumentResolverExceptions);
