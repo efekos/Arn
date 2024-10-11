@@ -31,22 +31,22 @@ import java.lang.reflect.Parameter;
 
 /**
  * Represents a resolver that can create an {@link T} from a {@link Parameter} of a
- * {@link BaseCommandHandlerMethod}. Unlike {@link CommandHandlerMethodArgumentResolver}s, there can be
+ * {@link BaseCommandHandlerMethod}. Unlike {@link BaseHndResolver}s, there can be
  * {@link Parameter}s that doesn't have a CommandArgumentResolver. If
- * {@link CommandHandlerMethodArgumentResolver#requireCommandArgument()} returns {@code false} for a parameter, Arn
+ * {@link BaseHndResolver#requireCommandArgument()} returns {@code false} for a parameter, Arn
  * won't search for a CommandArgumentResolver for that parameter.
  *
  * @author efekos
  * @since 0.1
  */
-public interface CommandArgumentResolver<T> {
+public interface BaseCmdResolver<T> {
 
     /**
-     * Returns whether this {@link CommandArgumentResolver} can resolve {@code parameter}. Keep in mind that there
-     * shouldn't be more than one {@link CommandArgumentResolver} that can resolver the same parameter.
+     * Returns whether this {@link BaseCmdResolver} can resolve {@code parameter}. Keep in mind that there
+     * shouldn't be more than one {@link BaseCmdResolver} that can resolver the same parameter.
      *
      * @param parameter A parameter of a {@link BaseCommandHandlerMethod}.
-     * @return {@code true} if this {@link Parameter} should be resolved using this {@link CommandArgumentResolver},
+     * @return {@code true} if this {@link Parameter} should be resolved using this {@link BaseCmdResolver},
      * {@code false} otherwise.
      */
     boolean isApplicable(Parameter parameter);

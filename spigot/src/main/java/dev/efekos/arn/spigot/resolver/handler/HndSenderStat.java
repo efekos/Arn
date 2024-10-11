@@ -27,7 +27,7 @@ package dev.efekos.arn.spigot.resolver.handler;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.FromSender;
 import dev.efekos.arn.common.annotation.modifier.sender.*;
-import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.common.resolver.BaseHndResolver;
 import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
@@ -40,7 +40,7 @@ import java.lang.reflect.Parameter;
 ;
 
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * An implementation of {@link BaseHndResolver}. Resolves
  * different kinds of number values
  * from a {@link Player} sender.
  *

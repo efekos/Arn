@@ -27,7 +27,7 @@ package dev.efekos.arn.spigot.resolver.command;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.annotation.modifier.InventorySlot;
-import dev.efekos.arn.common.resolver.CommandArgumentResolver;
+import dev.efekos.arn.common.resolver.BaseCmdResolver;
 import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -36,7 +36,7 @@ import net.minecraft.commands.arguments.SlotArgument;
 import java.lang.reflect.Parameter;
 
 /**
- * An implementation of {@link CommandArgumentResolver}. Resolves {@link Integer} arguments that are an
+ * An implementation of {@link BaseCmdResolver}. Resolves {@link Integer} arguments that are an
  * {@link InventorySlot}.
  *
  * @author efekos

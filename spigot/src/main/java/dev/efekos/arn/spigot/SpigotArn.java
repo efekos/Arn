@@ -35,15 +35,14 @@ import dev.efekos.arn.common.annotation.*;
 import dev.efekos.arn.common.annotation.block.BlockCommandBlock;
 import dev.efekos.arn.common.annotation.block.BlockConsole;
 import dev.efekos.arn.common.annotation.block.BlockPlayer;
-import dev.efekos.arn.common.config.ArnConfigurer;
+import dev.efekos.arn.common.config.BaseArnConfigurer;
 import dev.efekos.arn.common.data.CommandAnnotationData;
 import dev.efekos.arn.common.data.CommandAnnotationLiteral;
 import dev.efekos.arn.common.data.ExceptionMap;
 import dev.efekos.arn.common.exception.*;
-import dev.efekos.arn.common.resolver.CommandArgumentResolver;
-import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.common.resolver.BaseCmdResolver;
+import dev.efekos.arn.common.resolver.BaseHndResolver;
 import dev.efekos.arn.spigot.argument.CustomArgumentType;
-import dev.efekos.arn.spigot.config.BaseArnConfigurer;
 import dev.efekos.arn.spigot.config.SpArnConfig;
 import dev.efekos.arn.spigot.data.SpigotExceptionHandlerMethod;
 import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
@@ -136,12 +135,12 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
     private static final List<ChatColor> ARGUMENT_DISPLAY_COLORS = Arrays.asList(ChatColor.AQUA, ChatColor.YELLOW,
             ChatColor.GREEN, ChatColor.LIGHT_PURPLE, ChatColor.GOLD);
     /**
-     * A list of {@link CommandHandlerMethodArgumentResolver}s that can provide
+     * A list of {@link BaseHndResolver}s that can provide
      * values to parameters of a {@link SpigotCommandHandlerMethod}.
      */
     private final List<SpigotHndResolver> handlerMethodArgumentResolvers = new ArrayList<>();
     /**
-     * A list of {@link CommandArgumentResolver} that can provide
+     * A list of {@link BaseCmdResolver} that can provide
      * {@link ArgumentBuilder}s using parameters of a command
      * handler method to create command structures.
      */
@@ -154,12 +153,12 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
     private final List<SpigotCommandHandlerMethod> handlers = new ArrayList<>();
     /**
      * An {@link ExceptionMap} storing annotation exceptions to
-     * {@link CommandArgumentResolver}s.
+     * {@link BaseCmdResolver}s.
      */
     private final ExceptionMap<SpigotCmdResolver> commandArgumentResolverExceptions = new ExceptionMap<>();
     /**
      * An {@link ExceptionMap} storing annotation exceptions to
-     * {@link CommandHandlerMethodArgumentResolver}s.
+     * {@link BaseHndResolver}s.
      */
     private final ExceptionMap<SpigotHndResolver> handlerExceptions = new ExceptionMap<>();
     /**
@@ -282,7 +281,7 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
      * Default configuration of {@link SpigotArn}.
      */
     private void configure() {
-        BaseArnConfigurer configurer = new BaseArnConfigurer();
+        dev.efekos.arn.spigot.config.BaseArnConfigurer configurer = new dev.efekos.arn.spigot.config.BaseArnConfigurer();
         configurer.addArgumentResolvers(commandArgumentResolvers);
         configurer.addHandlerMethodArgumentResolvers(handlerMethodArgumentResolvers);
         configurer.putArgumentResolverExceptions(commandArgumentResolverExceptions);
@@ -291,11 +290,11 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
     }
 
     /**
-     * Scans every class that implements {@link ArnConfigurer} using
+     * Scans every class that implements {@link BaseArnConfigurer} using
      * {@code reflections}, and calls their commands.
      *
      * @param reflections A {@link Reflections} object to use finding
-     *                    {@link ArnConfigurer}s.
+     *                    {@link BaseArnConfigurer}s.
      */
     private void scanConfigurers(Reflections reflections) {
         List<Class<?>> configurers = reflections.getTypesAnnotatedWith(Container.class).stream()

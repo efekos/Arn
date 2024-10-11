@@ -26,7 +26,7 @@ package dev.efekos.arn.spigot.resolver.command;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.common.resolver.CommandArgumentResolver;
+import dev.efekos.arn.common.resolver.BaseCmdResolver;
 import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -43,7 +43,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.lang.reflect.Parameter;
 
 /**
- * An implementation of {@link CommandArgumentResolver}. Resolves {@link PotionEffectType} arguments.
+ * An implementation of {@link BaseCmdResolver}. Resolves {@link PotionEffectType} arguments.
  *
  * @author efekos
  * @since 0.1

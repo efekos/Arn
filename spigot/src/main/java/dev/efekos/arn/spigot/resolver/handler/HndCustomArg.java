@@ -27,7 +27,7 @@ package dev.efekos.arn.spigot.resolver.handler;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
-import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.common.resolver.BaseHndResolver;
 import dev.efekos.arn.spigot.argument.CustomArgumentType;
 import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
@@ -38,7 +38,7 @@ import java.lang.reflect.Parameter;
 ;
 
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * An implementation of {@link BaseHndResolver}. Resolves
  * {@link CustomArgumentType}s.
  *
  * @author efekos

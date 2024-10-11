@@ -24,6 +24,7 @@
 
 package dev.efekos.arn.spigot.argument;
 
+import dev.efekos.arn.common.argument.BaseCustomArgumentType;
 import dev.efekos.arn.spigot.SpigotArn;
 import org.bukkit.command.CommandSender;
 
@@ -36,5 +37,5 @@ import org.bukkit.command.CommandSender;
  * @author efekos
  * @since 0.3.1
  */
-public interface CustomArgumentType<T> extends dev.efekos.arn.common.argument.CustomArgumentType<T, ArgumentRegistration, CommandSender> {
+public interface CustomArgumentType<T> extends BaseCustomArgumentType<T, ArgumentRegistration, CommandSender> {
 }

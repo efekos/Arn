@@ -27,7 +27,7 @@ package dev.efekos.arn.spigot.resolver.handler;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.FromSender;
 import dev.efekos.arn.common.annotation.modifier.sender.Name;
-import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.common.resolver.BaseHndResolver;
 import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
@@ -43,7 +43,7 @@ import java.util.Locale;
 ;
 
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * An implementation of {@link BaseHndResolver}. Resolves
  * names of {@link CommandSender}s.
  *
  * @author efekos

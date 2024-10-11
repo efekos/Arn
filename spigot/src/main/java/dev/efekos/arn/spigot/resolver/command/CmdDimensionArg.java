@@ -26,7 +26,7 @@ package dev.efekos.arn.spigot.resolver.command;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.common.resolver.CommandArgumentResolver;
+import dev.efekos.arn.common.resolver.BaseCmdResolver;
 import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -36,7 +36,7 @@ import org.bukkit.World;
 import java.lang.reflect.Parameter;
 
 /**
- * An implementation of {@link CommandArgumentResolver}. Resolves {@link World} arguments using {@link DimensionArgument}.
+ * An implementation of {@link BaseCmdResolver}. Resolves {@link World} arguments using {@link DimensionArgument}.
  * <strong>Since this implementation uses {@link DimensionArgument}, which was only made for dimensions of one world,
  * there isn't any conclusion that this resolver will work with different worlds, such as ones made by Multiverse plugin.
  * </strong>

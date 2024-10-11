@@ -27,7 +27,7 @@ package dev.efekos.arn.spigot.resolver.command;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.annotation.modifier.Vector;
-import dev.efekos.arn.common.resolver.CommandArgumentResolver;
+import dev.efekos.arn.common.resolver.BaseCmdResolver;
 import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -37,7 +37,7 @@ import org.bukkit.Location;
 import java.lang.reflect.Parameter;
 
 /**
- * An implementation of {@link CommandArgumentResolver}. Resolves {@link Location} arguments using vec3 position.
+ * An implementation of {@link BaseCmdResolver}. Resolves {@link Location} arguments using vec3 position.
  *
  * @author efekos
  * @since 0.1

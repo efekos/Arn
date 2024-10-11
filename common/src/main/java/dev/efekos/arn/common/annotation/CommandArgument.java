@@ -24,8 +24,8 @@
 
 package dev.efekos.arn.common.annotation;
 
-import dev.efekos.arn.common.resolver.CommandArgumentResolver;
-import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.common.resolver.BaseCmdResolver;
+import dev.efekos.arn.common.resolver.BaseHndResolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -34,8 +34,8 @@ import java.lang.annotation.Target;
 
 /**
  * Specifies that applied parameter is a command argument. When a method parameter is a CommandArgument, Arn will try to
- * find an applicable {@link CommandHandlerMethodArgumentResolver} to provide a value to the parameter when calling a
- * command handler method. If there is a {@link CommandArgumentResolver} associated with the type of the parameter, an
+ * find an applicable {@link BaseHndResolver} to provide a value to the parameter when calling a
+ * command handler method. If there is a {@link BaseCmdResolver} associated with the type of the parameter, an
  * argument node that represents the parameter will be added to command structure.
  *
  * @author efekos

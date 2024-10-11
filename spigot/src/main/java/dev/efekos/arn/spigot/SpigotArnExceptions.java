@@ -34,8 +34,8 @@ import dev.efekos.arn.common.exception.type.Dynamic2ArnExceptionType;
 import dev.efekos.arn.common.exception.type.Dynamic3ArnExceptionType;
 import dev.efekos.arn.common.exception.type.DynamicArnExceptionType;
 import dev.efekos.arn.common.exception.type.SimpleArnExceptionType;
-import dev.efekos.arn.common.resolver.CommandArgumentResolver;
-import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.common.resolver.BaseCmdResolver;
+import dev.efekos.arn.common.resolver.BaseHndResolver;
 import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 
 import java.lang.reflect.Method;
@@ -122,8 +122,8 @@ public final class SpigotArnExceptions {
     /**
      * Thrown when a method annotated with {@link Command} has a parameter that
      * can't be linked with any
-     * {@link CommandHandlerMethodArgumentResolver} or
-     * {@link CommandArgumentResolver}.
+     * {@link BaseHndResolver} or
+     * {@link BaseCmdResolver}.
      */
     public static final Dynamic3ArnExceptionType<ArnCommandException, Method, Command, Parameter> HM_NOT_APPLICABLE = new Dynamic3ArnExceptionType<>(
             (o, o2, o3) -> new ArnCommandException(
@@ -137,7 +137,7 @@ public final class SpigotArnExceptions {
     public static final DynamicArnExceptionType<ArnCommandException, SpigotCommandHandlerMethod> HM_DUPLICATE = new DynamicArnExceptionType<>(
             o -> new ArnCommandException("Duplicate command '" + o.getSignature() + "'"));
     /**
-     * Thrown when a guaranteed nonnull {@link CommandHandlerMethodArgumentResolver}
+     * Thrown when a guaranteed nonnull {@link BaseHndResolver}
      * somehow
      * becomes null.
      */

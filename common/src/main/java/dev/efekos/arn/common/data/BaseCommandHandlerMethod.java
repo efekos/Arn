@@ -29,8 +29,8 @@ import dev.efekos.arn.common.annotation.block.BlockCommandBlock;
 import dev.efekos.arn.common.annotation.block.BlockConsole;
 import dev.efekos.arn.common.annotation.block.BlockPlayer;
 import dev.efekos.arn.common.exception.ArnCommandException;
-import dev.efekos.arn.common.resolver.CommandArgumentResolver;
-import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.common.resolver.BaseCmdResolver;
+import dev.efekos.arn.common.resolver.BaseHndResolver;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -44,7 +44,7 @@ import java.util.Objects;
  * @author efekos
  * @since 0.1
  */
-public abstract class BaseCommandHandlerMethod<Cmd extends CommandArgumentResolver<?>, Hnd extends CommandHandlerMethodArgumentResolver<?, ?>> {
+public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, Hnd extends BaseHndResolver<?, ?>> {
 
     /**
      * Value of the {@link Command#value()} on {@link #method}.
@@ -273,7 +273,7 @@ public abstract class BaseCommandHandlerMethod<Cmd extends CommandArgumentResolv
     /**
      * Getter for {@link #argumentResolvers}.
      *
-     * @return List of {@link CommandHandlerMethodArgumentResolver}s found by Arn.
+     * @return List of {@link BaseHndResolver}s found by Arn.
      */
     public List<Hnd> getHandlerMethodResolvers() {
         return handlerMethodResolvers;

@@ -25,11 +25,12 @@
 package dev.efekos.arn.common.exception;
 
 import dev.efekos.arn.common.annotation.Command;
+import dev.efekos.arn.common.argument.BaseCustomArgumentType;
 
 /**
  * An {@link ArnException} that is used to replace Brigadier's
  * {@code com.mojang.brigadier.exceptions.CommandSyntaxException} so you don't have to include NMS in your plugin to
- * use Arn. Methods annotated with {@link Command} and {@link dev.efekos.arn.common.argument.CustomArgumentType} can
+ * use Arn. Methods annotated with {@link Command} and {@link BaseCustomArgumentType} can
  * throw this exception with a message that will pop up to the player with red color by default.
  *
  * @author efekos

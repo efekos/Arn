@@ -29,7 +29,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.spigot.annotation.Block;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
-import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.common.resolver.BaseHndResolver;
 import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
@@ -45,7 +45,7 @@ import java.lang.reflect.Parameter;
 import java.util.Arrays;
 
 /**
- * An implementation of {@link CommandHandlerMethodArgumentResolver}. Resolves
+ * An implementation of {@link BaseHndResolver}. Resolves
  * {@link Material} arguments that is a {@link Block}.
  *
  * @author efekos

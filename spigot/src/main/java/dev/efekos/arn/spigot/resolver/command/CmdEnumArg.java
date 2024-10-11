@@ -29,7 +29,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.annotation.CustomArgument;
-import dev.efekos.arn.common.resolver.CommandArgumentResolver;
+import dev.efekos.arn.common.resolver.BaseCmdResolver;
 import dev.efekos.arn.spigot.SpigotArn;
 import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
 import net.minecraft.commands.Commands;
@@ -41,7 +41,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
- * An implementation of {@link CommandArgumentResolver}. Resolves custom {@link Enum} arguments that is annotated with
+ * An implementation of {@link BaseCmdResolver}. Resolves custom {@link Enum} arguments that is annotated with
  * {@link CustomArgument}.
  *
  * @author efekos

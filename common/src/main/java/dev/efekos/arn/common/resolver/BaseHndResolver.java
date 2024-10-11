@@ -36,24 +36,24 @@ import java.lang.reflect.Parameter;
  * @author efekos
  * @since 0.1
  */
-public interface CommandHandlerMethodArgumentResolver<Ctx, Handler extends BaseCommandHandlerMethod<?, ?>> {
+public interface BaseHndResolver<Ctx, Handler extends BaseCommandHandlerMethod<?, ?>> {
 
 
     /**
-     * Returns whether this {@link CommandHandlerMethodArgumentResolver} can resolve {@code parameter}. Keep in mind,
-     * that there shouldn't be more than one {@link CommandHandlerMethodArgumentResolver} that can resolver the same
+     * Returns whether this {@link BaseHndResolver} can resolve {@code parameter}. Keep in mind,
+     * that there shouldn't be more than one {@link BaseHndResolver} that can resolver the same
      * parameter.
      *
      * @param parameter A parameter of a {@link BaseCommandHandlerMethod}.
      * @return {@code true} if this {@link Parameter} should be resolved using this
-     * {@link CommandHandlerMethodArgumentResolver}, {@code false} otherwise.
+     * {@link BaseHndResolver}, {@code false} otherwise.
      */
     boolean isApplicable(Parameter parameter);
 
     /**
-     * Should return true if there is a {@link CommandArgumentResolver} assigned to this resolver.
+     * Should return true if there is a {@link BaseCmdResolver} assigned to this resolver.
      *
-     * @return Whether Arn should search for a {@link CommandArgumentResolver} when a {@link Parameter} is resolvable
+     * @return Whether Arn should search for a {@link BaseCmdResolver} when a {@link Parameter} is resolvable
      * by this resolver.
      */
     boolean requireCommandArgument();

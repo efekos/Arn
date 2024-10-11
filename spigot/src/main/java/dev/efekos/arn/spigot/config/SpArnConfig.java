@@ -24,9 +24,9 @@
 
 package dev.efekos.arn.spigot.config;
 
-import dev.efekos.arn.common.config.ArnConfigurer;
+import dev.efekos.arn.common.config.BaseArnConfigurer;
 import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
 import dev.efekos.arn.spigot.resolver.SpigotHndResolver;
 
-public interface SpArnConfig extends ArnConfigurer<SpigotCmdResolver, SpigotHndResolver> {
+public interface SpArnConfig extends BaseArnConfigurer<SpigotCmdResolver, SpigotHndResolver> {
 }

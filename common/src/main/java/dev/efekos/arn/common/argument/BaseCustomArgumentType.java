@@ -22,49 +22,52 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.common.config;
+package dev.efekos.arn.common.argument;
 
-import dev.efekos.arn.common.annotation.Container;
-import dev.efekos.arn.common.data.ExceptionMap;
+import dev.efekos.arn.common.exception.ArnSyntaxException;
 
 import java.util.List;
 
 /**
- * An interface that represents a configurer of Arn. When ran, Arn scans for {@link Container}s that is a configurer
- * and applies such configuration from found configuration classes. Implementations must have an empty constructor in
- * order to work.
+ * An interface used to create custom argument types. When scanned by Arn, {@link Type} becomes a usable argument type
+ * that is handled by the implementation of this interface.
  *
+ * @param <Type> Type of the custom argument.
  * @author efekos
- * @since 0.1
+ * @since 0.3.1
  */
-public interface ArnConfigurer<Cmd, Hnd> {
+public interface BaseCustomArgumentType<Type, Registration, Sender> {
 
     /**
-     * Adds extra {@link Hnd}s to the given list.
+     * Returns class instance of the custom argument.
      *
-     * @param resolvers A list.
+     * @return A {@link Class} instance.
      */
-    void addHandlerMethodArgumentResolvers(List<Hnd> resolvers);
+    Class<Type> getType();
 
     /**
-     * Adds extra {@link Cmd}s to the given list.
+     * Returns a {@link Registration}, specifying how this argument should be registered.
      *
-     * @param resolvers A list.
+     * @return A {@link Registration}.
      */
-    void addArgumentResolvers(List<Cmd> resolvers);
+    Registration getRegistration();
 
     /**
-     * Adds extra annotation exceptions to the given map.
+     * Suggests a list of strings to the given command sender.
      *
-     * @param map An {@link ExceptionMap}.
+     * @param sender Any command sender.
+     * @return A list of suggestions.
      */
-    void putArgumentResolverExceptions(ExceptionMap<Cmd> map);
-
+    List<String> suggest(Sender sender);
 
     /**
-     * Adds extra annotation exceptions to the given map.
+     * Parses the given argument.
      *
-     * @param map An {@link ExceptionMap}.
+     * @param sender Sender who sent this argument.
+     * @param arg    The argument value.
+     * @return Parsed object.
+     * @throws ArnSyntaxException If {@code arg} is invalid.
      */
-    void putHandlerMethodArgumentResolverExceptions(ExceptionMap<Hnd> map);
+    Type parse(Sender sender, String arg) throws ArnSyntaxException;
+
 }

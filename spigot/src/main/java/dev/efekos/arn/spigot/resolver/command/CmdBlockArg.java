@@ -27,7 +27,7 @@ package dev.efekos.arn.spigot.resolver.command;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.spigot.annotation.Block;
-import dev.efekos.arn.common.resolver.CommandArgumentResolver;
+import dev.efekos.arn.common.resolver.BaseCmdResolver;
 import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -44,7 +44,7 @@ import org.bukkit.craftbukkit.v1_21_R1.CraftServer;
 import java.lang.reflect.Parameter;
 
 /**
- * An implementation of {@link CommandArgumentResolver}. Resolves {@link Material} arguments that are a {@link Block}.
+ * An implementation of {@link BaseCmdResolver}. Resolves {@link Material} arguments that are a {@link Block}.
  *
  * @author efekos
  * @since 0.1

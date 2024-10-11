@@ -25,9 +25,9 @@
 package dev.efekos.arn.spigot.resolver;
 
 import com.mojang.brigadier.context.CommandContext;
-import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
+import dev.efekos.arn.common.resolver.BaseHndResolver;
 import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 import net.minecraft.commands.CommandSourceStack;
 
-public interface SpigotHndResolver extends CommandHandlerMethodArgumentResolver<CommandContext<CommandSourceStack>, SpigotCommandHandlerMethod> {
+public interface SpigotHndResolver extends BaseHndResolver<CommandContext<CommandSourceStack>, SpigotCommandHandlerMethod> {
 }
