@@ -76,7 +76,7 @@ public final class HndEntityArg implements SpigotHndResolver {
         try {
             entity = EntityArgument.getEntity(context, s.isEmpty() ? parameter.getName() : s);
         } catch (CommandSyntaxException e) {
-            throw new ArnSyntaxException(e);
+            throw new ArnSyntaxException(e.getMessage());
         }
         return CraftEntity.getEntity(((CraftServer) Bukkit.getServer()), entity);
     }

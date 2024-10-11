@@ -81,7 +81,7 @@ public final class HndMultipleEntityArg implements SpigotHndResolver {
         try {
             entities = EntityArgument.getEntities(context, s.isEmpty() ? parameter.getName() : s);
         } catch (CommandSyntaxException e) {
-            throw new ArnSyntaxException(e);
+            throw new ArnSyntaxException(e.getMessage());
         }
         CommandSender sender = context.getSource().getBukkitSender();
         World w;

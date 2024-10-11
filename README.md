@@ -293,7 +293,7 @@ After all of your command and configurations are done, call
 from your plugin.
 
 ````java
-import dev.efekos.arn.spigot.Arn;
+import dev.efekos.arn.spigot.SpigotArn;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MyPlugin extends JavaPlugin {

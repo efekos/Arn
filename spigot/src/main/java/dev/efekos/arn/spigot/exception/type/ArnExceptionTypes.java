@@ -32,7 +32,7 @@ import dev.efekos.arn.common.exception.ArnCommandException;
 import dev.efekos.arn.common.exception.ArnContainerException;
 import dev.efekos.arn.common.resolver.CommandArgumentResolver;
 import dev.efekos.arn.common.resolver.CommandHandlerMethodArgumentResolver;
-import dev.efekos.arn.spigot.Arn;
+import dev.efekos.arn.spigot.SpigotArn;
 import dev.efekos.arn.spigot.data.SpigotCommandHandlerMethod;
 
 import java.lang.reflect.Method;
@@ -42,7 +42,7 @@ import java.util.List;
 ;
 
 /**
- * Utility class containing every exception type thrown by {@link Arn}.
+ * Utility class containing every exception type thrown by {@link SpigotArn}.
  *
  * @author efekos
  * @since 0.3

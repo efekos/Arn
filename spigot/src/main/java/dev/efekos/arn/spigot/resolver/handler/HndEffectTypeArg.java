@@ -79,7 +79,7 @@ public final class HndEffectTypeArg implements SpigotHndResolver {
         try {
             f = ResourceArgument.getMobEffect(context, s.isEmpty() ? parameter.getName() : s);
         } catch (CommandSyntaxException e) {
-            throw new ArnSyntaxException(e);
+            throw new ArnSyntaxException(e.getMessage());
         }
         MobEffect list = f.value();
         ResourceLocation key = BuiltInRegistries.MOB_EFFECT.getKey(list);

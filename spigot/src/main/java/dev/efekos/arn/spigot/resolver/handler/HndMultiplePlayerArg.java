@@ -79,7 +79,7 @@ public final class HndMultiplePlayerArg implements SpigotHndResolver {
         try {
             player = EntityArgument.getPlayers(context, s.isEmpty() ? parameter.getName() : s);
         } catch (CommandSyntaxException e) {
-            throw new ArnSyntaxException(e);
+            throw new ArnSyntaxException(e.getMessage());
         }
         if (player == null)
             return null;

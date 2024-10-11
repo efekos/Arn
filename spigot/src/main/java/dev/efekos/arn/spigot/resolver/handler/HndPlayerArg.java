@@ -78,7 +78,7 @@ public final class HndPlayerArg implements SpigotHndResolver {
         try {
             player = EntityArgument.getPlayer(context, s.isEmpty() ? parameter.getName() : s);
         } catch (CommandSyntaxException e) {
-            throw new ArnSyntaxException(e);
+            throw new ArnSyntaxException(e.getMessage());
         }
         if (player == null)
             return null;

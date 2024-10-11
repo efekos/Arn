@@ -43,7 +43,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
- * A class to dump utility methods used in {@link Arn} as a way to separate it
+ * A class to dump utility methods used in {@link SpigotArn} as a way to separate it
  * into two classes.
  *
  * @since 0.4

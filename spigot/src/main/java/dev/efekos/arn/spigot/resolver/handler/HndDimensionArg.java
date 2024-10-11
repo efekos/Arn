@@ -79,7 +79,7 @@ public final class HndDimensionArg implements SpigotHndResolver {
         try {
             world = DimensionArgument.getDimension(context, s.isEmpty() ? parameter.getName() : s);
         } catch (CommandSyntaxException e) {
-            throw new ArnSyntaxException(e);
+            throw new ArnSyntaxException(e.getMessage());
         }
         return world.getWorld();
     }

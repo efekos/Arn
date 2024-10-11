@@ -76,7 +76,7 @@ public final class HndEnchantmentArg implements SpigotHndResolver {
         try {
             enchantmentc = ResourceArgument.getEnchantment(context, s.isEmpty() ? parameter.getName() : s);
         } catch (CommandSyntaxException e) {
-            throw new ArnSyntaxException(e);
+            throw new ArnSyntaxException(e.getMessage());
         }
         ResourceLocation key = enchantmentc.key().location();
         NamespacedKey effectKey = new NamespacedKey(key.getNamespace(), key.getPath());

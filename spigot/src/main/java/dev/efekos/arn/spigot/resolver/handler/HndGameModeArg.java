@@ -75,7 +75,7 @@ public final class HndGameModeArg implements SpigotHndResolver {
         try {
             gamemode = GameModeArgument.getGameMode(context, s.isEmpty() ? parameter.getName() : s);
         } catch (CommandSyntaxException e) {
-            throw new ArnSyntaxException(e);
+            throw new ArnSyntaxException(e.getMessage());
         }
         return GameMode.valueOf(gamemode.getName().toUpperCase(Locale.ENGLISH));
     }

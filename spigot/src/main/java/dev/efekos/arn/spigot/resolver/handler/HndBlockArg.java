@@ -81,7 +81,7 @@ public final class HndBlockArg implements SpigotHndResolver {
         try {
             holder = ResourceArgument.getResource(context, s.isEmpty() ? parameter.getName() : s, Registries.BLOCK);
         } catch (CommandSyntaxException e) {
-            throw new ArnSyntaxException(e);
+            throw new ArnSyntaxException(e.getMessage());
         }
         ResourceLocation key = BuiltInRegistries.BLOCK.getKey(holder.value());
         NamespacedKey blockKey = new NamespacedKey(key.getNamespace(), key.getPath());

@@ -22,19 +22,10 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.spigot.argument;
+package dev.efekos.arn.common;
 
-import dev.efekos.arn.spigot.SpigotArn;
-import org.bukkit.command.CommandSender;
+public interface ArnInstance {
 
+    void run(Class<?> mainClass);
 
-/**
- * An interface used to create custom argument types. When scanned by {@link SpigotArn}, {@link T} becomes a
- * usable argument type that is handled by the implementation of this interface.
- *
- * @param <T> Type of the custom argument.
- * @author efekos
- * @since 0.3.1
- */
-public interface CustomArgumentType<T> extends dev.efekos.arn.common.argument.CustomArgumentType<T, ArgumentRegistration, CommandSender> {
 }

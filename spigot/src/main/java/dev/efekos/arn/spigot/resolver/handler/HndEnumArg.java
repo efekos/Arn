@@ -96,7 +96,7 @@ public final class HndEnumArg implements SpigotHndResolver {
             return Enum.valueOf(enumClass.getEnumConstants()[0].getClass(), string.toUpperCase(Locale.ENGLISH));
         } catch (IllegalArgumentException e) {
             throw new ArnSyntaxException(ResourceArgument.ERROR_UNKNOWN_RESOURCE.create(string,
-                    enumClass.getAnnotation(CustomArgument.class).value()));
+                    enumClass.getAnnotation(CustomArgument.class).value()).getMessage());
         } catch (NullPointerException e) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "ARN-ERROR");
             Bukkit.getConsoleSender().sendMessage(enumClass.toString());

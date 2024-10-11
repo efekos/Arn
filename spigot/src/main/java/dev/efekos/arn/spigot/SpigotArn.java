@@ -30,6 +30,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import dev.efekos.arn.common.ArnInstance;
 import dev.efekos.arn.common.annotation.*;
 import dev.efekos.arn.common.annotation.block.BlockCommandBlock;
 import dev.efekos.arn.common.annotation.block.BlockConsole;
@@ -84,13 +85,13 @@ import java.util.stream.IntStream;
  * Main class of Arn, used to run command scanning and registration. Handles
  * scanning {@link Container}s, applying
  * {@link SpArnConfig}s, creating {@link SpigotCommandHandlerMethod}s and
- * registering commands. {@link Arn#run(Class)} must
+ * registering commands. {@link SpigotArn#run(Class)} must
  * be called in {@link JavaPlugin#onEnable()} to register commands.
  *
  * @author efekos
  * @since 0.1
  */
-public final class Arn extends MethodDump {
+public final class SpigotArn extends MethodDump implements ArnInstance {
 
     /**
      * An exception type thrown by command handler when a command is blocked to
@@ -118,10 +119,7 @@ public final class Arn extends MethodDump {
      */
     public static final DynamicCommandExceptionType GENERIC = new DynamicCommandExceptionType(
             o -> Component.literal((String) o));
-    /**
-     * Local instance of {@link Arn}, used by {@link #run(Class)}.
-     */
-    private static final Arn instance = new Arn();
+
     /**
      * A list of classes that are a sender. There can't be more than one parameter
      * with one of these classes in a
@@ -178,12 +176,6 @@ public final class Arn extends MethodDump {
     private boolean configured;
 
     /**
-     * Creates a new instance of Arn.
-     */
-    private Arn() {
-    }
-
-    /**
      * Main method used to run Arn. Scans every class under the package of
      * {@code mainClass}, applies {@link SpArnConfig}s
      * to base configuration, and registers found
@@ -192,25 +184,25 @@ public final class Arn extends MethodDump {
      * @param mainClass Main class whose package will be scanned. Recommended to
      *                  make it your {@link JavaPlugin} class.
      */
-    public static void run(Class<?> mainClass) {
+    public void run(Class<?> mainClass) {
         Reflections reflections = new Reflections(mainClass.getPackage().getName());
 
         try {
-            instance.createContainerInstances(reflections);
+            createContainerInstances(reflections);
 
-            if (!instance.configured)
-                instance.configure();
-            instance.scanConfigurers(reflections);
+            if (!configured)
+                configure();
+            scanConfigurers(reflections);
 
-            instance.scanEnumArguments(reflections);
-            instance.scanCustomArguments(reflections);
-            instance.scanExceptionHandlerMethods(reflections);
+            scanEnumArguments(reflections);
+            scanCustomArguments(reflections);
+            scanExceptionHandlerMethods(reflections);
 
-            instance.scanCommands(reflections);
-            instance.registerCommands();
-            instance.registerHelpers(reflections);
+            scanCommands(reflections);
+            registerCommands();
+            registerHelpers(reflections);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Unexpected SpigotArn error. Please report this to github: https://github.com/efekos/Arn",e);
         }
     }
 
@@ -288,7 +280,7 @@ public final class Arn extends MethodDump {
     }
 
     /**
-     * Default configuration of {@link Arn}.
+     * Default configuration of {@link SpigotArn}.
      */
     private void configure() {
         BaseArnConfigurer configurer = new BaseArnConfigurer();
@@ -307,10 +299,10 @@ public final class Arn extends MethodDump {
      *                    {@link ArnConfigurer}s.
      */
     private void scanConfigurers(Reflections reflections) {
-        Object[] configurers = reflections.getTypesAnnotatedWith(Container.class).stream()
-                .filter(aClass -> Arrays.asList(aClass.getInterfaces()).contains(SpArnConfig.class)).toArray();
+        List<Class<?>> configurers = reflections.getTypesAnnotatedWith(Container.class).stream()
+                .filter(SpArnConfig.class::isAssignableFrom).toList();
 
-        for (Object configurer : configurers) {
+        for (Class<?> configurer : configurers) {
             Class<? extends SpArnConfig> clazz = (Class<? extends SpArnConfig>) configurer;
 
             SpArnConfig configurerInstance = (SpArnConfig) containerInstanceMap.get(clazz.getName());
@@ -334,7 +326,7 @@ public final class Arn extends MethodDump {
         for (Class<?> container : containers)
             for (Method method : container.getMethods())
                 if (method.isAnnotationPresent(Command.class))
-                    instance.command(method.getAnnotation(Command.class), method);
+                    command(method.getAnnotation(Command.class), method);
 
     }
 
@@ -540,7 +532,7 @@ public final class Arn extends MethodDump {
             try {
                 objects = fillResolvers(method, commandContext);
             } catch (ArnSyntaxException e) {
-                throw Arn.GENERIC.create(e.getMessage());
+                throw SpigotArn.GENERIC.create(e.getMessage());
             }
 
             Method actualMethodToInvoke = method.getMethod();

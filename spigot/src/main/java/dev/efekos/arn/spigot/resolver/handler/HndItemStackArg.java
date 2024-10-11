@@ -75,7 +75,7 @@ public final class HndItemStackArg implements SpigotHndResolver {
         try {
             itemStack = itemc.createItemStack(1, false);
         } catch (CommandSyntaxException e) {
-            throw new ArnSyntaxException(e);
+            throw new ArnSyntaxException(e.getMessage());
         }
         return CraftItemStack.asBukkitCopy(itemStack);
     }

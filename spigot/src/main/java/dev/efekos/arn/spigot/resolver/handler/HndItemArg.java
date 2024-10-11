@@ -82,7 +82,7 @@ public final class HndItemArg implements SpigotHndResolver {
         try {
             itemc = ResourceArgument.getResource(context, s.isEmpty() ? parameter.getName() : s, Registries.ITEM);
         } catch (CommandSyntaxException e) {
-            throw new ArnSyntaxException(e);
+            throw new ArnSyntaxException(e.getMessage());
         }
         net.minecraft.world.item.Item item = itemc.value();
         ResourceLocation key = BuiltInRegistries.ITEM.getKey(item);

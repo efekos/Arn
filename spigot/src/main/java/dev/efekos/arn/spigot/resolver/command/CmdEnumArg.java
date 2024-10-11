@@ -30,7 +30,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.annotation.CustomArgument;
 import dev.efekos.arn.common.resolver.CommandArgumentResolver;
-import dev.efekos.arn.spigot.Arn;
+import dev.efekos.arn.spigot.SpigotArn;
 import dev.efekos.arn.spigot.resolver.SpigotCmdResolver;
 import net.minecraft.commands.Commands;
 
@@ -60,7 +60,7 @@ public final class CmdEnumArg implements SpigotCmdResolver {
 
     /**
      * Creates a new enumerator resolver. This class is not a static argument resolver. It is dynamically added by
-     * {@link Arn} for every {@link Enum} that is annotated with {@link CustomArgument}.
+     * {@link SpigotArn} for every {@link Enum} that is annotated with {@link CustomArgument}.
      *
      * @param enumClass Main {@link Enum} class this resolver will handle.
      */
