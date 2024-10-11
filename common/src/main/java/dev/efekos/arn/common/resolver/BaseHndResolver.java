@@ -24,6 +24,7 @@
 
 package dev.efekos.arn.common.resolver;
 
+import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.data.BaseCommandHandlerMethod;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 
@@ -68,5 +69,11 @@ public interface BaseHndResolver<Ctx, Method extends BaseCommandHandlerMethod<?,
      * @throws ArnSyntaxException if needed.
      */
     Object resolve(Parameter parameter, Method method, Ctx context) throws ArnSyntaxException;
+
+
+    default String getName(Parameter parameter){
+        String s = parameter.getAnnotation(CommandArgument.class).value();
+        return s.isEmpty() ? parameter.getName() : s;
+    }
 
 }

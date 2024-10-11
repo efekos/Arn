@@ -29,6 +29,7 @@ import dev.efekos.arn.paper.command.*;
 import dev.efekos.arn.paper.face.PaperArnConfig;
 import dev.efekos.arn.paper.face.PaperCmdResolver;
 import dev.efekos.arn.paper.face.PaperHndResolver;
+import dev.efekos.arn.paper.handler.*;
 
 import java.util.List;
 
@@ -36,7 +37,11 @@ public class PaperArnConfigurer implements PaperArnConfig {
 
     @Override
     public void addHandlerMethodArgumentResolvers(List<PaperHndResolver> resolvers) {
-
+        resolvers.addAll(List.of(
+                new HndBoolArg(),new HndDoubleArg(),new HndEntitiesArg(),new HndEntityArg(), new HndFloatArg(),
+                new HndIntArg(),new HndLocationArg(),new HndLongArg(),new HndPlayerArg(),new HndPlayersArg(),
+                new HndStringArg(),new HndVectorArg()
+        ));
     }
 
     @Override
