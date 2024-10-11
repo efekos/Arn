@@ -29,7 +29,11 @@ import java.lang.reflect.Method;
 
 public class Arn {
 
-    public boolean isAvailable(){
+    private Arn() {
+
+    }
+
+    public static boolean isAvailable(){
         try {
             Class.forName("dev.efekos.arn.StaticArnBinder");
             return true;
@@ -38,7 +42,7 @@ public class Arn {
         }
     }
 
-    public ArnInstance getInstance(){
+    public static ArnInstance getInstance(){
         if(!isAvailable())return null;
         try {
             Class<?> clazz = Class.forName("dev.efekos.arn.StaticArnBinder");
