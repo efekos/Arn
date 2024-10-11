@@ -22,11 +22,11 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.spigot.data;
+package dev.efekos.arn.paper;
 
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.data.BaseExceptionHandlerMethod;
-import net.minecraft.commands.CommandSourceStack;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -35,18 +35,19 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpigotExceptionHandlerMethod extends BaseExceptionHandlerMethod<CommandContext<CommandSourceStack>> {
+public class PaperExceptionMethod extends BaseExceptionHandlerMethod<CommandContext<CommandSourceStack>> {
 
-    public SpigotExceptionHandlerMethod(Method method, Class<? extends Exception> exceptionClass) {
+    public PaperExceptionMethod(Method method, Class<? extends Exception> exceptionClass) {
         super(method, exceptionClass);
     }
 
+    @Override
     public List<Object> fillParams(Throwable ex, CommandContext<CommandSourceStack> commandContext) {
         List<Object> objects = new ArrayList<>();
 
         for (Parameter parameter : method.getParameters()) {
-            if (Player.class.isAssignableFrom(parameter.getType())) objects.add(commandContext.getSource().getPlayer());
-            else if (CommandSender.class.isAssignableFrom(parameter.getType())) objects.add(commandContext.getSource().getBukkitSender());
+            if (Player.class.isAssignableFrom(parameter.getType())) objects.add((Player) commandContext.getSource().getSender());
+            else if (CommandSender.class.isAssignableFrom(parameter.getType())) objects.add(commandContext.getSource().getSender());
             else if (parameter.getType().isAssignableFrom(exceptionClass)||exceptionClass.equals(parameter.getType())) objects.add(ex);
             else objects.add(null);
         }

@@ -36,7 +36,7 @@ import java.lang.reflect.Parameter;
  * @author efekos
  * @since 0.1
  */
-public interface BaseHndResolver<Ctx, Handler extends BaseCommandHandlerMethod<?, ?>> {
+public interface BaseHndResolver<Ctx, Method extends BaseCommandHandlerMethod<?, ?>> {
 
 
     /**
@@ -67,6 +67,6 @@ public interface BaseHndResolver<Ctx, Handler extends BaseCommandHandlerMethod<?
      * @return An object to be passed in to {@code parameter}.
      * @throws ArnSyntaxException if needed.
      */
-    Object resolve(Parameter parameter, Handler method, Ctx context) throws ArnSyntaxException;
+    Object resolve(Parameter parameter, Method method, Ctx context) throws ArnSyntaxException;
 
 }
