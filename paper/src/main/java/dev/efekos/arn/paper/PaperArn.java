@@ -26,6 +26,7 @@ package dev.efekos.arn.paper;
 
 import com.mojang.brigadier.LiteralMessage;
 import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
@@ -51,12 +52,14 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.command.BlockCommandSender;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
@@ -306,7 +309,8 @@ public class PaperArn implements ArnInstance {
                 if(finalNode==null)finalNode=builder;
                 else finalNode=finalNode.then(builder);
             }
-            finalNodes.add(finalNode);
+            if(finalNode==null)continue;
+            finalNodes.add(finalNode.executes(createCommandLambda(method)));
         }
 
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS,e->{
@@ -317,5 +321,85 @@ public class PaperArn implements ArnInstance {
         });
 
     }
+
+    private com.mojang.brigadier.Command<CommandSourceStack> createCommandLambda(PaperCommandMethod method) {
+        return commandContext -> {
+
+            CommandSender sender = commandContext.getSource().getSender();
+            if (!method.getAnnotationData().getPermission().isEmpty()
+                    && !sender.hasPermission(method.getAnnotationData().getPermission()))
+                return 1;
+            if (method.isBlocksConsole() && sender instanceof ConsoleCommandSender)
+                throw CONSOLE_BLOCKED_EXCEPTION.create();
+            if (method.isBlocksCommandBlock() && sender instanceof BlockCommandSender)
+                throw CM_BLOCKED_EXCEPTION.create();
+            if (method.isBlocksPlayer() && sender instanceof Player)
+                throw PLAYER_BLOCKED_EXCEPTION.create();
+
+            List<Object> objects;
+            try {
+                objects = fillResolvers(method, commandContext);
+            } catch (ArnSyntaxException e) {
+                throw GENERIC.create(e.getMessage());
+            }
+
+            Method actualMethodToInvoke = method.getMethod();
+
+            try {
+                actualMethodToInvoke.setAccessible(true);
+                return (int) actualMethodToInvoke.invoke(
+                        instantiate(method.getMethod().getDeclaringClass()), objects.toArray());
+            } catch (InvocationTargetException e) {
+                Throwable ex = e.getCause();
+                if (ex == null)
+                    return 1;
+                if (ex instanceof CommandSyntaxException)
+                    throw (CommandSyntaxException) ex;
+                else if (ex instanceof ArnSyntaxException)
+                    throw GENERIC.create(ex.getMessage());
+                else
+                    try {
+
+                        Optional<PaperExceptionMethod> exceptionMethodOptional = findHandlerMethod(ex);
+                        if (exceptionMethodOptional.isEmpty())
+                            throw GENERIC.create(ex.getMessage());
+                        PaperExceptionMethod exceptionMethod = exceptionMethodOptional.get();
+                        List<Object> list = exceptionMethod.fillParams(ex, commandContext);
+                        Method actualMethod = exceptionMethod.getMethod();
+                        actualMethod.invoke(
+                                instantiate(actualMethod.getDeclaringClass()),
+                                list.toArray());
+
+                    } catch (Exception exe) {
+                        throw GENERIC.create(exe.getMessage());
+                    }
+                return 1;
+            } catch (IllegalAccessException e) {
+                PaperArnExceptions.COMMAND_NO_ACCESS.create().initCause(e).printStackTrace();
+                return 1;
+            }
+
+        };
+    }
+
+
+    protected static List<Object> fillResolvers(PaperCommandMethod method,
+                                                CommandContext<CommandSourceStack> commandContext) throws ArnSyntaxException {
+        List<Object> objects = new ArrayList<>();
+
+        for (int i = 0; i < method.getHandlerMethodResolvers().size(); i++) {
+            PaperHndResolver resolver = method.getHandlerMethodResolvers().get(i);
+            objects.add(resolver.resolve(method.getParameters().get(i), method, commandContext));
+        }
+        return objects;
+    }
+
+    protected Optional<PaperExceptionMethod> findHandlerMethod(Throwable e) {
+        for (PaperExceptionMethod method : exceptionMethods)
+            if (method.getExceptionClass().isAssignableFrom(e.getClass()))
+                return Optional.of(method);
+        return Optional.empty();
+    }
+
 
 }
