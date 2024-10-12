@@ -43,6 +43,9 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Biome;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BlockType;
+import org.bukkit.command.BlockCommandSender;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -63,7 +66,8 @@ public final class PaperArnConfigurer implements PaperArnConfig {
     public void addHandlerMethodArgumentResolvers(List<PaperHndResolver> resolvers) {
         resolvers.addAll(List.of(
                 new HndEntitiesArg(), new HndEntityArg(),  new HndBlockPosArg(), new HndPlayerArg(), new HndPlayersArg(),
-                new HndVectorArg(),
+                new HndVectorArg(), new HndSender(Player.class), new HndSender(BlockCommandSender.class),
+                new HndSender(ConsoleCommandSender.class), new HndSender(CommandSender.class),
 
                 new HndNonResolverArg(Integer.class),new HndNonResolverArg(int.class),new HndNonResolverArg(Double.class),
                 new HndNonResolverArg(double.class),new HndNonResolverArg(Float.class),new HndNonResolverArg(float.class),
