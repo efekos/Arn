@@ -28,6 +28,6 @@ import dev.efekos.arn.common.exception.ArnException;
 
 public interface ArnInstance {
 
-    <T> void run(Class<T> mainClass,T instance) throws ArnException;
+    <T> void run(Class<T> mainClass, T instance) throws ArnException;
 
 }

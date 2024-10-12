@@ -65,18 +65,18 @@ public final class PaperArnConfigurer implements PaperArnConfig {
     @Override
     public void addHandlerMethodArgumentResolvers(List<PaperHndResolver> resolvers) {
         resolvers.addAll(List.of(
-                new HndEntitiesArg(), new HndEntityArg(),  new HndBlockPosArg(), new HndPlayerArg(), new HndPlayersArg(),
+                new HndEntitiesArg(), new HndEntityArg(), new HndBlockPosArg(), new HndPlayerArg(), new HndPlayersArg(),
                 new HndVectorArg(), new HndSender(Player.class), new HndSender(BlockCommandSender.class),
                 new HndSender(ConsoleCommandSender.class), new HndSender(CommandSender.class),
 
-                new HndNonResolverArg(Integer.class),new HndNonResolverArg(int.class),new HndNonResolverArg(Double.class),
-                new HndNonResolverArg(double.class),new HndNonResolverArg(Float.class),new HndNonResolverArg(float.class),
-                new HndNonResolverArg(String.class),new HndNonResolverArg(Boolean.class),new HndNonResolverArg(boolean.class),
-                new HndNonResolverArg(Long.class),new HndNonResolverArg(long.class), new HndNonResolverArg(Component.class),
-                new HndNonResolverArg(Attribute.class),new HndNonResolverArg(Biome.class),new HndNonResolverArg(ItemType.class),
-                new HndNonResolverArg(EntityType.class),new HndNonResolverArg(BlockType.class),new HndNonResolverArg(DamageType.class),
-                new HndNonResolverArg(Sound.class),new HndNonResolverArg(JukeboxSong.class),new HndNonResolverArg(Enchantment.class),
-                new HndNonResolverArg(PotionEffectType.class),new HndNonResolverArg(Structure.class),new HndNonResolverArg(StructureType.class),
+                new HndNonResolverArg(Integer.class), new HndNonResolverArg(int.class), new HndNonResolverArg(Double.class),
+                new HndNonResolverArg(double.class), new HndNonResolverArg(Float.class), new HndNonResolverArg(float.class),
+                new HndNonResolverArg(String.class), new HndNonResolverArg(Boolean.class), new HndNonResolverArg(boolean.class),
+                new HndNonResolverArg(Long.class), new HndNonResolverArg(long.class), new HndNonResolverArg(Component.class),
+                new HndNonResolverArg(Attribute.class), new HndNonResolverArg(Biome.class), new HndNonResolverArg(ItemType.class),
+                new HndNonResolverArg(EntityType.class), new HndNonResolverArg(BlockType.class), new HndNonResolverArg(DamageType.class),
+                new HndNonResolverArg(Sound.class), new HndNonResolverArg(JukeboxSong.class), new HndNonResolverArg(Enchantment.class),
+                new HndNonResolverArg(PotionEffectType.class), new HndNonResolverArg(Structure.class), new HndNonResolverArg(StructureType.class),
                 new HndNonResolverArg(MusicInstrument.class), new HndNonResolverArg(ItemStack.class), new HndNonResolverArg(UUID.class),
                 new HndNonResolverArg(ItemStackPredicate.class), new HndNonResolverArg(GameMode.class), new HndNonResolverArg(BlockState.class)
         ));
@@ -85,23 +85,23 @@ public final class PaperArnConfigurer implements PaperArnConfig {
     @Override
     public void addArgumentResolvers(List<PaperCmdResolver> resolvers) {
         resolvers.addAll(List.of(
-                new CmdResourceArg(Attribute.class, RegistryKey.ATTRIBUTE), new CmdResourceArg(Biome.class,RegistryKey.BIOME),
-                new CmdResourceArg(ItemType.class,RegistryKey.ITEM), new CmdResourceArg(EntityType.class,RegistryKey.ENTITY_TYPE),
-                new CmdResourceArg(BlockType.class,RegistryKey.BLOCK),new CmdResourceArg(DamageType.class,RegistryKey.DAMAGE_TYPE),
-                new CmdResourceArg(Sound.class,RegistryKey.SOUND_EVENT),new CmdResourceArg(JukeboxSong.class,RegistryKey.JUKEBOX_SONG),
-                new CmdResourceArg(Enchantment.class, RegistryKey.ENCHANTMENT), new CmdResourceArg(PotionEffectType.class,RegistryKey.MOB_EFFECT),
-                new CmdResourceArg(Structure.class,RegistryKey.STRUCTURE),new CmdResourceArg(StructureType.class,RegistryKey.STRUCTURE_TYPE),
-                new CmdResourceArg(MusicInstrument.class,RegistryKey.INSTRUMENT),
+                new CmdResourceArg(Attribute.class, RegistryKey.ATTRIBUTE), new CmdResourceArg(Biome.class, RegistryKey.BIOME),
+                new CmdResourceArg(ItemType.class, RegistryKey.ITEM), new CmdResourceArg(EntityType.class, RegistryKey.ENTITY_TYPE),
+                new CmdResourceArg(BlockType.class, RegistryKey.BLOCK), new CmdResourceArg(DamageType.class, RegistryKey.DAMAGE_TYPE),
+                new CmdResourceArg(Sound.class, RegistryKey.SOUND_EVENT), new CmdResourceArg(JukeboxSong.class, RegistryKey.JUKEBOX_SONG),
+                new CmdResourceArg(Enchantment.class, RegistryKey.ENCHANTMENT), new CmdResourceArg(PotionEffectType.class, RegistryKey.MOB_EFFECT),
+                new CmdResourceArg(Structure.class, RegistryKey.STRUCTURE), new CmdResourceArg(StructureType.class, RegistryKey.STRUCTURE_TYPE),
+                new CmdResourceArg(MusicInstrument.class, RegistryKey.INSTRUMENT),
 
                 new CmdBlockPosArg(), new CmdVectorArg(),
-                new CmdFloatArg(),new CmdDoubleArg(), new CmdIntArg(),new CmdLongArg(),new CmdStringArg(),
+                new CmdFloatArg(), new CmdDoubleArg(), new CmdIntArg(), new CmdLongArg(), new CmdStringArg(),
                 new CmdOneMethodArg(Boolean.class, BoolArgumentType::bool), new CmdOneMethodArg(boolean.class, BoolArgumentType::bool),
                 new CmdOneMethodArg(UUID.class, ArgumentTypes::uuid), new CmdOneMethodArg(BlockState.class, ArgumentTypes::blockState),
-                new CmdOneMethodArg(Component.class,ArgumentTypes::component),
-                new CmdOneMethodArg(Entity[].class,ArgumentTypes::entities), new CmdOneMethodArg(Entity.class,ArgumentTypes::entity),
-                new CmdOneMethodArg(GameMode.class,ArgumentTypes::gameMode),
-                new CmdOneMethodArg(ItemStack.class,ArgumentTypes::itemStack),new CmdOneMethodArg(ItemStackPredicate.class,ArgumentTypes::itemPredicate),
-                new CmdOneMethodArg(Player.class,ArgumentTypes::player), new CmdOneMethodArg(Player[].class,ArgumentTypes::players)
+                new CmdOneMethodArg(Component.class, ArgumentTypes::component),
+                new CmdOneMethodArg(Entity[].class, ArgumentTypes::entities), new CmdOneMethodArg(Entity.class, ArgumentTypes::entity),
+                new CmdOneMethodArg(GameMode.class, ArgumentTypes::gameMode),
+                new CmdOneMethodArg(ItemStack.class, ArgumentTypes::itemStack), new CmdOneMethodArg(ItemStackPredicate.class, ArgumentTypes::itemPredicate),
+                new CmdOneMethodArg(Player.class, ArgumentTypes::player), new CmdOneMethodArg(Player[].class, ArgumentTypes::players)
         ));
     }
 

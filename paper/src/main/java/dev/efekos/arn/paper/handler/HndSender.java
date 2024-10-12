@@ -31,7 +31,6 @@ import dev.efekos.arn.paper.PaperCommandMethod;
 import dev.efekos.arn.paper.face.PaperHndResolver;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.lang.reflect.Parameter;
 
@@ -45,7 +44,7 @@ public class HndSender implements PaperHndResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return !parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(clazz);
+        return !parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(clazz);
     }
 
     @Override
@@ -56,7 +55,7 @@ public class HndSender implements PaperHndResolver {
     @Override
     public Object resolve(Parameter parameter, PaperCommandMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
         CommandSender sender = context.getSource().getSender();
-        return clazz.isAssignableFrom(sender.getClass())?clazz.cast(sender):null;
+        return clazz.isAssignableFrom(sender.getClass()) ? clazz.cast(sender) : null;
     }
 
 }

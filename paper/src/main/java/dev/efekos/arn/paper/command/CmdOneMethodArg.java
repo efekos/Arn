@@ -46,7 +46,7 @@ public final class CmdOneMethodArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class)&&parameter.getType().equals(clazz);
+        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(clazz);
     }
 
     @Override

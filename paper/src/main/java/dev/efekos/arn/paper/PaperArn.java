@@ -58,7 +58,10 @@ import org.reflections.Reflections;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
@@ -70,7 +73,7 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
     private final ExceptionMap<PaperHndResolver> handlerResolverExceptions = new ExceptionMap<>();
     private final List<PaperHndResolver> handlerResolvers = new ArrayList<>();
     private final List<PaperCommandMethod> commandMethods = new ArrayList<>();
-    private final List<ArgumentBuilder<CommandSourceStack,?>> finalNodes = new ArrayList<>();
+    private final List<ArgumentBuilder<CommandSourceStack, ?>> finalNodes = new ArrayList<>();
     private boolean configured = false;
 
     private <T> T instantiate(Class<T> clazz) {
@@ -101,8 +104,9 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
     }
 
     @Override
-    public <T> void run(Class<T> mainClass,T instance) throws ArnException {
-        if(!(instance instanceof Plugin plugin)) throw new IllegalStateException("Arn#run is called with a "+mainClass.getName()+" which isn't a JavaPlugin.");
+    public <T> void run(Class<T> mainClass, T instance) throws ArnException {
+        if (!(instance instanceof Plugin plugin))
+            throw new IllegalStateException("Arn#run is called with a " + mainClass.getName() + " which isn't a JavaPlugin.");
         Reflections reflections = new Reflections(mainClass.getPackage().getName());
 
         configure(reflections);
@@ -115,17 +119,17 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
     private void scanCommands(Reflections reflections) throws ArnException {
         for (Class<?> aClass : reflections.getTypesAnnotatedWith(Container.class)) {
             for (Method method : aClass.getMethods()) {
-                if(method.isAnnotationPresent(Command.class)) {
+                if (method.isAnnotationPresent(Command.class)) {
                     Command annotation = method.getAnnotation(Command.class);
-                    command(annotation,method);
+                    command(annotation, method);
                 }
             }
         }
     }
 
-    private void command(Command ann,Method method) throws ArnException {
+    private void command(Command ann, Method method) throws ArnException {
         // Check for return type
-        if(!method.getReturnType().equals(int.class)) throw PaperArnExceptions.HM_NOT_INT.create(method,ann);
+        if (!method.getReturnType().equals(int.class)) throw PaperArnExceptions.HM_NOT_INT.create(method, ann);
 
         // Check exceptions
         Optional<Class<?>> optional = Arrays.stream(method.getExceptionTypes()).filter(aClass ->
@@ -135,7 +139,7 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
 
         // Check senders
         long lC = Arrays.stream(method.getParameters()).filter(parameter -> !parameter.isAnnotationPresent(CommandArgument.class)).count();
-        if(lC>1) throw PaperArnExceptions.HM_MULTIPLE_SENDERS.create(method,ann);
+        if (lC > 1) throw PaperArnExceptions.HM_MULTIPLE_SENDERS.create(method, ann);
 
         // Check applicable
 
@@ -231,17 +235,17 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
         return signatureBuilder;
     }
 
-    public void registerCommands(@NotNull LifecycleEventManager<Plugin> lifecycleManager){
+    public void registerCommands(@NotNull LifecycleEventManager<Plugin> lifecycleManager) {
 
         for (PaperCommandMethod method : commandMethods) {
 
-            ArrayList<ArgumentBuilder<CommandSourceStack,?>> nodes = new ArrayList<>();
+            ArrayList<ArgumentBuilder<CommandSourceStack, ?>> nodes = new ArrayList<>();
             List<CommandAnnotationLiteral> literals = method.getAnnotationData().getLiterals();
 
             // Register first literals as they are head of the command, and they will need #requires for permissions
             for (CommandAnnotationLiteral lit : literals) {
-                if(lit.getOffset()==0) if(method.getAnnotationData().getPermission().isEmpty()) {
-                    Predicate<CommandSourceStack> predicate = method.getAnnotationData().getPermission().isEmpty() ? s->true:s -> s.getSender().hasPermission(method.getAnnotationData().getPermission());
+                if (lit.getOffset() == 0) if (method.getAnnotationData().getPermission().isEmpty()) {
+                    Predicate<CommandSourceStack> predicate = method.getAnnotationData().getPermission().isEmpty() ? s -> true : s -> s.getSender().hasPermission(method.getAnnotationData().getPermission());
                     nodes.add(Commands.literal(lit.getLiteral()).requires(predicate));
                 }
             }
@@ -273,16 +277,16 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
             }
 
             // Chain up builders
-            ArgumentBuilder<CommandSourceStack,?> finalNode = null;
+            ArgumentBuilder<CommandSourceStack, ?> finalNode = null;
             for (ArgumentBuilder<CommandSourceStack, ?> builder : nodes.reversed()) {
-                if(finalNode==null)finalNode=builder;
-                else finalNode=finalNode.then(builder);
+                if (finalNode == null) finalNode = builder;
+                else finalNode = finalNode.then(builder);
             }
-            if(finalNode==null)continue;
+            if (finalNode == null) continue;
             finalNodes.add(finalNode.executes(createCommandLambda(method)));
         }
 
-        lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS,e->{
+        lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, e -> {
             Commands registrar = e.registrar();
             for (ArgumentBuilder<CommandSourceStack, ?> node : finalNodes) {
                 registrar.register(((LiteralCommandNode<CommandSourceStack>) node.build()));

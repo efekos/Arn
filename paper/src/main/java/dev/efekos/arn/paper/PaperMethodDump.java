@@ -45,40 +45,6 @@ import java.util.Optional;
 
 public sealed class PaperMethodDump permits PaperArn {
 
-    protected final List<PaperExceptionMethod> exceptionMethods = new ArrayList<>();
-
-    protected static List<Object> fillResolvers(PaperCommandMethod method,
-                                                CommandContext<CommandSourceStack> commandContext) throws ArnSyntaxException {
-        List<Object> objects = new ArrayList<>();
-
-        for (int i = 0; i < method.getHandlerMethodResolvers().size(); i++) {
-            PaperHndResolver resolver = method.getHandlerMethodResolvers().get(i);
-            objects.add(resolver.resolve(method.getParameters().get(i), method, commandContext));
-        }
-        return objects;
-    }
-
-    protected Optional<PaperExceptionMethod> findHandlerMethod(Throwable e) {
-        for (PaperExceptionMethod method : exceptionMethods)
-            if (method.getExceptionClass().isAssignableFrom(e.getClass()))
-                return Optional.of(method);
-        return Optional.empty();
-    }
-
-
-    protected void scanExceptionHandlerMethods(Reflections reflections) {
-        for (Class<?> aClass : reflections.getTypesAnnotatedWith(Container.class))
-            for (Method method : aClass.getDeclaredMethods()) {
-                if (!method.isAnnotationPresent(ExceptionHandler.class))
-                    continue;
-                ExceptionHandler annotation = method.getAnnotation(ExceptionHandler.class);
-                PaperExceptionMethod handlerMethod = new PaperExceptionMethod(method, annotation.value());
-                exceptionMethods.add(handlerMethod);
-            }
-
-    }
-
-
     /**
      * An exception type thrown by command handler when a command is blocked to
      * {@link ConsoleCommandSender}s, but the
@@ -105,7 +71,37 @@ public sealed class PaperMethodDump permits PaperArn {
      */
     public static final DynamicCommandExceptionType GENERIC = new DynamicCommandExceptionType(
             o -> new LiteralMessage(o.toString()));
+    protected final List<PaperExceptionMethod> exceptionMethods = new ArrayList<>();
 
+    protected static List<Object> fillResolvers(PaperCommandMethod method,
+                                                CommandContext<CommandSourceStack> commandContext) throws ArnSyntaxException {
+        List<Object> objects = new ArrayList<>();
+
+        for (int i = 0; i < method.getHandlerMethodResolvers().size(); i++) {
+            PaperHndResolver resolver = method.getHandlerMethodResolvers().get(i);
+            objects.add(resolver.resolve(method.getParameters().get(i), method, commandContext));
+        }
+        return objects;
+    }
+
+    protected Optional<PaperExceptionMethod> findHandlerMethod(Throwable e) {
+        for (PaperExceptionMethod method : exceptionMethods)
+            if (method.getExceptionClass().isAssignableFrom(e.getClass()))
+                return Optional.of(method);
+        return Optional.empty();
+    }
+
+    protected void scanExceptionHandlerMethods(Reflections reflections) {
+        for (Class<?> aClass : reflections.getTypesAnnotatedWith(Container.class))
+            for (Method method : aClass.getDeclaredMethods()) {
+                if (!method.isAnnotationPresent(ExceptionHandler.class))
+                    continue;
+                ExceptionHandler annotation = method.getAnnotation(ExceptionHandler.class);
+                PaperExceptionMethod handlerMethod = new PaperExceptionMethod(method, annotation.value());
+                exceptionMethods.add(handlerMethod);
+            }
+
+    }
 
 
 }
