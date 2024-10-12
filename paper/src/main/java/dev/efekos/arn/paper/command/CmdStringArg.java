@@ -35,7 +35,7 @@ import io.papermc.paper.command.brigadier.Commands;
 
 import java.lang.reflect.Parameter;
 
-public class CmdStringArg implements PaperCmdResolver {
+public final class CmdStringArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {

@@ -37,7 +37,7 @@ import org.bukkit.Location;
 
 import java.lang.reflect.Parameter;
 
-public class HndVectorArg implements PaperHndResolver {
+public final class HndVectorArg implements PaperHndResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {

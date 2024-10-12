@@ -35,7 +35,7 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpigotExceptionHandlerMethod extends BaseExceptionHandlerMethod<CommandContext<CommandSourceStack>> {
+public final class SpigotExceptionHandlerMethod extends BaseExceptionHandlerMethod<CommandContext<CommandSourceStack>> {
 
     public SpigotExceptionHandlerMethod(Method method, Class<? extends Exception> exceptionClass) {
         super(method, exceptionClass);

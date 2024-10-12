@@ -66,7 +66,7 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
-public class PaperArn implements ArnInstance {
+public final class PaperArn implements ArnInstance {
 
 
     /**

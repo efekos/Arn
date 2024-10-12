@@ -35,7 +35,7 @@ import org.bukkit.Location;
 
 import java.lang.reflect.Parameter;
 
-public class CmdVectorArg implements PaperCmdResolver {
+public final class CmdVectorArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {

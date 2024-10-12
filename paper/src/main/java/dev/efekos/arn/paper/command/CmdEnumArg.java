@@ -35,7 +35,7 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CmdEnumArg implements PaperCmdResolver {
+public final class CmdEnumArg implements PaperCmdResolver {
 
     private final Class<? extends Enum<?>> clazz;
     private final List<String> constants;

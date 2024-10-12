@@ -39,5 +39,5 @@ import java.lang.reflect.Method;
  * @author efekos
  * @since 0.1
  */
-public class SpigotCommandHandlerMethod extends BaseCommandHandlerMethod<SpigotCmdResolver, SpigotHndResolver> {
+public final class SpigotCommandHandlerMethod extends BaseCommandHandlerMethod<SpigotCmdResolver, SpigotHndResolver> {
 }

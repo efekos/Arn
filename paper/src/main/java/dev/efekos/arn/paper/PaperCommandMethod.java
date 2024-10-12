@@ -28,6 +28,5 @@ import dev.efekos.arn.common.data.BaseCommandHandlerMethod;
 import dev.efekos.arn.paper.face.PaperCmdResolver;
 import dev.efekos.arn.paper.face.PaperHndResolver;
 
-public class PaperCommandMethod extends BaseCommandHandlerMethod<PaperCmdResolver, PaperHndResolver> {
-
+public final class PaperCommandMethod extends BaseCommandHandlerMethod<PaperCmdResolver, PaperHndResolver> {
 }

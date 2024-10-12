@@ -57,7 +57,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.List;
 import java.util.UUID;
 
-public class PaperArnConfigurer implements PaperArnConfig {
+public final class PaperArnConfigurer implements PaperArnConfig {
 
     @Override
     public void addHandlerMethodArgumentResolvers(List<PaperHndResolver> resolvers) {

@@ -33,7 +33,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 import java.lang.reflect.Parameter;
 
-public class HndNonResolverArg implements PaperHndResolver {
+public final class HndNonResolverArg implements PaperHndResolver {
 
     private final Class<?> clazz;
 

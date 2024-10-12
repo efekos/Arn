@@ -36,7 +36,7 @@ import org.bukkit.entity.Entity;
 
 import java.lang.reflect.Parameter;
 
-public class HndEntitiesArg implements PaperHndResolver {
+public final class HndEntitiesArg implements PaperHndResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {

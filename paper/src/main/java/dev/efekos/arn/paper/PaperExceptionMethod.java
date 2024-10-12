@@ -35,7 +35,7 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaperExceptionMethod extends BaseExceptionHandlerMethod<CommandContext<CommandSourceStack>> {
+public final class PaperExceptionMethod extends BaseExceptionHandlerMethod<CommandContext<CommandSourceStack>> {
 
     public PaperExceptionMethod(Method method, Class<? extends Exception> exceptionClass) {
         super(method, exceptionClass);
@@ -47,7 +47,7 @@ public class PaperExceptionMethod extends BaseExceptionHandlerMethod<CommandCont
 
         for (Parameter parameter : method.getParameters()) {
             if (Player.class.isAssignableFrom(parameter.getType()))
-                objects.add((Player) commandContext.getSource().getSender());
+                objects.add(commandContext.getSource().getSender());
             else if (CommandSender.class.isAssignableFrom(parameter.getType()))
                 objects.add(commandContext.getSource().getSender());
             else if (parameter.getType().isAssignableFrom(exceptionClass) || exceptionClass.equals(parameter.getType()))

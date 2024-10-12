@@ -36,7 +36,7 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Parameter;
 
-public class HndPlayersArg implements PaperHndResolver {
+public final class HndPlayersArg implements PaperHndResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {

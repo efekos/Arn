@@ -27,7 +27,7 @@ package dev.efekos.arn;
 import dev.efekos.arn.common.ArnInstance;
 import dev.efekos.arn.spigot.SpigotArn;
 
-public class StaticArnBinder {
+public final class StaticArnBinder {
 
     public static ArnInstance createArnInstance() {
         return new SpigotArn();

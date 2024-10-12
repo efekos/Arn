@@ -46,7 +46,7 @@ import java.util.function.Predicate;
  *
  * @since 0.4
  */
-class SpigotArnMethodDump {
+sealed class SpigotArnMethodDump permits SpigotArn {
 
     private final List<SpigotExceptionHandlerMethod> baseSpigotExceptionHandlerMethods = new ArrayList<>();
 

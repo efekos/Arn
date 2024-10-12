@@ -34,7 +34,7 @@ import io.papermc.paper.command.brigadier.Commands;
 
 import java.lang.reflect.Parameter;
 
-public class CmdFloatArg implements PaperCmdResolver {
+public final class CmdFloatArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {

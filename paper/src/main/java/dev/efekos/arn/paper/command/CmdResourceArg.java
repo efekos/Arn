@@ -34,7 +34,7 @@ import io.papermc.paper.registry.RegistryKey;
 
 import java.lang.reflect.Parameter;
 
-public class CmdResourceArg implements PaperCmdResolver {
+public final class CmdResourceArg implements PaperCmdResolver {
 
     private final Class<?> clazz;
     private final RegistryKey<?> registryKey;

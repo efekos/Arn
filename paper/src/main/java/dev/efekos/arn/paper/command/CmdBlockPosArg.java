@@ -35,7 +35,7 @@ import org.bukkit.Location;
 
 import java.lang.reflect.Parameter;
 
-public class CmdBlockPosArg implements PaperCmdResolver {
+public final class CmdBlockPosArg implements PaperCmdResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {

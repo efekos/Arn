@@ -34,7 +34,7 @@ import io.papermc.paper.command.brigadier.Commands;
 import java.lang.reflect.Parameter;
 import java.util.function.Supplier;
 
-public class CmdOneMethodArg implements PaperCmdResolver {
+public final class CmdOneMethodArg implements PaperCmdResolver {
 
     private final Class<?> clazz;
     private final Supplier<ArgumentType<?>> type;
