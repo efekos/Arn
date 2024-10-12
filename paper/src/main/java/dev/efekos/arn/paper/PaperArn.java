@@ -281,7 +281,7 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
             ArgumentBuilder<CommandSourceStack, ?> finalNode = nodes.getLast().executes(createCommandLambda(method));
             for (int i = nodes.size()-2; i >= 0; i--) finalNode = nodes.get(i).then(finalNode);
             if (finalNode == null) continue;
-            finalNodes.add(finalNode);
+            finalNodes.add(finalNode); // TODO apparently Paper doesn't allow overloading and using the old NMS way arn-spigot uses didn't work, find another way to register commands.
         }
 
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, e -> {
