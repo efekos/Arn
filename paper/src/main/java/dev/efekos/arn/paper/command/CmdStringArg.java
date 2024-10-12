@@ -44,10 +44,9 @@ public final class CmdStringArg implements PaperCmdResolver {
 
     @Override
     public ArgumentBuilder<CommandSourceStack, ?> apply(Parameter parameter) {
-        String s = parameter.getAnnotation(CommandArgument.class).value();
         boolean b1 = parameter.isAnnotationPresent(Greedy.class);
         boolean b2 = parameter.isAnnotationPresent(Word.class);
-        return Commands.argument(s.isEmpty() ? parameter.getName() : s, b1 ? StringArgumentType.greedyString() : (b2 ? StringArgumentType.word() : StringArgumentType.string()));
+        return Commands.argument(getName(parameter), b1 ? StringArgumentType.greedyString() : (b2 ? StringArgumentType.word() : StringArgumentType.string()));
     }
 
 }

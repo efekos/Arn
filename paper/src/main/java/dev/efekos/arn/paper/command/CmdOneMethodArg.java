@@ -51,6 +51,6 @@ public final class CmdOneMethodArg implements PaperCmdResolver {
 
     @Override
     public ArgumentBuilder<CommandSourceStack, ?> apply(Parameter parameter) {
-        return Commands.argument(parameter.getName(), type.get());
+        return Commands.argument(getName(parameter), type.get());
     }
 }
