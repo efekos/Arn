@@ -24,8 +24,10 @@
 
 package dev.efekos.arn.common;
 
+import dev.efekos.arn.common.exception.ArnException;
+
 public interface ArnInstance {
 
-    void run(Class<?> mainClass);
+    <T> void run(Class<T> mainClass,T instance) throws ArnException;
 
 }

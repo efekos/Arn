@@ -65,6 +65,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.craftbukkit.v1_21_R1.CraftServer;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
@@ -180,7 +181,8 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
      * @param mainClass Main class whose package will be scanned. Recommended to
      *                  make it your {@link JavaPlugin} class.
      */
-    public void run(Class<?> mainClass) {
+    public <T> void run(Class<T> mainClass,T instance) {
+        if(!(instance instanceof Plugin)) throw new IllegalStateException("Arn#run was called with a "+mainClass.getName()+" instance which isn't a Plugin.");
         Reflections reflections = new Reflections(mainClass.getPackage().getName());
 
         try {
