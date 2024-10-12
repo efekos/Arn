@@ -25,6 +25,7 @@
 package dev.efekos.arn.paper;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import dev.efekos.arn.common.ArnInstance;
@@ -244,7 +245,7 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
 
             // Register first literals as they are head of the command, and they will need #requires for permissions
             for (CommandAnnotationLiteral lit : literals) {
-                if (lit.getOffset() == 0) if (method.getAnnotationData().getPermission().isEmpty()) {
+                if (lit.getOffset() == 0) {
                     Predicate<CommandSourceStack> predicate = method.getAnnotationData().getPermission().isEmpty() ? s -> true : s -> s.getSender().hasPermission(method.getAnnotationData().getPermission());
                     nodes.add(Commands.literal(lit.getLiteral()).requires(predicate));
                 }
@@ -277,19 +278,16 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
             }
 
             // Chain up builders
-            ArgumentBuilder<CommandSourceStack, ?> finalNode = null;
-            for (ArgumentBuilder<CommandSourceStack, ?> builder : nodes.reversed()) {
-                if (finalNode == null) finalNode = builder;
-                else finalNode = finalNode.then(builder);
-            }
+            ArgumentBuilder<CommandSourceStack, ?> finalNode = nodes.getLast().executes(createCommandLambda(method));
+            for (int i = nodes.size()-2; i >= 0; i--) finalNode = nodes.get(i).then(finalNode);
             if (finalNode == null) continue;
-            finalNodes.add(finalNode.executes(createCommandLambda(method)));
+            finalNodes.add(finalNode);
         }
 
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, e -> {
             Commands registrar = e.registrar();
             for (ArgumentBuilder<CommandSourceStack, ?> node : finalNodes) {
-                registrar.register(((LiteralCommandNode<CommandSourceStack>) node.build()));
+                registrar.register(((LiteralArgumentBuilder<CommandSourceStack>) node).build());
             }
         });
 
