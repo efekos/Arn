@@ -82,7 +82,7 @@ import java.util.stream.IntStream;
  * Main class of Arn, used to run command scanning and registration. Handles
  * scanning {@link Container}s, applying
  * {@link SpArnConfig}s, creating {@link SpigotCommandHandlerMethod}s and
- * registering commands. {@link SpigotArn#run(Class)} must
+ * registering commands. {@link SpigotArn#run(Class, Object)} must
  * be called in {@link JavaPlugin#onEnable()} to register commands.
  *
  * @author efekos
