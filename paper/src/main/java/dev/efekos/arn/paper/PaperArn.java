@@ -24,12 +24,8 @@
 
 package dev.efekos.arn.paper;
 
-import com.mojang.brigadier.LiteralMessage;
 import com.mojang.brigadier.builder.ArgumentBuilder;
-import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
-import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import dev.efekos.arn.common.ArnInstance;
 import dev.efekos.arn.common.annotation.Command;
@@ -66,43 +62,14 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
-public final class PaperArn implements ArnInstance {
+public final class PaperArn extends PaperMethodDump implements ArnInstance {
 
-
-    /**
-     * An exception type thrown by command handler when a command is blocked to
-     * {@link ConsoleCommandSender}s, but the
-     * command sender is a {@link ConsoleCommandSender}.
-     */
-    public static final SimpleCommandExceptionType CONSOLE_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(
-            new LiteralMessage("This command can't be used by the console."));
-    /**
-     * An exception type thrown by command handler when a command is blocked to
-     * {@link BlockCommandSender}s, but the
-     * command sender is a {@link BlockCommandSender}.
-     */
-    public static final SimpleCommandExceptionType CM_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(
-            new LiteralMessage("This command can't be used by command blocks."));
-    /**
-     * An exception type thrown by command handler when a command is blocked to
-     * {@link Player}s, but the command sender
-     * is a {@link Player}.
-     */
-    public static final SimpleCommandExceptionType PLAYER_BLOCKED_EXCEPTION = new SimpleCommandExceptionType(
-            new LiteralMessage("This command can't be used by players."));
-    /**
-     * Generic exception type used to handle {@link ArnSyntaxException}s.
-     */
-    public static final DynamicCommandExceptionType GENERIC = new DynamicCommandExceptionType(
-            o -> new LiteralMessage(o.toString()));
-
-
+    // You cannot imagine the happiness in me seeing all these lists clearly without any comments
     private final List<PaperCmdResolver> commandResolvers = new ArrayList<>();
     private final ExceptionMap<PaperCmdResolver> commandResolverExceptions = new ExceptionMap<>();
     private final ExceptionMap<PaperHndResolver> handlerResolverExceptions = new ExceptionMap<>();
     private final List<PaperHndResolver> handlerResolvers = new ArrayList<>();
     private final List<PaperCommandMethod> commandMethods = new ArrayList<>();
-    private final List<PaperExceptionMethod> exceptionMethods = new ArrayList<>();
     private final List<ArgumentBuilder<CommandSourceStack,?>> finalNodes = new ArrayList<>();
     private boolean configured = false;
 
@@ -139,11 +106,13 @@ public final class PaperArn implements ArnInstance {
         Reflections reflections = new Reflections(mainClass.getPackage().getName());
 
         configure(reflections);
-        registerCommands(reflections);
+        scanCommands(reflections);
+        scanExceptionHandlerMethods(reflections);
+
         registerCommands(plugin.getLifecycleManager());
     }
 
-    private void registerCommands(Reflections reflections) throws ArnException {
+    private void scanCommands(Reflections reflections) throws ArnException {
         for (Class<?> aClass : reflections.getTypesAnnotatedWith(Container.class)) {
             for (Method method : aClass.getMethods()) {
                 if(method.isAnnotationPresent(Command.class)) {
@@ -381,25 +350,5 @@ public final class PaperArn implements ArnInstance {
 
         };
     }
-
-
-    protected static List<Object> fillResolvers(PaperCommandMethod method,
-                                                CommandContext<CommandSourceStack> commandContext) throws ArnSyntaxException {
-        List<Object> objects = new ArrayList<>();
-
-        for (int i = 0; i < method.getHandlerMethodResolvers().size(); i++) {
-            PaperHndResolver resolver = method.getHandlerMethodResolvers().get(i);
-            objects.add(resolver.resolve(method.getParameters().get(i), method, commandContext));
-        }
-        return objects;
-    }
-
-    protected Optional<PaperExceptionMethod> findHandlerMethod(Throwable e) {
-        for (PaperExceptionMethod method : exceptionMethods)
-            if (method.getExceptionClass().isAssignableFrom(e.getClass()))
-                return Optional.of(method);
-        return Optional.empty();
-    }
-
 
 }
