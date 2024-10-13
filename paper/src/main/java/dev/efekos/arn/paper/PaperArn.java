@@ -27,7 +27,6 @@ package dev.efekos.arn.paper;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import dev.efekos.arn.common.ArnInstance;
 import dev.efekos.arn.common.annotation.Command;
 import dev.efekos.arn.common.annotation.CommandArgument;
@@ -281,13 +280,13 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
             ArgumentBuilder<CommandSourceStack, ?> finalNode = nodes.getLast().executes(createCommandLambda(method));
             for (int i = nodes.size()-2; i >= 0; i--) finalNode = nodes.get(i).then(finalNode);
             if (finalNode == null) continue;
-            finalNodes.add(finalNode); // TODO apparently Paper doesn't allow overloading and using the old NMS way arn-spigot uses didn't work, find another way to register commands.
+            finalNodes.add(finalNode);
         }
 
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, e -> {
             Commands registrar = e.registrar();
             for (ArgumentBuilder<CommandSourceStack, ?> node : finalNodes) {
-                registrar.register(((LiteralArgumentBuilder<CommandSourceStack>) node).build());
+                registrar.getDispatcher().register(((LiteralArgumentBuilder<CommandSourceStack>) node));
             }
         });
 
@@ -337,10 +336,7 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
                         PaperExceptionMethod exceptionMethod = exceptionMethodOptional.get();
                         List<Object> list = exceptionMethod.fillParams(ex, commandContext);
                         Method actualMethod = exceptionMethod.getMethod();
-                        actualMethod.invoke(
-                                instantiate(actualMethod.getDeclaringClass()),
-                                list.toArray());
-
+                        actualMethod.invoke(instantiate(actualMethod.getDeclaringClass()), list.toArray());
                     } catch (Exception exe) {
                         throw GENERIC.create(exe.getMessage());
                     }
