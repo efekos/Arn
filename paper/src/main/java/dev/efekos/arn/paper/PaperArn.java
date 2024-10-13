@@ -29,9 +29,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.common.ArnFeature;
 import dev.efekos.arn.common.ArnInstance;
-import dev.efekos.arn.common.annotation.Command;
-import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.common.annotation.Container;
+import dev.efekos.arn.common.annotation.*;
 import dev.efekos.arn.common.annotation.block.BlockCommandBlock;
 import dev.efekos.arn.common.annotation.block.BlockConsole;
 import dev.efekos.arn.common.annotation.block.BlockPlayer;
@@ -185,7 +183,9 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
         CommandAnnotationData baseAnnData = new CommandAnnotationData(annotation);
 
         if (baseAnnData.getDescription().isEmpty())
-            baseAnnData.setDescription("No description provided.");
+            baseAnnData.setDescription(Optional.ofNullable(method.getAnnotation(Description.class)).map(Description::value).orElse("No description provided."));
+
+        if (baseAnnData.getPermission().isEmpty()&&method.isAnnotationPresent(Permission.class)) baseAnnData.setPermission(method.getAnnotation(Permission.class).value());
 
         ArrayList<CommandAnnotationLiteral> literals = new ArrayList<>();
         for (String s : annotation.value().split("\\" + CommandAnnotationLiteral.SEPARATOR_CHAR_STRING))

@@ -395,7 +395,9 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
         CommandAnnotationData baseAnnData = new CommandAnnotationData(annotation);
 
         if (baseAnnData.getDescription().isEmpty())
-            baseAnnData.setDescription("No description provided.");
+            baseAnnData.setDescription(Optional.ofNullable(method.getAnnotation(Description.class)).map(Description::value).orElse("No description provided."));
+
+        if (baseAnnData.getPermission().isEmpty()&&method.isAnnotationPresent(Permission.class)) baseAnnData.setPermission(method.getAnnotation(Permission.class).value());
 
         ArrayList<CommandAnnotationLiteral> literals = new ArrayList<>();
         for (String s : annotation.value().split("\\" + CommandAnnotationLiteral.SEPARATOR_CHAR_STRING))
