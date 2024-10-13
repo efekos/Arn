@@ -71,6 +71,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -397,8 +398,10 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
         if (baseAnnData.getDescription().isEmpty())
             baseAnnData.setDescription(Optional.ofNullable(method.getAnnotation(Description.class)).map(Description::value).orElse("No description provided."));
 
-        if (baseAnnData.getPermission().isEmpty()&&method.isAnnotationPresent(Permission.class)) baseAnnData.setPermission(method.getAnnotation(Permission.class).value());
-        if (baseAnnData.getPermission().isEmpty()&&method.getDeclaringClass().isAnnotationPresent(Permission.class)) baseAnnData.setPermission(method.getDeclaringClass().getAnnotation(Permission.class).value());
+        if (baseAnnData.getPermission().isEmpty() && method.isAnnotationPresent(Permission.class))
+            baseAnnData.setPermission(method.getAnnotation(Permission.class).value());
+        if (baseAnnData.getPermission().isEmpty() && method.getDeclaringClass().isAnnotationPresent(Permission.class))
+            baseAnnData.setPermission(method.getDeclaringClass().getAnnotation(Permission.class).value());
 
         ArrayList<CommandAnnotationLiteral> literals = new ArrayList<>();
         for (String s : annotation.value().split("\\" + CommandAnnotationLiteral.SEPARATOR_CHAR_STRING))
@@ -480,9 +483,12 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
                 List<Parameter> parametersClone = IntStream.range(0, method.getArgumentResolvers().size())
                         .filter(i -> !indexesToDelete.contains(i)).mapToObj(method.getParameters()::get).toList();
 
+                Predicate<CommandSourceStack> permissionPre = method.getAnnotationData().getPermission().isEmpty() ? s -> true : s -> s.hasPermission(0,method.getAnnotationData().getPermission());
+
                 for (CommandAnnotationLiteral lit : literals)
-                    if (lit.getOffset() == 0)
-                        nodes.add(Commands.literal(lit.getLiteral()));
+                    if (lit.getOffset() == 0) {
+                        nodes.add(Commands.literal(lit.getLiteral()).requires(permissionPre));
+                    }
 
                 for (int i = 0; i < nonnullResolvers.size(); i++) {
                     SpigotCmdResolver resolver = nonnullResolvers.get(i);
@@ -490,7 +496,7 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
                     if (i != 0)
                         for (CommandAnnotationLiteral lit : literals)
                             if (lit.getOffset() == i)
-                                nodes.add(Commands.literal(lit.getLiteral()));
+                                nodes.add(Commands.literal(lit.getLiteral()).requires(permissionPre));
 
                     ArgumentBuilder<CommandSourceStack, ?> builder = resolver.apply(parametersClone.get(i));
                     if (builder != null)
@@ -591,7 +597,7 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
                 .getCommands().getDispatcher();
 
         for (Class<?> helperClass : reflections.getTypesAnnotatedWith(Container.class).stream()
-                .filter(aClass -> !exclusions.contains(aClass)&& aClass.isAnnotationPresent(Helper.class)).toList()) {
+                .filter(aClass -> !exclusions.contains(aClass) && aClass.isAnnotationPresent(Helper.class)).toList()) {
             List<SpigotCommandHandlerMethod> associatedHelperMethods = handlers.stream().filter(
                             commandHandlerMethod -> commandHandlerMethod.getMethod().getDeclaringClass().equals(helperClass))
                     .toList();

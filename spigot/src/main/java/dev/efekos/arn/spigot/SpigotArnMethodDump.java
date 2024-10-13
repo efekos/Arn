@@ -118,8 +118,7 @@ sealed class SpigotArnMethodDump permits SpigotArn {
         ArgumentBuilder<CommandSourceStack, ?> chainedBuilder = nodes.getLast().executes(executes);
 
         for (int i = nodes.size() - 2; i >= 0; i--)
-            chainedBuilder = nodes.get(i).then(chainedBuilder.requires(o -> o.hasPermission(0, data.getPermission())))
-                    .requires(o -> o.hasPermission(0, data.getPermission()));
+            chainedBuilder = nodes.get(i).then(chainedBuilder);
 
         if (!data.getPermission().isEmpty())
             chainedBuilder = chainedBuilder.requires(o -> o.hasPermission(0, data.getPermission()));
