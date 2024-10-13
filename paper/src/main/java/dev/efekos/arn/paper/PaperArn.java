@@ -27,6 +27,7 @@ package dev.efekos.arn.paper;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import dev.efekos.arn.common.ArnFeature;
 import dev.efekos.arn.common.ArnInstance;
 import dev.efekos.arn.common.annotation.Command;
 import dev.efekos.arn.common.annotation.CommandArgument;
@@ -357,6 +358,11 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
     public ArnInstance excludeClass(Class<?> clazz) {
         exclusions.add(clazz);
         return this;
+    }
+
+    @Override
+    public List<ArnFeature> getSupportedFeatures() {
+        return List.of(ArnFeature.COMMANDS,ArnFeature.EXCLUSION,ArnFeature.EXCEPTION_HANDLERS);
     }
 
 }

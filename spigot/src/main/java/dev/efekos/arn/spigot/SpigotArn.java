@@ -30,18 +30,15 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import dev.efekos.arn.common.ArnInstance;
+import dev.efekos.arn.common.*;
 import dev.efekos.arn.common.annotation.*;
 import dev.efekos.arn.common.annotation.block.BlockCommandBlock;
 import dev.efekos.arn.common.annotation.block.BlockConsole;
 import dev.efekos.arn.common.annotation.block.BlockPlayer;
-import dev.efekos.arn.common.BaseArnConfigurer;
 import dev.efekos.arn.common.data.CommandAnnotationData;
 import dev.efekos.arn.common.data.CommandAnnotationLiteral;
 import dev.efekos.arn.common.data.ExceptionMap;
 import dev.efekos.arn.common.exception.*;
-import dev.efekos.arn.common.BaseCmdResolver;
-import dev.efekos.arn.common.BaseHndResolver;
 import dev.efekos.arn.spigot.face.CustomArgumentType;
 import dev.efekos.arn.spigot.face.SpArnConfig;
 import dev.efekos.arn.spigot.face.SpigotCmdResolver;
@@ -654,6 +651,11 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
             dispatcher.register(((LiteralArgumentBuilder<CommandSourceStack>) finalNode));
         }
 
+    }
+
+    @Override
+    public List<ArnFeature> getSupportedFeatures() {
+        return List.of(ArnFeature.ALL);
     }
 
 }
