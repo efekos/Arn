@@ -23,6 +23,6 @@
  */
 
 /**
- * {@link dev.efekos.arn.common.resolver.BaseCmdResolver} implementations.
+ * {@link dev.efekos.arn.common.BaseCmdResolver} implementations.
  */
 package dev.efekos.arn.spigot.resolver.command;

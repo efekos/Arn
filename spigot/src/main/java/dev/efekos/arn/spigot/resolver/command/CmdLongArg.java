@@ -28,7 +28,7 @@ import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.annotation.modifier.NumberLimitations;
-import dev.efekos.arn.common.resolver.BaseCmdResolver;
+import dev.efekos.arn.common.BaseCmdResolver;
 import dev.efekos.arn.spigot.face.SpigotCmdResolver;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

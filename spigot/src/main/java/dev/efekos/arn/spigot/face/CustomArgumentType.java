@@ -24,7 +24,7 @@
 
 package dev.efekos.arn.spigot.face;
 
-import dev.efekos.arn.common.argument.BaseCustomArgumentType;
+import dev.efekos.arn.common.BaseCustomArgumentType;
 import dev.efekos.arn.spigot.SpigotArn;
 import dev.efekos.arn.spigot.enumerator.ArgumentRegistration;
 import org.bukkit.command.CommandSender;

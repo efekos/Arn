@@ -24,8 +24,8 @@
 
 package dev.efekos.arn.common.annotation;
 
-import dev.efekos.arn.common.resolver.BaseCmdResolver;
-import dev.efekos.arn.common.resolver.BaseHndResolver;
+import dev.efekos.arn.common.BaseCmdResolver;
+import dev.efekos.arn.common.BaseHndResolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

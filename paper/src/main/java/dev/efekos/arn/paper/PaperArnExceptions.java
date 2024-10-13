@@ -34,8 +34,8 @@ import dev.efekos.arn.common.exception.type.Dynamic2ArnExceptionType;
 import dev.efekos.arn.common.exception.type.Dynamic3ArnExceptionType;
 import dev.efekos.arn.common.exception.type.DynamicArnExceptionType;
 import dev.efekos.arn.common.exception.type.SimpleArnExceptionType;
-import dev.efekos.arn.common.resolver.BaseCmdResolver;
-import dev.efekos.arn.common.resolver.BaseHndResolver;
+import dev.efekos.arn.common.BaseCmdResolver;
+import dev.efekos.arn.common.BaseHndResolver;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;

@@ -29,8 +29,8 @@ import dev.efekos.arn.common.annotation.block.BlockCommandBlock;
 import dev.efekos.arn.common.annotation.block.BlockConsole;
 import dev.efekos.arn.common.annotation.block.BlockPlayer;
 import dev.efekos.arn.common.exception.ArnCommandException;
-import dev.efekos.arn.common.resolver.BaseCmdResolver;
-import dev.efekos.arn.common.resolver.BaseHndResolver;
+import dev.efekos.arn.common.BaseCmdResolver;
+import dev.efekos.arn.common.BaseHndResolver;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;

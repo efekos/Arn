@@ -24,7 +24,7 @@
 
 package dev.efekos.arn.paper.face;
 
-import dev.efekos.arn.common.config.BaseArnConfigurer;
+import dev.efekos.arn.common.BaseArnConfigurer;
 
 public interface PaperArnConfig extends BaseArnConfigurer<PaperCmdResolver, PaperHndResolver> {
 }

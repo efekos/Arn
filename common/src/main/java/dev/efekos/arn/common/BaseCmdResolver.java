@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package dev.efekos.arn.common.resolver;
+package dev.efekos.arn.common;
 
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.data.BaseCommandHandlerMethod;

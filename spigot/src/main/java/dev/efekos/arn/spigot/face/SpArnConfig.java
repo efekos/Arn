@@ -24,7 +24,7 @@
 
 package dev.efekos.arn.spigot.face;
 
-import dev.efekos.arn.common.config.BaseArnConfigurer;
+import dev.efekos.arn.common.BaseArnConfigurer;
 
 public interface SpArnConfig extends BaseArnConfigurer<SpigotCmdResolver, SpigotHndResolver> {
 }

@@ -25,7 +25,7 @@
 package dev.efekos.arn.spigot.face;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
-import dev.efekos.arn.common.resolver.BaseCmdResolver;
+import dev.efekos.arn.common.BaseCmdResolver;
 import net.minecraft.commands.CommandSourceStack;
 
 public interface SpigotCmdResolver extends BaseCmdResolver<ArgumentBuilder<CommandSourceStack, ?>> {

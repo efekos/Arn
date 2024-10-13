@@ -24,7 +24,7 @@
 
 package dev.efekos.arn.paper.face;
 
-import dev.efekos.arn.common.argument.BaseCustomArgumentType;
+import dev.efekos.arn.common.BaseCustomArgumentType;
 import dev.efekos.arn.paper.enumerator.PaperRegistration;
 import org.bukkit.command.CommandSender;
 
