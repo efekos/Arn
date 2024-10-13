@@ -31,17 +31,19 @@ import java.util.List;
 public interface ArnInstance {
 
     <T> void run(Class<T> mainClass, T instance) throws ArnException;
+
     ArnInstance excludeClass(Class<?> clazz);
+
     List<ArnFeature> getSupportedFeatures();
 
-    default boolean doesSupport(ArnFeature feature){
+    default boolean doesSupport(ArnFeature feature) {
         return getSupportedFeatures().contains(ArnFeature.ALL) || getSupportedFeatures().contains(feature);
     }
 
-    default ArnInstance excludeClass(String className){
+    default ArnInstance excludeClass(String className) {
         try {
             return excludeClass(Class.forName(className));
-        } catch (Exception e){
+        } catch (Exception e) {
             return this;
         }
     }

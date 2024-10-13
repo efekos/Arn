@@ -163,13 +163,13 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
      * Used to instantiate {@link SpArnConfig}s.
      */
     private final Map<String, Object> containerInstanceMap = new HashMap<>();
+    private final List<Class<?>> exclusions = new ArrayList<>();
     /**
      * Whether was {@link #configure()} called or not. Used to prevent
      * {@link #configure()} from being called more than
      * once.
      */
     private boolean configured;
-    private final List<Class<?>> exclusions = new ArrayList<>();
 
     /**
      * Main method used to run Arn. Scans every class under the package of
@@ -483,7 +483,7 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
                 List<Parameter> parametersClone = IntStream.range(0, method.getArgumentResolvers().size())
                         .filter(i -> !indexesToDelete.contains(i)).mapToObj(method.getParameters()::get).toList();
 
-                Predicate<CommandSourceStack> permissionPre = method.getAnnotationData().getPermission().isEmpty() ? s -> true : s -> s.hasPermission(0,method.getAnnotationData().getPermission());
+                Predicate<CommandSourceStack> permissionPre = method.getAnnotationData().getPermission().isEmpty() ? s -> true : s -> s.hasPermission(0, method.getAnnotationData().getPermission());
 
                 for (CommandAnnotationLiteral lit : literals)
                     if (lit.getOffset() == 0) {

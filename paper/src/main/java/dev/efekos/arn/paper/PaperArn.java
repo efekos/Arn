@@ -73,6 +73,7 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
     private final List<PaperHndResolver> handlerResolvers = new ArrayList<>();
     private final List<PaperCommandMethod> commandMethods = new ArrayList<>();
     private final List<ArgumentBuilder<CommandSourceStack, ?>> finalNodes = new ArrayList<>();
+    private final List<Class<?>> exclusions = new ArrayList<>();
     private boolean configured = false;
 
     private <T> T instantiate(Class<T> clazz) {
@@ -90,7 +91,7 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
         List<PaperArnConfig> list = new ArrayList<>(List.of(new PaperArnConfigurer()));
 
         for (Class<? extends PaperArnConfig> aClass : reflections.getSubTypesOf(PaperArnConfig.class)) {
-            if(exclusions.contains(aClass))continue;
+            if (exclusions.contains(aClass)) continue;
             PaperArnConfig instantiate = instantiate(aClass);
             if (instantiate != null) list.add(instantiate);
         }
@@ -111,14 +112,14 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
 
         configure(reflections);
         scanCommands(reflections);
-        scanExceptionHandlerMethods(reflections,exclusions);
+        scanExceptionHandlerMethods(reflections, exclusions);
 
         registerCommands(plugin.getLifecycleManager());
     }
 
     private void scanCommands(Reflections reflections) throws ArnException {
         for (Class<?> aClass : reflections.getTypesAnnotatedWith(Container.class)) {
-            if(exclusions.contains(aClass))continue;
+            if (exclusions.contains(aClass)) continue;
             for (Method method : aClass.getMethods()) {
                 if (method.isAnnotationPresent(Command.class)) {
                     Command annotation = method.getAnnotation(Command.class);
@@ -185,8 +186,10 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
         if (baseAnnData.getDescription().isEmpty())
             baseAnnData.setDescription(Optional.ofNullable(method.getAnnotation(Description.class)).map(Description::value).orElse(Optional.ofNullable(method.getDeclaringClass().getAnnotation(Description.class)).map(Description::value).orElse("No description provided.")));
 
-        if (baseAnnData.getPermission().isEmpty()&&method.isAnnotationPresent(Permission.class)) baseAnnData.setPermission(method.getAnnotation(Permission.class).value());
-        if (baseAnnData.getPermission().isEmpty()&&method.getDeclaringClass().isAnnotationPresent(Permission.class)) baseAnnData.setPermission(method.getDeclaringClass().getAnnotation(Permission.class).value());
+        if (baseAnnData.getPermission().isEmpty() && method.isAnnotationPresent(Permission.class))
+            baseAnnData.setPermission(method.getAnnotation(Permission.class).value());
+        if (baseAnnData.getPermission().isEmpty() && method.getDeclaringClass().isAnnotationPresent(Permission.class))
+            baseAnnData.setPermission(method.getDeclaringClass().getAnnotation(Permission.class).value());
 
         ArrayList<CommandAnnotationLiteral> literals = new ArrayList<>();
         for (String s : annotation.value().split("\\" + CommandAnnotationLiteral.SEPARATOR_CHAR_STRING))
@@ -206,7 +209,6 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
         cmdMethod.setSignature(signature.toString());
         return cmdMethod;
     }
-
 
     private StringBuilder buildSignature(Method method, ArrayList<PaperHndResolver> handlerMethodResolvers, ArrayList<PaperCmdResolver> argumentResolvers) throws ArnCommandException {
         StringBuilder signatureBuilder = new StringBuilder();
@@ -282,7 +284,7 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
 
             // Chain up builders
             ArgumentBuilder<CommandSourceStack, ?> finalNode = nodes.getLast().executes(createCommandLambda(method));
-            for (int i = nodes.size()-2; i >= 0; i--) finalNode = nodes.get(i).then(finalNode);
+            for (int i = nodes.size() - 2; i >= 0; i--) finalNode = nodes.get(i).then(finalNode);
             if (finalNode == null) continue;
             finalNodes.add(finalNode);
         }
@@ -353,8 +355,6 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
         };
     }
 
-    private final List<Class<?>> exclusions = new ArrayList<>();
-
     @Override
     public ArnInstance excludeClass(Class<?> clazz) {
         exclusions.add(clazz);
@@ -363,7 +363,7 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
 
     @Override
     public List<ArnFeature> getSupportedFeatures() {
-        return List.of(ArnFeature.COMMANDS,ArnFeature.EXCLUSION,ArnFeature.EXCEPTION_HANDLERS);
+        return List.of(ArnFeature.COMMANDS, ArnFeature.EXCLUSION, ArnFeature.EXCEPTION_HANDLERS);
     }
 
 }

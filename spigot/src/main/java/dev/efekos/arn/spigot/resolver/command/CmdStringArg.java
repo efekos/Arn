@@ -26,10 +26,10 @@ package dev.efekos.arn.spigot.resolver.command;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
+import dev.efekos.arn.common.BaseCmdResolver;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.common.annotation.modifier.Greedy;
 import dev.efekos.arn.common.annotation.modifier.Word;
-import dev.efekos.arn.common.BaseCmdResolver;
 import dev.efekos.arn.spigot.face.SpigotCmdResolver;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

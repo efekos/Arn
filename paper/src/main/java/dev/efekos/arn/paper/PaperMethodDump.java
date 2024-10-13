@@ -91,9 +91,9 @@ public sealed class PaperMethodDump permits PaperArn {
         return Optional.empty();
     }
 
-    protected void scanExceptionHandlerMethods(Reflections reflections,List<Class<?>> exclusions) {
-        for (Class<?> aClass : reflections.getTypesAnnotatedWith(Container.class)){
-            if(exclusions.contains(aClass))continue;
+    protected void scanExceptionHandlerMethods(Reflections reflections, List<Class<?>> exclusions) {
+        for (Class<?> aClass : reflections.getTypesAnnotatedWith(Container.class)) {
+            if (exclusions.contains(aClass)) continue;
             for (Method method : aClass.getDeclaredMethods()) {
                 if (!method.isAnnotationPresent(ExceptionHandler.class))
                     continue;
