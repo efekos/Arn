@@ -171,6 +171,7 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
      * once.
      */
     private boolean configured;
+    private final List<Class<?>> exclusions = new ArrayList<>();
 
     /**
      * Main method used to run Arn. Scans every class under the package of
@@ -213,7 +214,7 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
      */
     private void scanCustomArguments(Reflections reflections) {
         for (Class<?> customArgumentClass : reflections.getTypesAnnotatedWith(Container.class).stream()
-                .filter(aClass -> Arrays.asList(aClass.getInterfaces()).contains(CustomArgumentType.class)).toList()) {
+                .filter(aClass -> !exclusions.contains(aClass) && Arrays.asList(aClass.getInterfaces()).contains(CustomArgumentType.class)).toList()) {
             CustomArgumentType<?> o = (CustomArgumentType<?>) containerInstanceMap.get(customArgumentClass.getName());
 
             handlerMethodArgumentResolvers.add(new HndCustomArg(o));
@@ -231,10 +232,8 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
      */
     private void scanEnumArguments(Reflections reflections) throws ArnException {
         List<Class<?>> classes = reflections.getTypesAnnotatedWith(Container.class).stream()
-                .filter(aClass -> aClass.isAnnotationPresent(CustomArgument.class)).toList();
+                .filter(aClass -> aClass.isAnnotationPresent(CustomArgument.class) && aClass.isEnum() && !exclusions.contains(aClass)).toList();
         for (Class<?> aClass : classes) {
-            if (!aClass.isEnum())
-                throw SpigotArnExceptions.CA_NOT_ENUM.create(aClass);
             Class<? extends Enum<?>> enumC = (Class<? extends Enum<?>>) aClass;
 
             CustomArgument customArgument = enumC.getAnnotation(CustomArgument.class);
@@ -302,6 +301,7 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
                 .filter(SpArnConfig.class::isAssignableFrom).toList();
 
         for (Class<?> configurer : configurers) {
+            if (exclusions.contains(configurer)) continue;
             Class<? extends SpArnConfig> clazz = (Class<? extends SpArnConfig>) configurer;
 
             SpArnConfig configurerInstance = (SpArnConfig) containerInstanceMap.get(clazz.getName());
@@ -323,9 +323,10 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
         Set<Class<?>> containers = reflections.getTypesAnnotatedWith(Container.class);
 
         for (Class<?> container : containers)
-            for (Method method : container.getMethods())
-                if (method.isAnnotationPresent(Command.class))
-                    command(method.getAnnotation(Command.class), method);
+            if (!exclusions.contains(container))
+                for (Method method : container.getMethods())
+                    if (method.isAnnotationPresent(Command.class))
+                        command(method.getAnnotation(Command.class), method);
 
     }
 
@@ -573,6 +574,12 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
         };
     }
 
+    @Override
+    public ArnInstance excludeClass(Class<?> clazz) {
+        exclusions.add(clazz);
+        return this;
+    }
+
     /**
      * Scans classes annotated with {@link Helper}
      *
@@ -584,7 +591,7 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
                 .getCommands().getDispatcher();
 
         for (Class<?> helperClass : reflections.getTypesAnnotatedWith(Container.class).stream()
-                .filter(aClass -> aClass.isAnnotationPresent(Helper.class)).toList()) {
+                .filter(aClass -> !exclusions.contains(aClass)&& aClass.isAnnotationPresent(Helper.class)).toList()) {
             List<SpigotCommandHandlerMethod> associatedHelperMethods = handlers.stream().filter(
                             commandHandlerMethod -> commandHandlerMethod.getMethod().getDeclaringClass().equals(helperClass))
                     .toList();

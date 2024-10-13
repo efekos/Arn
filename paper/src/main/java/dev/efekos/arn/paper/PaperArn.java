@@ -91,6 +91,7 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
         List<PaperArnConfig> list = new ArrayList<>(List.of(new PaperArnConfigurer()));
 
         for (Class<? extends PaperArnConfig> aClass : reflections.getSubTypesOf(PaperArnConfig.class)) {
+            if(exclusions.contains(aClass))continue;
             PaperArnConfig instantiate = instantiate(aClass);
             if (instantiate != null) list.add(instantiate);
         }
@@ -111,13 +112,14 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
 
         configure(reflections);
         scanCommands(reflections);
-        scanExceptionHandlerMethods(reflections);
+        scanExceptionHandlerMethods(reflections,exclusions);
 
         registerCommands(plugin.getLifecycleManager());
     }
 
     private void scanCommands(Reflections reflections) throws ArnException {
         for (Class<?> aClass : reflections.getTypesAnnotatedWith(Container.class)) {
+            if(exclusions.contains(aClass))continue;
             for (Method method : aClass.getMethods()) {
                 if (method.isAnnotationPresent(Command.class)) {
                     Command annotation = method.getAnnotation(Command.class);
@@ -347,6 +349,14 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
             }
 
         };
+    }
+
+    private final List<Class<?>> exclusions = new ArrayList<>();
+
+    @Override
+    public ArnInstance excludeClass(Class<?> clazz) {
+        exclusions.add(clazz);
+        return this;
     }
 
 }
