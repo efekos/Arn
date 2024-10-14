@@ -71,7 +71,7 @@ public final class PaperArnExceptions {
      */
     public static final DynamicArnExceptionType<ArnArgumentException, Class<? extends Enum<?>>> CA_NO_CONSTANTS = new DynamicArnExceptionType<>(
             o -> new ArnArgumentException(
-                    o.getName() + " must have at least one constant tobe a CustomArgument."));
+                    o.getName() + " must have at least one constant to be a CustomArgument."));
     /**
      * Thrown when an enum annotated with {@link CustomArgument} has a constant that
      * isn't

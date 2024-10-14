@@ -36,13 +36,19 @@ import dev.efekos.arn.common.exception.ArnException;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.common.annotation.*;
 import dev.efekos.arn.common.base.ArnInstance;
+import dev.efekos.arn.paper.command.CmdCustomArg;
+import dev.efekos.arn.paper.command.CmdEnumArg;
+import dev.efekos.arn.paper.face.CustomArnArgumentType;
 import dev.efekos.arn.paper.face.PaperArnConfig;
 import dev.efekos.arn.paper.face.PaperCmdResolver;
 import dev.efekos.arn.paper.face.PaperHndResolver;
+import dev.efekos.arn.paper.handler.HndCustomArg;
+import dev.efekos.arn.paper.handler.HndEnumArg;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -54,10 +60,7 @@ import org.reflections.Reflections;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
@@ -108,10 +111,45 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
         Reflections reflections = new Reflections(mainClass.getPackage().getName());
 
         configure(reflections);
+        scanEnums(reflections);
+        scanCustoms(reflections);
         scanCommands(reflections);
         scanExceptionHandlerMethods(reflections, exclusions);
 
         registerCommands(plugin.getLifecycleManager());
+    }
+
+    private void scanCustoms(Reflections reflections) {
+        for (Class<? extends CustomArnArgumentType<?>> aClass : reflections.getSubTypesOf(CustomArnArgumentType.class)) {
+            if(exclusions.contains(aClass))continue;
+            CustomArnArgumentType<?> instance = instantiate(aClass);
+            commandResolvers.add(new CmdCustomArg(instance));
+            handlerResolvers.add(new HndCustomArg(instance));
+        }
+    }
+
+    private void scanEnums(Reflections reflections) throws ArnException {
+        List<Class<?>> classes = reflections.getTypesAnnotatedWith(Container.class).stream()
+                .filter(aClass -> aClass.isAnnotationPresent(CustomArgument.class) && aClass.isEnum() && !exclusions.contains(aClass)).toList();
+        for (Class<?> aClass : classes) {
+            Class<? extends Enum<?>> enumC = (Class<? extends Enum<?>>) aClass;
+
+            CustomArgument customArgument = enumC.getAnnotation(CustomArgument.class);
+            try {
+                NamespacedKey.fromString(customArgument.value());
+            } catch (Exception e) {
+                throw PaperArnExceptions.CA_VALUE_NOT_KEY.create(aClass);
+            }
+
+            if (enumC.getEnumConstants().length == 0)
+                throw PaperArnExceptions.CA_NO_CONSTANTS.create(enumC);
+            if (Arrays.stream(enumC.getEnumConstants())
+                    .anyMatch(constant -> !constant.name().toUpperCase(Locale.ENGLISH).equals(constant.name())))
+                throw PaperArnExceptions.CA_LOWERCASE.create(enumC);
+
+            handlerResolvers.add(new HndEnumArg(enumC));
+            commandResolvers.add(new CmdEnumArg(enumC));
+        }
     }
 
     private void scanCommands(Reflections reflections) throws ArnException {
@@ -361,7 +399,7 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
 
     @Override
     public List<ArnFeature> getSupportedFeatures() {
-        return List.of(ArnFeature.COMMANDS, ArnFeature.EXCLUSION, ArnFeature.EXCEPTION_HANDLERS);
+        return List.of(ArnFeature.ALL);
     }
 
 }
