@@ -29,14 +29,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * An annotation used to block a specific command to the console. If this annotation is present on a command handler
- * method, console won't be able to execute that command.
- *
- * @author efekos
- * @since 0.1
- */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD,ElementType.TYPE,ElementType.PACKAGE})
-public @interface BlockConsole {
+public @interface BlockSenderTypes {
+
+    Class<?>[] value();
+
 }

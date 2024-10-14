@@ -34,6 +34,7 @@ import dev.efekos.arn.spigot.face.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
 import org.reflections.Reflections;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -123,6 +124,11 @@ sealed class SpigotArnMethodDump permits SpigotArn {
         if (!data.getPermission().isEmpty())
             chainedBuilder = chainedBuilder.requires(o -> o.hasPermission(0, data.getPermission()));
         return chainedBuilder;
+    }
+
+
+    protected <T extends Annotation> T getApplied(Method method, Class<T> annotation){
+        return Optional.ofNullable(method.getAnnotation(annotation)).orElse(Optional.ofNullable(method.getDeclaringClass().getAnnotation(annotation)).orElse(method.getDeclaringClass().getPackage().getAnnotation(annotation)));
     }
 
 }

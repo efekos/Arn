@@ -38,6 +38,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.reflections.Reflections;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -103,6 +104,10 @@ public sealed class PaperMethodDump permits PaperArn {
             }
         }
 
+    }
+
+    protected <T extends Annotation> T getApplied(Method method,Class<T> annotation){
+        return Optional.ofNullable(method.getAnnotation(annotation)).orElse(Optional.ofNullable(method.getDeclaringClass().getAnnotation(annotation)).orElse(method.getDeclaringClass().getPackage().getAnnotation(annotation)));
     }
 
 
