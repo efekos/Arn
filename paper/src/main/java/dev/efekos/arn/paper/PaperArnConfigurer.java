@@ -44,9 +44,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Biome;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BlockType;
-import org.bukkit.command.BlockCommandSender;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.*;
 import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -67,8 +65,9 @@ public final class PaperArnConfigurer implements PaperArnConfig {
     public void addHandlerMethodArgumentResolvers(List<PaperHndResolver> resolvers) {
         resolvers.addAll(List.of(
                 new HndEntitiesArg(), new HndEntityArg(), new HndBlockPosArg(), new HndPlayerArg(), new HndPlayersArg(),
-                new HndVectorArg(), new HndSender(Player.class), new HndSender(BlockCommandSender.class),
-                new HndSender(ConsoleCommandSender.class), new HndSender(CommandSender.class),
+                new HndVectorArg(), new HndSender(Player.class), new HndSender(BlockCommandSender.class), new HndSender(ConsoleCommandSender.class),
+                new HndSender(CommandSender.class), new HndSender(Entity.class),new HndSender(RemoteConsoleCommandSender.class),
+                new HndSender(ProxiedCommandSender.class),
 
                 new HndSenderValue<>(Float.class, Experience.class, Player::getExp), new HndSenderValue<>(float.class, Experience.class, Player::getExp),
                 new HndSenderValue<>(Integer.class, ExpLevel.class, Player::getLevel), new HndSenderValue<>(int.class, Experience.class, Player::getLevel),

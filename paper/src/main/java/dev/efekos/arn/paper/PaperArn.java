@@ -285,11 +285,17 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
             ArrayList<ArgumentBuilder<CommandSourceStack, ?>> nodes = new ArrayList<>();
             List<CommandAnnotationLiteral> literals = method.getAnnotationData().getLiterals();
 
+            Predicate<CommandSourceStack> senderPredicate = commandSourceStack -> (method.getIncludedSender()==null || method.getIncludedSender()==commandSourceStack.getSender().getClass()) &&
+                    (!method.isBlocksCommandBlock() || !(commandSourceStack.getSender() instanceof BlockCommandSender)) &&
+                            (!method.isBlocksPlayer() || !(commandSourceStack.getSender() instanceof Player)) &&
+                            (!method.isBlocksConsole() || !(commandSourceStack.getSender() instanceof ConsoleCommandSender)) &&
+                    !method.doesBlockSender(commandSourceStack.getSender());
+            Predicate<CommandSourceStack> permisisonPredicate = method.getAnnotationData().getPermission().isEmpty() ? s -> true : s -> s.getSender().hasPermission(method.getAnnotationData().getPermission());
+
             // Register first literals as they are head of the command, and they will need #requires for permissions
             for (CommandAnnotationLiteral lit : literals) {
                 if (lit.getOffset() == 0) {
-                    Predicate<CommandSourceStack> predicate = method.getAnnotationData().getPermission().isEmpty() ? s -> true : s -> s.getSender().hasPermission(method.getAnnotationData().getPermission());
-                    nodes.add(Commands.literal(lit.getLiteral()).requires(predicate));
+                    nodes.add(Commands.literal(lit.getLiteral()).requires(permisisonPredicate).requires(senderPredicate));
                 }
             }
 

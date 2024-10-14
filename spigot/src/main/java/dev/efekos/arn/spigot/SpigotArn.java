@@ -486,11 +486,16 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
                 List<Parameter> parametersClone = IntStream.range(0, method.getArgumentResolvers().size())
                         .filter(i -> !indexesToDelete.contains(i)).mapToObj(method.getParameters()::get).toList();
 
-                Predicate<CommandSourceStack> permissionPre = method.getAnnotationData().getPermission().isEmpty() ? s -> true : s -> s.hasPermission(0, method.getAnnotationData().getPermission());
+                Predicate<CommandSourceStack> senderPredicate = commandSourceStack -> (method.getIncludedSender()==null || method.getIncludedSender()==commandSourceStack.getBukkitSender().getClass()) &&
+                        (!method.isBlocksCommandBlock() || !(commandSourceStack.getBukkitSender() instanceof BlockCommandSender)) &&
+                        (!method.isBlocksPlayer() || !(commandSourceStack.getBukkitSender() instanceof Player)) &&
+                        (!method.isBlocksConsole() || !(commandSourceStack.getBukkitSender() instanceof ConsoleCommandSender)) &&
+                        !method.doesBlockSender(commandSourceStack.getBukkitSender());
+                Predicate<CommandSourceStack> permissionPredicate = method.getAnnotationData().getPermission().isEmpty() ? s -> true : s -> s.getBukkitSender().hasPermission(method.getAnnotationData().getPermission());
 
                 for (CommandAnnotationLiteral lit : literals)
                     if (lit.getOffset() == 0) {
-                        nodes.add(Commands.literal(lit.getLiteral()).requires(permissionPre));
+                        nodes.add(Commands.literal(lit.getLiteral()).requires(permissionPredicate).requires(senderPredicate));
                     }
 
                 for (int i = 0; i < nonnullResolvers.size(); i++) {
@@ -499,7 +504,7 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
                     if (i != 0)
                         for (CommandAnnotationLiteral lit : literals)
                             if (lit.getOffset() == i)
-                                nodes.add(Commands.literal(lit.getLiteral()).requires(permissionPre));
+                                nodes.add(Commands.literal(lit.getLiteral()).requires(permissionPredicate));
 
                     ArgumentBuilder<CommandSourceStack, ?> builder = resolver.apply(parametersClone.get(i));
                     if (builder != null)
