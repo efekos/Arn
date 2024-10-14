@@ -33,6 +33,7 @@ import dev.efekos.arn.common.annotation.Command;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -95,6 +96,9 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
      */
     private boolean blocksPlayer;
 
+    private final List<Class<?>> blockedSenders = new ArrayList<>();
+    private Class<?> includedSender;
+
     @Override
     public String toString() {
         return "CommandHandlerMethod{" +
@@ -108,6 +112,8 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
                 ", blocksConsole=" + blocksConsole +
                 ", blocksCommandBlock=" + blocksCommandBlock +
                 ", blocksPlayer=" + blocksPlayer +
+                ", blockedSenders=" + blockedSenders +
+                ", includedSender=" + includedSender +
                 '}';
     }
 
@@ -115,7 +121,7 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BaseCommandHandlerMethod that = (BaseCommandHandlerMethod) o;
+        BaseCommandHandlerMethod<Cmd,Hnd> that = (BaseCommandHandlerMethod<Cmd,Hnd>) o;
         return blocksConsole == that.blocksConsole && blocksCommandBlock == that.blocksCommandBlock && blocksPlayer == that.blocksPlayer && Objects.equals(command, that.command) && Objects.equals(method, that.method) && Objects.equals(annotationData, that.annotationData) && Objects.equals(parameters, that.parameters) && Objects.equals(argumentResolvers, that.argumentResolvers) && Objects.equals(handlerMethodResolvers, that.handlerMethodResolvers) && Objects.equals(signature, that.signature);
     }
 
@@ -304,4 +310,25 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
     public void setSignature(String signature) {
         this.signature = signature;
     }
+
+    public boolean doesBlockSenderType(Class<?> sender){
+        return blockedSenders.contains(sender);
+    }
+
+    public boolean doesBlockSender(Object sender){
+        return sender != null && doesBlockSenderType(sender.getClass());
+    }
+
+    public void addSenderBlock(Class<?> sender){
+        blockedSenders.add(sender);
+    }
+
+    public Class<?> getIncludedSender() {
+        return includedSender;
+    }
+
+    public void setIncludedSender(Class<?> includedSender) {
+        this.includedSender = includedSender;
+    }
+
 }

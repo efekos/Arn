@@ -174,15 +174,13 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
         cmdMethod.setCommand(annotation.value());
         cmdMethod.setMethod(method);
         cmdMethod.setParameters(Arrays.asList(method.getParameters()));
-        cmdMethod.setBlocksCommandBlock(method.isAnnotationPresent(BlockCommandBlock.class));
-        cmdMethod.setBlocksConsole(method.isAnnotationPresent(BlockConsole.class));
-        cmdMethod.setBlocksPlayer(method.isAnnotationPresent(BlockPlayer.class));
+        cmdMethod.setBlocksCommandBlock(isApplied(method,BlockCommandBlock.class));
+        cmdMethod.setBlocksConsole(isApplied(method,BlockConsole.class));
+        cmdMethod.setBlocksPlayer(isApplied(method,BlockPlayer.class));
 
-        Optional.ofNullable(getApplied(method,BlockSenderTypes.class)).ifPresent(bst->{
-            for (Class<?> aClass : bst.value()) {
-                cmdMethod.addSenderBlock(aClass);
-            }
-        });
+        if(isApplied(method,OnlyAllowSender.class)) cmdMethod.setIncludedSender(getApplied(method,OnlyAllowSender.class).value());
+        else if (isApplied(method,BlockSenderTypes.class))
+            for (Class<?> aClass : getApplied(method, BlockSenderTypes.class).value()) cmdMethod.addSenderBlock(aClass);
 
         CommandAnnotationData baseAnnData = new CommandAnnotationData(annotation);
 

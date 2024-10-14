@@ -390,9 +390,13 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
         commandHandlerMethod.setCommand(annotation.value());
         commandHandlerMethod.setMethod(method);
         commandHandlerMethod.setParameters(Arrays.asList(method.getParameters()));
-        commandHandlerMethod.setBlocksCommandBlock(method.isAnnotationPresent(BlockCommandBlock.class));
-        commandHandlerMethod.setBlocksConsole(method.isAnnotationPresent(BlockConsole.class));
-        commandHandlerMethod.setBlocksPlayer(method.isAnnotationPresent(BlockPlayer.class));
+        commandHandlerMethod.setBlocksCommandBlock(isApplied(method,BlockCommandBlock.class));
+        commandHandlerMethod.setBlocksConsole(isApplied(method,BlockConsole.class));
+        commandHandlerMethod.setBlocksPlayer(isApplied(method,BlockPlayer.class));
+
+        if(isApplied(method,OnlyAllowSender.class)) commandHandlerMethod.setIncludedSender(getApplied(method,OnlyAllowSender.class).value());
+        else if (isApplied(method,BlockSenderTypes.class))
+            for (Class<?> aClass : getApplied(method, BlockSenderTypes.class).value()) commandHandlerMethod.addSenderBlock(aClass);
 
         CommandAnnotationData baseAnnData = new CommandAnnotationData(annotation);
 
