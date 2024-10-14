@@ -25,7 +25,7 @@
 package dev.efekos.arn.paper.face;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
-import dev.efekos.arn.common.BaseCmdResolver;
+import dev.efekos.arn.common.base.BaseCmdResolver;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 public interface PaperCmdResolver extends BaseCmdResolver<ArgumentBuilder<CommandSourceStack, ?>> {

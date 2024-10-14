@@ -24,9 +24,9 @@
 
 package dev.efekos.arn.spigot;
 
-import dev.efekos.arn.common.annotation.modifier.InventorySlot;
-import dev.efekos.arn.common.annotation.modifier.Vector;
-import dev.efekos.arn.common.data.ExceptionMap;
+import dev.efekos.arn.common.annotation.InventorySlot;
+import dev.efekos.arn.common.annotation.Vector;
+import dev.efekos.arn.common.exception.ExceptionMap;
 import dev.efekos.arn.spigot.face.SpArnConfig;
 import dev.efekos.arn.spigot.face.SpigotCmdResolver;
 import dev.efekos.arn.spigot.face.SpigotHndResolver;

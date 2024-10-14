@@ -24,7 +24,7 @@
 
 package dev.efekos.arn;
 
-import dev.efekos.arn.common.ArnInstance;
+import dev.efekos.arn.common.base.ArnInstance;
 import dev.efekos.arn.paper.PaperArn;
 
 public final class StaticArnBinder {

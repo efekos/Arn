@@ -27,7 +27,7 @@ package dev.efekos.arn.spigot.resolver.command;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
-import dev.efekos.arn.common.BaseCmdResolver;
+import dev.efekos.arn.common.base.BaseCmdResolver;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.spigot.face.SpigotCmdResolver;
 import net.minecraft.advancements.AdvancementHolder;

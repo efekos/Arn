@@ -28,7 +28,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import dev.efekos.arn.common.annotation.Container;
 import dev.efekos.arn.common.annotation.ExceptionHandler;
-import dev.efekos.arn.common.data.CommandAnnotationData;
+import dev.efekos.arn.common.CommandAnnotationData;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.spigot.face.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;

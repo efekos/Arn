@@ -25,7 +25,7 @@
 package dev.efekos.arn.spigot.resolver.command;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
-import dev.efekos.arn.common.BaseCmdResolver;
+import dev.efekos.arn.common.base.BaseCmdResolver;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.spigot.face.SpigotCmdResolver;
 import net.md_5.bungee.api.chat.BaseComponent;

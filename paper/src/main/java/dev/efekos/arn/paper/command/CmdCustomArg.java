@@ -25,7 +25,7 @@
 package dev.efekos.arn.paper.command;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
-import dev.efekos.arn.common.BaseCmdResolver;
+import dev.efekos.arn.common.base.BaseCmdResolver;
 import dev.efekos.arn.common.annotation.CommandArgument;
 import dev.efekos.arn.paper.face.CustomArnArgumentType;
 import dev.efekos.arn.paper.face.PaperCmdResolver;

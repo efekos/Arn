@@ -24,7 +24,7 @@
 
 package dev.efekos.arn.paper;
 
-import dev.efekos.arn.common.data.BaseCommandHandlerMethod;
+import dev.efekos.arn.common.base.BaseCommandHandlerMethod;
 import dev.efekos.arn.paper.face.PaperCmdResolver;
 import dev.efekos.arn.paper.face.PaperHndResolver;
 

@@ -25,7 +25,7 @@
 package dev.efekos.arn.paper.face;
 
 import com.mojang.brigadier.context.CommandContext;
-import dev.efekos.arn.common.BaseHndResolver;
+import dev.efekos.arn.common.base.BaseHndResolver;
 import dev.efekos.arn.paper.PaperCommandMethod;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 

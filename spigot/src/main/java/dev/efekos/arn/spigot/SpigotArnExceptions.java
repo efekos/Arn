@@ -24,18 +24,18 @@
 
 package dev.efekos.arn.spigot;
 
-import dev.efekos.arn.common.BaseCmdResolver;
-import dev.efekos.arn.common.BaseHndResolver;
+import dev.efekos.arn.common.base.BaseCmdResolver;
+import dev.efekos.arn.common.base.BaseHndResolver;
 import dev.efekos.arn.common.annotation.Command;
 import dev.efekos.arn.common.annotation.CustomArgument;
-import dev.efekos.arn.common.data.CommandAnnotationLiteral;
+import dev.efekos.arn.common.CommandAnnotationLiteral;
 import dev.efekos.arn.common.exception.ArnArgumentException;
 import dev.efekos.arn.common.exception.ArnCommandException;
 import dev.efekos.arn.common.exception.ArnContainerException;
-import dev.efekos.arn.common.exception.type.Dynamic2ArnExceptionType;
-import dev.efekos.arn.common.exception.type.Dynamic3ArnExceptionType;
-import dev.efekos.arn.common.exception.type.DynamicArnExceptionType;
-import dev.efekos.arn.common.exception.type.SimpleArnExceptionType;
+import dev.efekos.arn.common.exception.Dynamic2ArnExceptionType;
+import dev.efekos.arn.common.exception.Dynamic3ArnExceptionType;
+import dev.efekos.arn.common.exception.DynamicArnExceptionType;
+import dev.efekos.arn.common.exception.SimpleArnExceptionType;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;

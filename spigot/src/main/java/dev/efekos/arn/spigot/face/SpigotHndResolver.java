@@ -25,7 +25,7 @@
 package dev.efekos.arn.spigot.face;
 
 import com.mojang.brigadier.context.CommandContext;
-import dev.efekos.arn.common.BaseHndResolver;
+import dev.efekos.arn.common.base.BaseHndResolver;
 import dev.efekos.arn.spigot.SpigotCommandHandlerMethod;
 import net.minecraft.commands.CommandSourceStack;
 

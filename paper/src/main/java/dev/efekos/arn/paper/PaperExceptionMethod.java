@@ -25,7 +25,7 @@
 package dev.efekos.arn.paper;
 
 import com.mojang.brigadier.context.CommandContext;
-import dev.efekos.arn.common.data.BaseExceptionHandlerMethod;
+import dev.efekos.arn.common.base.BaseExceptionHandlerMethod;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

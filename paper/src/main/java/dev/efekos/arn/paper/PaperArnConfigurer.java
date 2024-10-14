@@ -25,8 +25,8 @@
 package dev.efekos.arn.paper;
 
 import com.mojang.brigadier.arguments.BoolArgumentType;
-import dev.efekos.arn.common.annotation.modifier.sender.*;
-import dev.efekos.arn.common.data.ExceptionMap;
+import dev.efekos.arn.common.exception.ExceptionMap;
+import dev.efekos.arn.common.annotation.*;
 import dev.efekos.arn.paper.command.*;
 import dev.efekos.arn.paper.face.PaperArnConfig;
 import dev.efekos.arn.paper.face.PaperCmdResolver;

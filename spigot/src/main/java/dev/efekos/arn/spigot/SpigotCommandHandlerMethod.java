@@ -25,7 +25,7 @@
 package dev.efekos.arn.spigot;
 
 import dev.efekos.arn.common.annotation.Command;
-import dev.efekos.arn.common.data.BaseCommandHandlerMethod;
+import dev.efekos.arn.common.base.BaseCommandHandlerMethod;
 import dev.efekos.arn.spigot.face.SpigotCmdResolver;
 import dev.efekos.arn.spigot.face.SpigotHndResolver;
 

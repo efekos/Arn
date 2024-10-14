@@ -24,8 +24,8 @@
 
 package dev.efekos.arn.common.exception;
 
-import dev.efekos.arn.common.BaseCustomArgumentType;
 import dev.efekos.arn.common.annotation.Command;
+import dev.efekos.arn.common.base.BaseCustomArgumentType;
 
 /**
  * An {@link ArnException} that is used to replace Brigadier's

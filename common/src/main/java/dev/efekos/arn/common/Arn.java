@@ -24,6 +24,8 @@
 
 package dev.efekos.arn.common;
 
+import dev.efekos.arn.common.base.ArnInstance;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -49,7 +51,7 @@ public class Arn {
             Method createArnInstance = clazz.getDeclaredMethod("createArnInstance");
             Object o = createArnInstance.invoke(null);
             if (!(o instanceof ArnInstance i))
-                throw new RuntimeException("dev.efekos.arn.common.StaticArnBinder#createArnInstance does not return a dev.efekos.arn.common.ArnInstance. Please report this to github: https://github.com/efekos/Arn");
+                throw new RuntimeException("dev.efekos.arn.common.StaticArnBinder#createArnInstance does not return a dev.efekos.arn.common.i.ArnInstance. Please report this to github: https://github.com/efekos/Arn");
             return i;
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Could not find StaticArnBinder even though it is guaranteed to exist. Please report this to github: https://github.com/efekos/Arn", e);

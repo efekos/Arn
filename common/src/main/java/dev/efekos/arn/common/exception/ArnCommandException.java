@@ -24,7 +24,7 @@
 
 package dev.efekos.arn.common.exception;
 
-import dev.efekos.arn.common.data.BaseCommandHandlerMethod;
+import dev.efekos.arn.common.base.BaseCommandHandlerMethod;
 
 /**
  * An exception type thrown by Arn when there is something wrong with a

@@ -24,6 +24,8 @@
 
 package dev.efekos.arn.common.annotation;
 
+import dev.efekos.arn.common.CommandAnnotationLiteral;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -42,7 +44,7 @@ public @interface Command {
     /**
      * Literals of this command. There are a few rules about this value:
      * <ul>
-     *     <li>{@link dev.efekos.arn.common.data.CommandAnnotationLiteral#SEPARATOR_CHAR} can be used to separate multiple
+     *     <li>{@link CommandAnnotationLiteral#SEPARATOR_CHAR} can be used to separate multiple
      *     literals.</li>
      *     <li>{@code [ba]:\d:[a-z]} syntax can be used to offset literals. b stands for 'before', a stands for 'after'. Then a digit
      *     must be present to determine which argument the literal will be offset to, followed by the actual literal.</li>

@@ -23,6 +23,6 @@
  */
 
 /**
- * {@link dev.efekos.arn.common.BaseHndResolver} implementations.
+ * {@link dev.efekos.arn.common.base.BaseHndResolver} implementations.
  */
 package dev.efekos.arn.spigot.resolver.handler;
