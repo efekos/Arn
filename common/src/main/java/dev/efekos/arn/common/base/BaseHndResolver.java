@@ -24,8 +24,8 @@
 
 package dev.efekos.arn.common.base;
 
-import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.common.annotation.CommandArgument;
+import dev.efekos.arn.common.exception.ArnSyntaxException;
 
 import java.lang.reflect.Parameter;
 

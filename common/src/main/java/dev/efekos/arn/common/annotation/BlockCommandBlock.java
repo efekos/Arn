@@ -37,6 +37,6 @@ import java.lang.annotation.Target;
  * @since 0.1
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD,ElementType.TYPE,ElementType.PACKAGE})
+@Target({ElementType.METHOD, ElementType.TYPE, ElementType.PACKAGE})
 public @interface BlockCommandBlock {
 }

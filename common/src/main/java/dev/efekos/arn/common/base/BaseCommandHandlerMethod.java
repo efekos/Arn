@@ -24,12 +24,12 @@
 
 package dev.efekos.arn.common.base;
 
-import dev.efekos.arn.common.exception.ArnCommandException;
 import dev.efekos.arn.common.CommandAnnotationData;
 import dev.efekos.arn.common.annotation.BlockCommandBlock;
 import dev.efekos.arn.common.annotation.BlockConsole;
 import dev.efekos.arn.common.annotation.BlockPlayer;
 import dev.efekos.arn.common.annotation.Command;
+import dev.efekos.arn.common.exception.ArnCommandException;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -46,6 +46,7 @@ import java.util.Objects;
  */
 public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, Hnd extends BaseHndResolver<?, ?>> {
 
+    private final List<Class<?>> blockedSenders = new ArrayList<>();
     /**
      * Value of the {@link Command#value()} on {@link #method}.
      */
@@ -95,8 +96,6 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
      * {@link #method} has a {@link BlockPlayer} annotation.
      */
     private boolean blocksPlayer;
-
-    private final List<Class<?>> blockedSenders = new ArrayList<>();
     private Class<?> includedSender;
 
     @Override
@@ -121,7 +120,7 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BaseCommandHandlerMethod<Cmd,Hnd> that = (BaseCommandHandlerMethod<Cmd,Hnd>) o;
+        BaseCommandHandlerMethod<Cmd, Hnd> that = (BaseCommandHandlerMethod<Cmd, Hnd>) o;
         return blocksConsole == that.blocksConsole && blocksCommandBlock == that.blocksCommandBlock && blocksPlayer == that.blocksPlayer && Objects.equals(command, that.command) && Objects.equals(method, that.method) && Objects.equals(annotationData, that.annotationData) && Objects.equals(parameters, that.parameters) && Objects.equals(argumentResolvers, that.argumentResolvers) && Objects.equals(handlerMethodResolvers, that.handlerMethodResolvers) && Objects.equals(signature, that.signature);
     }
 
@@ -311,15 +310,15 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
         this.signature = signature;
     }
 
-    public boolean doesBlockSenderType(Class<?> sender){
+    public boolean doesBlockSenderType(Class<?> sender) {
         return blockedSenders.contains(sender);
     }
 
-    public boolean doesBlockSender(Object sender){
+    public boolean doesBlockSender(Object sender) {
         return sender != null && doesBlockSenderType(sender.getClass());
     }
 
-    public void addSenderBlock(Class<?> sender){
+    public void addSenderBlock(Class<?> sender) {
         blockedSenders.add(sender);
     }
 

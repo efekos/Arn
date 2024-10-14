@@ -106,12 +106,12 @@ public sealed class PaperMethodDump permits PaperArn {
 
     }
 
-    protected <T extends Annotation> T getApplied(Method method,Class<T> annotation){
+    protected <T extends Annotation> T getApplied(Method method, Class<T> annotation) {
         return Optional.ofNullable(method.getAnnotation(annotation)).orElse(Optional.ofNullable(method.getDeclaringClass().getAnnotation(annotation)).orElse(method.getDeclaringClass().getPackage().getAnnotation(annotation)));
     }
 
-    protected boolean isApplied(Method method,Class<? extends Annotation> annotation){
-        return Optional.ofNullable(getApplied(method,annotation)).isPresent();
+    protected boolean isApplied(Method method, Class<? extends Annotation> annotation) {
+        return Optional.ofNullable(getApplied(method, annotation)).isPresent();
     }
 
 

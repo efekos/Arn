@@ -24,8 +24,8 @@
 
 package dev.efekos.arn.common.base;
 
-import dev.efekos.arn.common.exception.ArnException;
 import dev.efekos.arn.common.ArnFeature;
+import dev.efekos.arn.common.exception.ArnException;
 
 import java.util.List;
 

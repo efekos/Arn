@@ -26,8 +26,8 @@ package dev.efekos.arn.spigot.resolver.handler;
 
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import dev.efekos.arn.common.base.BaseHndResolver;
 import dev.efekos.arn.common.annotation.CommandArgument;
+import dev.efekos.arn.common.base.BaseHndResolver;
 import dev.efekos.arn.spigot.SpigotCommandHandlerMethod;
 import dev.efekos.arn.spigot.face.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;

@@ -26,9 +26,9 @@ package dev.efekos.arn.spigot;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import dev.efekos.arn.common.CommandAnnotationData;
 import dev.efekos.arn.common.annotation.Container;
 import dev.efekos.arn.common.annotation.ExceptionHandler;
-import dev.efekos.arn.common.CommandAnnotationData;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.spigot.face.SpigotHndResolver;
 import net.minecraft.commands.CommandSourceStack;
@@ -127,12 +127,12 @@ sealed class SpigotArnMethodDump permits SpigotArn {
     }
 
 
-    protected <T extends Annotation> T getApplied(Method method, Class<T> annotation){
+    protected <T extends Annotation> T getApplied(Method method, Class<T> annotation) {
         return Optional.ofNullable(method.getAnnotation(annotation)).orElse(Optional.ofNullable(method.getDeclaringClass().getAnnotation(annotation)).orElse(method.getDeclaringClass().getPackage().getAnnotation(annotation)));
     }
 
-    protected boolean isApplied(Method method,Class<? extends Annotation> annotation){
-        return Optional.ofNullable(getApplied(method,annotation)).isPresent();
+    protected boolean isApplied(Method method, Class<? extends Annotation> annotation) {
+        return Optional.ofNullable(getApplied(method, annotation)).isPresent();
     }
 
 }

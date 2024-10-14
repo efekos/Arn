@@ -88,12 +88,12 @@ public final class HndEnumArg implements PaperHndResolver {
                            CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
 
         String s = parameter.getAnnotation(CommandArgument.class).value();
-        if(s.isEmpty()) s = enumClass.getSimpleName();
+        if (s.isEmpty()) s = enumClass.getSimpleName();
         String string = StringArgumentType.getString(context, getName(parameter));
         try {
             return Enum.valueOf(enumClass.getEnumConstants()[0].getClass(), string.toUpperCase(Locale.ENGLISH));
         } catch (IllegalArgumentException e) {
-            throw new ArnSyntaxException("'"+string+"' is not a member of '"+s+"'");
+            throw new ArnSyntaxException("'" + string + "' is not a member of '" + s + "'");
         } catch (NullPointerException e) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "ARN-ERROR");
             Bukkit.getConsoleSender().sendMessage(enumClass.toString());

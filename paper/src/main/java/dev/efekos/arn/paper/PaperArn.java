@@ -27,15 +27,15 @@ package dev.efekos.arn.paper;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.efekos.arn.common.*;
+import dev.efekos.arn.common.ArnFeature;
 import dev.efekos.arn.common.CommandAnnotationData;
 import dev.efekos.arn.common.CommandAnnotationLiteral;
-import dev.efekos.arn.common.exception.ExceptionMap;
+import dev.efekos.arn.common.annotation.*;
+import dev.efekos.arn.common.base.ArnInstance;
 import dev.efekos.arn.common.exception.ArnCommandException;
 import dev.efekos.arn.common.exception.ArnException;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
-import dev.efekos.arn.common.annotation.*;
-import dev.efekos.arn.common.base.ArnInstance;
+import dev.efekos.arn.common.exception.ExceptionMap;
 import dev.efekos.arn.paper.command.CmdCustomArg;
 import dev.efekos.arn.paper.command.CmdEnumArg;
 import dev.efekos.arn.paper.face.CustomArnArgumentType;
@@ -121,7 +121,7 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
 
     private void scanCustoms(Reflections reflections) {
         for (Class<? extends CustomArnArgumentType<?>> aClass : reflections.getSubTypesOf(CustomArnArgumentType.class)) {
-            if(exclusions.contains(aClass))continue;
+            if (exclusions.contains(aClass)) continue;
             CustomArnArgumentType<?> instance = instantiate(aClass);
             commandResolvers.add(new CmdCustomArg(instance));
             handlerResolvers.add(new HndCustomArg(instance));
@@ -212,20 +212,21 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
         cmdMethod.setCommand(annotation.value());
         cmdMethod.setMethod(method);
         cmdMethod.setParameters(Arrays.asList(method.getParameters()));
-        cmdMethod.setBlocksCommandBlock(isApplied(method,BlockCommandBlock.class));
-        cmdMethod.setBlocksConsole(isApplied(method,BlockConsole.class));
-        cmdMethod.setBlocksPlayer(isApplied(method,BlockPlayer.class));
+        cmdMethod.setBlocksCommandBlock(isApplied(method, BlockCommandBlock.class));
+        cmdMethod.setBlocksConsole(isApplied(method, BlockConsole.class));
+        cmdMethod.setBlocksPlayer(isApplied(method, BlockPlayer.class));
 
-        if(isApplied(method,OnlyAllowSender.class)) cmdMethod.setIncludedSender(getApplied(method,OnlyAllowSender.class).value());
-        else if (isApplied(method,BlockSenderTypes.class))
+        if (isApplied(method, OnlyAllowSender.class))
+            cmdMethod.setIncludedSender(getApplied(method, OnlyAllowSender.class).value());
+        else if (isApplied(method, BlockSenderTypes.class))
             for (Class<?> aClass : getApplied(method, BlockSenderTypes.class).value()) cmdMethod.addSenderBlock(aClass);
 
         CommandAnnotationData baseAnnData = new CommandAnnotationData(annotation);
 
         if (baseAnnData.getDescription().isEmpty())
-            baseAnnData.setDescription(Optional.ofNullable(getApplied(method,Description.class)).map(Description::value).orElse("No description provided."));
-        if (baseAnnData.getPermission().isEmpty() )
-            baseAnnData.setPermission(Optional.ofNullable(getApplied(method,Permission.class)).map(Permission::value).orElse(""));
+            baseAnnData.setDescription(Optional.ofNullable(getApplied(method, Description.class)).map(Description::value).orElse("No description provided."));
+        if (baseAnnData.getPermission().isEmpty())
+            baseAnnData.setPermission(Optional.ofNullable(getApplied(method, Permission.class)).map(Permission::value).orElse(""));
 
         ArrayList<CommandAnnotationLiteral> literals = new ArrayList<>();
         for (String s : annotation.value().split("\\" + CommandAnnotationLiteral.SEPARATOR_CHAR_STRING))

@@ -30,8 +30,8 @@
   * [License](#license)
 <!-- TOC -->
 
-Arn is an annotation-based command library inspired by Spring boot that helps spigot plugins with creating, handling and
-registering commands. This library uses Brigaider commands that Minecraft uses, so you can use most kinds of arguments
+Arn is an annotation-based command library inspired by Spring boot that helps Minecraft plugins with creating, handling and
+registering commands. This library uses Brigadier commands that Minecraft uses, so you can use most kinds of arguments
 you see in the commands of the original game. Plus, you can turn any enumerator to a custom argument, all it takes is
 literally two annotations. Then, let's get started!
 

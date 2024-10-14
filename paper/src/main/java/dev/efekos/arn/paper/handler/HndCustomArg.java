@@ -31,11 +31,7 @@ import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.paper.PaperCommandMethod;
 import dev.efekos.arn.paper.face.CustomArnArgumentType;
 import dev.efekos.arn.paper.face.PaperHndResolver;
-import dev.efekos.arn.spigot.SpigotCommandHandlerMethod;
-import dev.efekos.arn.spigot.face.CustomArgumentType;
-import dev.efekos.arn.spigot.face.SpigotHndResolver;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import net.minecraft.commands.CommandSourceStack;
 
 import java.lang.reflect.Parameter;
 

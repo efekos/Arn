@@ -30,11 +30,10 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import dev.efekos.arn.common.*;
-import dev.efekos.arn.common.annotation.*;
+import dev.efekos.arn.common.ArnFeature;
 import dev.efekos.arn.common.CommandAnnotationData;
 import dev.efekos.arn.common.CommandAnnotationLiteral;
-import dev.efekos.arn.common.exception.ExceptionMap;
+import dev.efekos.arn.common.annotation.*;
 import dev.efekos.arn.common.base.ArnInstance;
 import dev.efekos.arn.common.base.BaseArnConfigurer;
 import dev.efekos.arn.common.base.BaseCmdResolver;
@@ -390,20 +389,22 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
         commandHandlerMethod.setCommand(annotation.value());
         commandHandlerMethod.setMethod(method);
         commandHandlerMethod.setParameters(Arrays.asList(method.getParameters()));
-        commandHandlerMethod.setBlocksCommandBlock(isApplied(method,BlockCommandBlock.class));
-        commandHandlerMethod.setBlocksConsole(isApplied(method,BlockConsole.class));
-        commandHandlerMethod.setBlocksPlayer(isApplied(method,BlockPlayer.class));
+        commandHandlerMethod.setBlocksCommandBlock(isApplied(method, BlockCommandBlock.class));
+        commandHandlerMethod.setBlocksConsole(isApplied(method, BlockConsole.class));
+        commandHandlerMethod.setBlocksPlayer(isApplied(method, BlockPlayer.class));
 
-        if(isApplied(method,OnlyAllowSender.class)) commandHandlerMethod.setIncludedSender(getApplied(method,OnlyAllowSender.class).value());
-        else if (isApplied(method,BlockSenderTypes.class))
-            for (Class<?> aClass : getApplied(method, BlockSenderTypes.class).value()) commandHandlerMethod.addSenderBlock(aClass);
+        if (isApplied(method, OnlyAllowSender.class))
+            commandHandlerMethod.setIncludedSender(getApplied(method, OnlyAllowSender.class).value());
+        else if (isApplied(method, BlockSenderTypes.class))
+            for (Class<?> aClass : getApplied(method, BlockSenderTypes.class).value())
+                commandHandlerMethod.addSenderBlock(aClass);
 
         CommandAnnotationData baseAnnData = new CommandAnnotationData(annotation);
 
         if (baseAnnData.getDescription().isEmpty())
-            baseAnnData.setDescription(Optional.ofNullable(getApplied(method,Description.class)).map(Description::value).orElse("No description provided."));
-        if (baseAnnData.getPermission().isEmpty() )
-            baseAnnData.setPermission(Optional.ofNullable(getApplied(method,Permission.class)).map(Permission::value).orElse(""));
+            baseAnnData.setDescription(Optional.ofNullable(getApplied(method, Description.class)).map(Description::value).orElse("No description provided."));
+        if (baseAnnData.getPermission().isEmpty())
+            baseAnnData.setPermission(Optional.ofNullable(getApplied(method, Permission.class)).map(Permission::value).orElse(""));
 
         ArrayList<CommandAnnotationLiteral> literals = new ArrayList<>();
         for (String s : annotation.value().split("\\" + CommandAnnotationLiteral.SEPARATOR_CHAR_STRING))

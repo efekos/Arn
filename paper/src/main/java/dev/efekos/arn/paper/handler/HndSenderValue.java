@@ -41,7 +41,7 @@ public final class HndSenderValue<T> implements PaperHndResolver {
 
     private final Class<T> clazz;
     private final Class<? extends Annotation> annotation;
-    private final Function<Player,T> provider;
+    private final Function<Player, T> provider;
 
     public HndSenderValue(Class<T> clazz, Class<? extends Annotation> annotation, Function<Player, T> provider) {
         this.clazz = clazz;
@@ -51,7 +51,7 @@ public final class HndSenderValue<T> implements PaperHndResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(FromSender.class)&&parameter.isAnnotationPresent(annotation)&&parameter.getType().equals(clazz);
+        return parameter.isAnnotationPresent(FromSender.class) && parameter.isAnnotationPresent(annotation) && parameter.getType().equals(clazz);
     }
 
     @Override
@@ -62,7 +62,7 @@ public final class HndSenderValue<T> implements PaperHndResolver {
     @Override
     public Object resolve(Parameter parameter, PaperCommandMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
         CommandSender sender = context.getSource().getSender();
-        if(!(sender instanceof Player p))return null;
+        if (!(sender instanceof Player p)) return null;
         return clazz.cast(provider.apply(p));
     }
 

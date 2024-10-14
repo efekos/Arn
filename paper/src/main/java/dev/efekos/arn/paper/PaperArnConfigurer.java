@@ -25,8 +25,8 @@
 package dev.efekos.arn.paper;
 
 import com.mojang.brigadier.arguments.BoolArgumentType;
-import dev.efekos.arn.common.exception.ExceptionMap;
 import dev.efekos.arn.common.annotation.*;
+import dev.efekos.arn.common.exception.ExceptionMap;
 import dev.efekos.arn.paper.command.*;
 import dev.efekos.arn.paper.face.PaperArnConfig;
 import dev.efekos.arn.paper.face.PaperCmdResolver;
@@ -70,12 +70,12 @@ public final class PaperArnConfigurer implements PaperArnConfig {
                 new HndVectorArg(), new HndSender(Player.class), new HndSender(BlockCommandSender.class),
                 new HndSender(ConsoleCommandSender.class), new HndSender(CommandSender.class),
 
-                new HndSenderValue<>(Float.class, Experience.class,Player::getExp),new HndSenderValue<>(float.class, Experience.class,Player::getExp),
-                new HndSenderValue<>(Integer.class, ExpLevel.class,Player::getLevel),new HndSenderValue<>(int.class, Experience.class,Player::getLevel),
-                new HndSenderValue<>(Double.class, Health.class,Player::getHealth),new HndSenderValue<>(double.class, Health.class,Player::getHealth),
-                new HndSenderValue<>(Integer.class, FoodLevel.class,Player::getFoodLevel),new HndSenderValue<>(int.class, FoodLevel.class,Player::getFoodLevel),
-                new HndSenderValue<>(Double.class, MaxHealth.class,Player::getMaxHealth),new HndSenderValue<>(double.class, MaxHealth.class,Player::getMaxHealth),
-                new HndSenderValue<>(String.class, Name.class,Player::getName),
+                new HndSenderValue<>(Float.class, Experience.class, Player::getExp), new HndSenderValue<>(float.class, Experience.class, Player::getExp),
+                new HndSenderValue<>(Integer.class, ExpLevel.class, Player::getLevel), new HndSenderValue<>(int.class, Experience.class, Player::getLevel),
+                new HndSenderValue<>(Double.class, Health.class, Player::getHealth), new HndSenderValue<>(double.class, Health.class, Player::getHealth),
+                new HndSenderValue<>(Integer.class, FoodLevel.class, Player::getFoodLevel), new HndSenderValue<>(int.class, FoodLevel.class, Player::getFoodLevel),
+                new HndSenderValue<>(Double.class, MaxHealth.class, Player::getMaxHealth), new HndSenderValue<>(double.class, MaxHealth.class, Player::getMaxHealth),
+                new HndSenderValue<>(String.class, Name.class, Player::getName),
 
                 new HndNonResolverArg(Integer.class), new HndNonResolverArg(int.class), new HndNonResolverArg(Double.class),
                 new HndNonResolverArg(double.class), new HndNonResolverArg(Float.class), new HndNonResolverArg(float.class),
