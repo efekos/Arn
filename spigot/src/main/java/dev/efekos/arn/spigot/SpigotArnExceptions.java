@@ -180,10 +180,7 @@ public final class SpigotArnExceptions {
                     + "'. This might be an error related to Arn, please create an issue on GitHub: https://github.com/efekos/Arn/issues",
                     o2));
 
-    /**
-     * Creates a new instance of this class, but it is private because you don't
-     * need to instantiate this class anyway.
-     */
+
     private SpigotArnExceptions() {
     }
 }

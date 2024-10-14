@@ -46,9 +46,6 @@ import java.lang.reflect.Parameter;
  */
 public final class HndCustomArg implements SpigotHndResolver {
 
-    /**
-     * An instance of the {@link CustomArgumentType} this resolver resolves.
-     */
     private final CustomArgumentType<?> customArgumentType;
 
     /**

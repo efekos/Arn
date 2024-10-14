@@ -53,9 +53,6 @@ import java.util.Locale;
  */
 public final class HndEnumArg implements SpigotHndResolver {
 
-    /**
-     * Main {@link Enum} class this resolver will handle.
-     */
     private final Class<? extends Enum<?>> enumClass;
 
     /**

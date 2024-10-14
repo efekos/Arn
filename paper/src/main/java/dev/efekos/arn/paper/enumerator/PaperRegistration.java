@@ -33,7 +33,7 @@ import org.bukkit.NamespacedKey;
 import java.util.function.Supplier;
 
 /**
- * Represents registration type of a {@link dev.efekos.arn.paper.face.CustomArnArgumentType}. This registration type affects which characters you can
+ * Represents registration type of {@link dev.efekos.arn.paper.face.CustomArnArgumentType}. This registration type affects which characters you can
  * use in your argument and when Minecraft will throw an error before the flow gets to your command handling.
  *
  * @author efekos

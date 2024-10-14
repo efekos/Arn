@@ -48,9 +48,6 @@ import java.util.Collection;
  */
 public final class CmdAdvancementArg implements SpigotCmdResolver {
 
-    /**
-     * A suggestion provider that provides all advancements loaded in the game.
-     */
     private static final SuggestionProvider<CommandSourceStack> c = (var0, var1) -> {
         Collection<AdvancementHolder> var2 = var0.getSource().getServer().getAdvancements().getAllAdvancements();
         return SharedSuggestionProvider.suggestResource(var2.stream().map(AdvancementHolder::id), var1);

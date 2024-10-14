@@ -47,54 +47,15 @@ import java.util.Objects;
 public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, Hnd extends BaseHndResolver<?, ?>> {
 
     private final List<Class<?>> blockedSenders = new ArrayList<>();
-    /**
-     * Value of the {@link Command#value()} on {@link #method}.
-     */
     private String command;
-    /**
-     * Main method from Java Reflection API.
-     */
     private Method method;
-    /**
-     * An annotation data created from the {@link Command} annotation on {@link #method}.
-     */
     private CommandAnnotationData annotationData;
-    /**
-     * {@link Method#getParameters()} of {@link #method} converted into an {@link java.util.ArrayList}.
-     */
     private List<Parameter> parameters;
-    /**
-     * A list of {@link Cmd}s found and used by Arn.
-     */
     private List<Cmd> argumentResolvers;
-    /**
-     * A list of {@link Hnd}s found and used by Arn.
-     */
     private List<Hnd> handlerMethodResolvers;
-    /**
-     * A signature string that represents what this command is. Unlike a method signature, this signature starts with
-     * {@link Command#value()} of {@link #method} instead of the actual method game gathered through {@link Method#getName()}.
-     * This signature is generated and used by Arn to detect duplicate commands, and throw a {@link ArnCommandException}
-     * when found.
-     */
     private String signature;
-    /**
-     * Determines is this command blocked to console. When a command is blocked to console, the console will receive an
-     * error message while trying to execute the command. Arn makes this value {@code true} if
-     * {@link #method} has a {@link BlockConsole} annotation.
-     */
     private boolean blocksConsole;
-    /**
-     * Determines is this command blocked to command blocks. When a command is blocked to command blocks, a command block
-     * will receive an error message while trying to execute the command. Arn makes this value
-     * {@code true} if {@link #method} has a {@link BlockCommandBlock} annotation.
-     */
     private boolean blocksCommandBlock;
-    /**
-     * Determines is this command blocked to players. When a command is blocked to players, a player will receive an
-     * error message while trying to execute the command. Arn makes this value {@code true} if
-     * {@link #method} has a {@link BlockPlayer} annotation.
-     */
     private boolean blocksPlayer;
     private Class<?> includedSender;
 

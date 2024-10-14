@@ -77,15 +77,8 @@ public enum ArgumentRegistration {
      */
     BOOLEAN(BoolArgumentType::bool, (context, name) -> BoolArgumentType.getBool(context, name) + "");
 
-    /**
-     * A {@link Supplier} for the {@link ArgumentType} needed for this registration.
-     */
     private final Supplier<ArgumentType<?>> func;
 
-    /**
-     * A function that will return a {@link String} value accordingly to {@link ArgumentType} provided from
-     * {@link #func}. Needs a {@link CommandContext} and name of the argument as a {@link String}.
-     */
     private final GetFunction getFunction;
 
     /**

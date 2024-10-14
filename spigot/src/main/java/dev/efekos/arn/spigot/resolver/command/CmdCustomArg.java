@@ -42,9 +42,6 @@ import java.lang.reflect.Parameter;
  */
 public final class CmdCustomArg implements SpigotCmdResolver {
 
-    /**
-     * An instance of the {@link CustomArgumentType} this resolver resolves.
-     */
     private final CustomArgumentType<?> customArgumentType;
 
     /**

@@ -51,9 +51,6 @@ import java.lang.reflect.Parameter;
  */
 public final class CmdBlockArg implements SpigotCmdResolver {
 
-    /**
-     * A context that is needed to resolve an argument.
-     */
     private static CommandBuildContext context;
 
     /**
@@ -62,9 +59,6 @@ public final class CmdBlockArg implements SpigotCmdResolver {
     public CmdBlockArg() {
     }
 
-    /**
-     * Initializes {@link #context}.
-     */
     private static void initializeContext() {
         FeatureFlagSet flagSet = FeatureFlagSet.of(FeatureFlags.VANILLA);
         HolderLookup.Provider holderlookup = ((CraftServer) Bukkit.getServer()).getHandle().getServer().registryAccess();

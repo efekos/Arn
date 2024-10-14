@@ -115,60 +115,18 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
     public static final DynamicCommandExceptionType GENERIC = new DynamicCommandExceptionType(
             o -> Component.literal((String) o));
 
-    /**
-     * A list of classes that are a sender. There can't be more than one parameter
-     * with one of these classes in a
-     * {@link SpigotCommandHandlerMethod}, excluding ones annotated with
-     * {@link CommandArgument}.
-     */
+
     private static final List<Class<? extends CommandSender>> REQUIRED_SENDER_CLASSES = Arrays
             .asList(CommandSender.class, Player.class, ConsoleCommandSender.class, BlockCommandSender.class);
-    /**
-     * Argument formatting colors. When executing helper methods, argument colors
-     * will be in this order of colors. When
-     * there is more than 5 arguments, color goes back to the first element and
-     * repeats the same colors.
-     */
     private static final List<ChatColor> ARGUMENT_DISPLAY_COLORS = Arrays.asList(ChatColor.AQUA, ChatColor.YELLOW,
             ChatColor.GREEN, ChatColor.LIGHT_PURPLE, ChatColor.GOLD);
-    /**
-     * A list of {@link BaseHndResolver}s that can provide
-     * values to parameters of a {@link SpigotCommandHandlerMethod}.
-     */
     private final List<SpigotHndResolver> handlerMethodArgumentResolvers = new ArrayList<>();
-    /**
-     * A list of {@link BaseCmdResolver} that can provide
-     * {@link ArgumentBuilder}s using parameters of a command
-     * handler method to create command structures.
-     */
     private final List<SpigotCmdResolver> commandArgumentResolvers = new ArrayList<>();
-    /**
-     * A list of scanned {@link SpigotCommandHandlerMethod}s. Used to detect
-     * duplicate {@link SpigotCommandHandlerMethod}s and register
-     * commands.
-     */
     private final List<SpigotCommandHandlerMethod> handlers = new ArrayList<>();
-    /**
-     * An {@link ExceptionMap} storing annotation exceptions to
-     * {@link BaseCmdResolver}s.
-     */
     private final ExceptionMap<SpigotCmdResolver> commandArgumentResolverExceptions = new ExceptionMap<>();
-    /**
-     * An {@link ExceptionMap} storing annotation exceptions to
-     * {@link BaseHndResolver}s.
-     */
     private final ExceptionMap<SpigotHndResolver> handlerExceptions = new ExceptionMap<>();
-    /**
-     * A map containing an instance of every type annotated with {@link Container}.
-     * Used to instantiate {@link SpArnConfig}s.
-     */
     private final Map<String, Object> containerInstanceMap = new HashMap<>();
     private final List<Class<?>> exclusions = new ArrayList<>();
-    /**
-     * Whether was {@link #configure()} called or not. Used to prevent
-     * {@link #configure()} from being called more than
-     * once.
-     */
     private boolean configured;
 
     /**
@@ -204,12 +162,6 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
         }
     }
 
-    /**
-     * Scans {@link Container}s annotated with {@link CustomArgumentType} and
-     * creates a resolver for them.
-     *
-     * @param reflections Main reflections.
-     */
     private void scanCustomArguments(Reflections reflections) {
         for (Class<?> customArgumentClass : reflections.getTypesAnnotatedWith(Container.class).stream()
                 .filter(aClass -> !exclusions.contains(aClass) && Arrays.asList(aClass.getInterfaces()).contains(CustomArgumentType.class)).toList()) {
@@ -220,14 +172,6 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
         }
     }
 
-    /**
-     * Scans for {@link Container} enums annotated with {@link CustomArgument}, and
-     * registers a {@link CmdEnumArg} &amp;
-     * {@link HndEnumArg} for them.
-     *
-     * @param reflections Main reflections.
-     * @throws ArnArgumentException If something about an enum found is invalid.
-     */
     private void scanEnumArguments(Reflections reflections) throws ArnException {
         List<Class<?>> classes = reflections.getTypesAnnotatedWith(Container.class).stream()
                 .filter(aClass -> aClass.isAnnotationPresent(CustomArgument.class) && aClass.isEnum() && !exclusions.contains(aClass)).toList();
@@ -252,13 +196,6 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
         }
     }
 
-    /**
-     * Creates an instance of every {@link Container} found by {@code reflections}.
-     *
-     * @param reflections A {@link Reflections} to find {@link Container}s.
-     * @throws ArnContainerException If a {@link Container} can't be instantiated
-     *                               using an empty constructor.
-     */
     private void createContainerInstances(Reflections reflections) throws ArnException {
         for (Class<?> clazz : reflections.getTypesAnnotatedWith(Container.class)) {
             if (clazz.isInterface() || clazz.isAnnotation() || clazz.isEnum())
@@ -275,9 +212,6 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
         }
     }
 
-    /**
-     * Default configuration of {@link SpigotArn}.
-     */
     private void configure() {
         SpigotArnConfig configurer = new SpigotArnConfig();
         configurer.addArgumentResolvers(commandArgumentResolvers);
@@ -287,13 +221,6 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
         configured = true;
     }
 
-    /**
-     * Scans every class that implements {@link BaseArnConfigurer} using
-     * {@code reflections}, and calls their commands.
-     *
-     * @param reflections A {@link Reflections} object to use finding
-     *                    {@link BaseArnConfigurer}s.
-     */
     private void scanConfigurers(Reflections reflections) {
         List<Class<?>> configurers = reflections.getTypesAnnotatedWith(Container.class).stream()
                 .filter(SpArnConfig.class::isAssignableFrom).toList();
@@ -310,13 +237,6 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
         }
     }
 
-    /**
-     * Scans every {@link Container} for {@link Command}s using {@code reflections}.
-     *
-     * @param reflections A {@link Reflections} object to use finding
-     *                    {@link Command}s.
-     * @throws ArnException If a {@link Command} is invalid.
-     */
     private void scanCommands(Reflections reflections) throws ArnException {
         Set<Class<?>> containers = reflections.getTypesAnnotatedWith(Container.class);
 
@@ -328,14 +248,6 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
 
     }
 
-    /**
-     * Checks errors to ensure the command is valid.
-     *
-     * @param annotation The {@link Command} annotation of {@code method}.
-     * @param method     A {@link Method} that is annotated with {@code annotation}.
-     * @throws ArnException If something about {@code method} or created
-     *                      {@link SpigotCommandHandlerMethod} doesn't seem right.
-     */
     private void command(Command annotation, Method method) throws ArnException {
         // Errors
         if (!method.getReturnType().equals(int.class))
@@ -374,15 +286,6 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
         handlers.add(commandHandlerMethod);
     }
 
-    /**
-     * Creates a {@link SpigotCommandHandlerMethod} using {@code annotation} and
-     * {@code method}.
-     *
-     * @param annotation The {@link Command} annotation of {@code method}.
-     * @param method     A {@link Method} that is annotated with {@code annotation}.
-     * @return Created {@link SpigotCommandHandlerMethod}.
-     * @throws ArnException See {@link SpigotArnExceptions#HM_NO_RESOLVER_ACCESS}.
-     */
     private SpigotCommandHandlerMethod createHandlerMethod(Command annotation, Method method) throws ArnException {
         SpigotCommandHandlerMethod commandHandlerMethod = new SpigotCommandHandlerMethod();
 
@@ -457,12 +360,6 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
         return signatureBuilder;
     }
 
-    /**
-     * Registers every {@link SpigotCommandHandlerMethod} in {@link #handlers}.
-     *
-     * @throws ArnCommandException As a wrapper of an actual exception when
-     *                             encountered.
-     */
     private void registerCommands() throws ArnException {
         CommandDispatcher<CommandSourceStack> dispatcher = ((CraftServer) Bukkit.getServer()).getHandle().getServer()
                 .getCommands().getDispatcher();
@@ -594,12 +491,6 @@ public final class SpigotArn extends SpigotArnMethodDump implements ArnInstance 
         return this;
     }
 
-    /**
-     * Scans classes annotated with {@link Helper}
-     *
-     * @param reflections A {@link Reflections} object to use finding
-     *                    {@link Helper}s.
-     */
     private void registerHelpers(Reflections reflections) {
         CommandDispatcher<CommandSourceStack> dispatcher = ((CraftServer) Bukkit.getServer()).getHandle().getServer()
                 .getCommands().getDispatcher();

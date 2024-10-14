@@ -49,13 +49,7 @@ import java.util.stream.Collectors;
  */
 public final class CmdEnumArg implements SpigotCmdResolver {
 
-    /**
-     * Main {@link Enum} class this resolver will handle.
-     */
     private final Class<? extends Enum<?>> enumClass;
-    /**
-     * Constants of {@link #enumClass} in lower-case.
-     */
     private final List<String> constants;
 
     /**
