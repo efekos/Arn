@@ -14,8 +14,6 @@
 <!-- TOC -->
 * [Arn](#arn)
   * [Installation](#installation)
-    * [for Maven](#for-maven)
-    * [for Gradle:](#for-gradle)
   * [Usage](#usage)
     * [Creating commands](#creating-commands)
     * [Using parameter names as argument names](#using-parameter-names-as-argument-names)
