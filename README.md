@@ -32,82 +32,84 @@
 
 Arn is an annotation-based command library inspired by Spring boot that helps Minecraft plugins with creating, handling and
 registering commands. This library uses Brigadier commands that Minecraft uses, so you can use most kinds of arguments
-you see in the commands of the original game. Plus, you can turn any enumerator to a custom argument, all it takes is
-literally two annotations. Then, let's get started!
+you see in the commands of the original game. Plus, you can turn any enumerator to a custom argument, all it takes is 
+two annotations.
 
 ## Installation
 
-### for Maven
+Add this repository if you don't have it in your `<repositories>` or `repositories`.
 
-Add this repository:
-```xml
+````xml
 <repository>
   <id>efekosdev</id>
   <url>https://efekos.dev/maven</url>
 </repository>
-```
+````
 
-Add this dependency:
-```xml
-<dependency>
-  <groupId>dev.efekos</groupId>
-  <artifactId>Arn</artifactId>
-  <version>0.3.1</version>
-</dependency>
-```
-
-### for Gradle:
-
-Add this repository:
-```gradle
+````gradle
 maven { url 'https://efekos.dev/maven' }
-```
+````
 
-Add this dependency:
-```gradle
-implementation 'dev.efekos:Arn:0.3.1'
-```
+| **Artifact** | **Platform** | **Latest Version** |
+|--------------|--------------|--------------------|
+| `arn-paper`  | PaperMC      | 0.4                |
+| `arn-spigot` | SpigotMC     | 0.4                |
+
+Add this dependency. Check the table above to make sure you use the latest version and the correct dependency.
+
+````xml
+<dependency>
+  <groupId>dev.efekos.arn</groupId>
+  <artifactId>arn-paper</artifactId>
+  <version>0.4</version>
+</dependency>
+````
+
+````gradle
+implementation 'dev.efekos.arn:arn-paper:0.4'
+````
 
 ## Usage
 
 Arn uses Java Reflection API to scan through your plugin, detect needed classes and use them. Because of this, you have
 to add a [`Container`](https://efekos.dev/javadoc/arn/0.3.1/dev/efekos/arn/annotation/Container.html) annotation to
-**every** class that must be scanned by [`Arn`](https://efekos.dev/javadoc/arn/0.3.1/dev/efekos/arn/Arn.html).
+**every** class that must be scanned by Arn.
 
 ### Creating commands
 
 Let's create a new class using the knowledge we know so far.
 
 ````java
-import dev.efekos.arn.annotation.Container;
+import dev.efekos.arn.common.annotation.Container;
 
 @Container
 public class CommandClass {
 
 }
+
 ````
 
-Normally you need to either handle your command through events or create a
-[`Command`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/command/Command.html) class for it. But in Arn, all you
-have to do is add a method with such annotations.
+Normally, you need to either handle your command through events or create a [`Command`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/command/Command.html) class for it. But in Arn,
+all you have to do is add a method with such annotations.
 
 ````java
-import dev.efekos.arn.annotation.Command;
+import dev.efekos.arn.common.annotation.Command;
 import org.bukkit.command.CommandSender;
 
-@Command("helloworld") // command name
+@Command("ping") // command name
 public int helloWorld(CommandSender sender /*get the sender*/) {
-    sender.sendMessage("Hello World!");
+    sender.sendMessage("Pong!");
     return 0;
 }
+
 ````
 
 When scanned and registered, this method will be equivalent of command `/helloworld`, that takes no arguments and says
-"Hello World!" back to the sender. Now you might be thinking about arguments. That is pretty easy.
+"Pong!" back to the sender. Now you might be thinking about arguments. That is pretty easy.
 
 ````java
-import dev.efekos.arn.annotation.Command;
-import dev.efekos.arn.annotation.CommandArgument;
+import dev.efekos.arn.common.annotation.Command;
+import dev.efekos.arn.common.annotation.CommandArgument;
 import org.bukkit.command.CommandSender;
 
 @Command("hello")
@@ -212,10 +214,10 @@ and you'll be able to use that enum class as a command argument.
 ````java
 // Rating.java
 
-import dev.efekos.arn.annotation.Command;
-import dev.efekos.arn.annotation.CommandArgument;
-import dev.efekos.arn.annotation.Container;
-import dev.efekos.arn.annotation.CustomArgument;
+import dev.efekos.arn.common.annotation.Command;
+import dev.efekos.arn.common.annotation.CommandArgument;
+import dev.efekos.arn.common.annotation.Container;
+import dev.efekos.arn.common.annotation.CustomArgument;
 import org.bukkit.entity.Player;
 
 @Container
@@ -248,10 +250,10 @@ You can block access by using a permission or annotations. All you have to do is
 [`Command`](https://efekos.dev/javadoc/arn/0.3/dev/efekos/arn/annotation/Command.html) like this:
 
 ````java
-import dev.efekos.arn.annotation.Command;
-import dev.efekos.arn.annotation.block.BlockCommandBlock;
-import dev.efekos.arn.annotation.block.BlockConsole;
-import dev.efekos.arn.annotation.block.BlockPlayer;
+import dev.efekos.arn.common.annotation.Command;
+import dev.efekos.arn.common.annotation.block.BlockCommandBlock;
+import dev.efekos.arn.common.annotation.block.BlockConsole;
+import dev.efekos.arn.common.annotation.block.BlockPlayer;
 
 @Command(value = "this.is.command.name", permission = "methods.cmd.method")
 @BlockPlayer // Blocks access to players
@@ -266,10 +268,10 @@ You can apply [`NumberLimitations`](https://efekos.dev/javadoc/arn/0.3.1/dev/efe
 to any command argument with a number type.
 
 ````java
-import dev.efekos.arn.annotation.Command;
-import dev.efekos.arn.annotation.CommandArgument;
-import dev.efekos.arn.annotation.block.BlockCommandBlock;
-import dev.efekos.arn.annotation.modifier.NumberLimitations;
+import dev.efekos.arn.common.annotation.Command;
+import dev.efekos.arn.common.annotation.CommandArgument;
+import dev.efekos.arn.common.annotation.block.BlockCommandBlock;
+import dev.efekos.arn.common.annotation.modifier.NumberLimitations;
 
 @Command("settimeout")
 @BlockCommandBlock
@@ -293,14 +295,18 @@ After all of your command and configurations are done, call
 from your plugin.
 
 ````java
-import dev.efekos.arn.spigot.SpigotArn;
+import dev.efekos.arn.common.Arn;
+import dev.efekos.arn.common.base.ArnInstance;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MyPlugin extends JavaPlugin {
 
   @Override
   public void onEnable() {
-    Arn.run(MyPlugin.class); // classes under the package of this class will be scanned.
+    if(Arn.isAvailable()){
+        ArnInstance arn = Arn.getInstance();
+        arn.run(MyPlugin.class,this);
+    }
   }
 
 }
@@ -342,17 +348,24 @@ work on parameters with that annotation, for example:
 
 ````java
 
-import dev.efekos.arn.annotation.Container;
-import dev.efekos.arn.config.ArnConfigurer;
-import dev.efekos.arn.data.ExceptionMap;
-import dev.efekos.arn.resolver.CommandArgumentResolver;
-import dev.efekos.arn.resolver.CommandHandlerMethodArgumentResolver;
-import dev.efekos.arn.resolver.impl.command.CmdStringArg;
-import dev.efekos.arn.resolver.impl.handler.HndStringArg;
-import me.efekos.great.annotation.Greater;
+import dev.efekos.arn.common.exception.ExceptionMap;
+import dev.efekos.arn.paper.face.PaperArnConfig;
+import dev.efekos.arn.paper.face.PaperCmdResolver;
+import dev.efekos.arn.paper.face.PaperHndResolver;
 
-@Container
-public class GreatConfigurer implements ArnConfigurer {
+import java.util.List;
+
+public class GreatConfig implements PaperArnConfig {
+
+  @Override
+  public void addHandlerMethodArgumentResolvers(List<PaperHndResolver> resolvers) {
+
+  }
+
+  @Override
+  public void addArgumentResolvers(List<PaperCmdResolver> resolvers) {
+
+  }
 
   @Override
   public void putArgumentResolverExceptions(ExceptionMap<CommandArgumentResolver> map) {
@@ -363,11 +376,11 @@ public class GreatConfigurer implements ArnConfigurer {
   public void putHandlerMethodArgumentResolverExceptions(ExceptionMap<CommandHandlerMethodArgumentResolver> map) {
     map.put(HndStringArg.class, Greater.class); // This blocks HndStringArg the same way
   }
-
+  
 }
 
 ````
 
 ## License
 
-This repository is licensed under [MIT License](https://github.com/efekos/Arn/blob/master/LICENSE).
+This repository is licensed under the [MIT License](https://github.com/efekos/Arn/blob/master/LICENSE).
