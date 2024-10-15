@@ -52,14 +52,7 @@ public class CommandAnnotationLiteral {
      * {@link Pattern} of a literal with offset, used while parsing a {@link String} into a literal.
      */
     public static final Pattern OFFSET_REGEX = Pattern.compile("^([ba]):(\\d*):([a-z]+)$");
-    /**
-     * Actual literal that will be used in command structures.
-     */
     private String literal;
-    /**
-     * Offset of the literal. Can't be a negative value. Arn will place this literal before the
-     * argument that has the same index value with this offset.
-     */
     private int offset;
 
     /**
@@ -150,4 +143,5 @@ public class CommandAnnotationLiteral {
     public void setOffset(int offset) {
         this.offset = offset;
     }
+
 }

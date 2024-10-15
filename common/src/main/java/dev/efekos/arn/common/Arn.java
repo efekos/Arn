@@ -26,15 +26,24 @@ package dev.efekos.arn.common;
 
 import dev.efekos.arn.common.base.ArnInstance;
 
+import javax.annotation.Nullable;
+import javax.naming.OperationNotSupportedException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+/**
+ * Main class of Arn, a Minecraft command library used to easily register commands.
+ */
 public class Arn {
 
     private Arn() {
 
     }
 
+    /**
+     * Checks if Arn is currently available.
+     * @return Whether Arn is currently available or not.
+     */
     public static boolean isAvailable() {
         try {
             Class.forName("dev.efekos.arn.StaticArnBinder");
@@ -44,6 +53,12 @@ public class Arn {
         }
     }
 
+    /**
+     * Uses dev.efekos.arn.StaticArnBinder class to try to get an Arn instance. This class does not exist in {@code arn-common}
+     * artifact and must be created by another class to return an {@link ArnInstance}.
+     * @return Created {@link ArnInstance} if Arn is currently available, {@code null} otherwise.
+     */
+    @Nullable
     public static ArnInstance getInstance() {
         if (!isAvailable()) return null;
         try {

@@ -29,6 +29,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Specifies the permission of a command. Should be used on methods, but also can be applied to classes and packages
+ * if all the methods use the same value.
+ * @author efekos
+ * @since 0.4
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE, ElementType.PACKAGE})
 public @interface Permission {

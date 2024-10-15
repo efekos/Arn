@@ -24,11 +24,43 @@
 
 package dev.efekos.arn.common;
 
+/**
+ * An enumerator used to determine what features of Arn supported in the current environment.
+ */
 public enum ArnFeature {
+
+    /**
+     * All features. {@link dev.efekos.arn.common.base.ArnInstance#doesSupport(ArnFeature)} will always return {@code true}
+     * if an {@link dev.efekos.arn.common.base.ArnInstance} contains this feature in its feature list.
+     */
     ALL,
+
+    /**
+     * Commands you can register using {@link dev.efekos.arn.common.annotation.Command} on a method inside a class
+     * annotated with {@link dev.efekos.arn.common.annotation.Container}.
+     */
     COMMANDS,
+
+    /**
+     * Being able to turn any enum class into a custom argument type using {@link dev.efekos.arn.common.annotation.Container}
+     * and {@link dev.efekos.arn.common.annotation.CustomArgument} annotations.
+     */
     ENUM_ARGUMENTS,
+
+    /**
+     * Being able to create advanced custom argument types using {@link dev.efekos.arn.common.base.BaseCustomArgumentType}
+     */
     CUSTOM_ARGUMENTS,
+
+    /**
+     * Being able to exclude specific classes from scanning despite if they are annotated with {@link dev.efekos.arn.common.annotation.Container}
+     * or not using {@link dev.efekos.arn.common.base.ArnInstance#excludeClass(Class)}.
+     */
     EXCLUSION,
+
+    /**
+     * Exception handler methods you can register using {@link dev.efekos.arn.common.annotation.ExceptionHandler} method.
+     */
     EXCEPTION_HANDLERS
+
 }

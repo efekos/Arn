@@ -29,6 +29,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Specifies that the method this annotation is applied to will listen for a specific type of {@link Exception} and
+ * properly respond to command senders when it is thrown.
+ * @author efekos
+ * @since 0.4
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface ExceptionHandler {

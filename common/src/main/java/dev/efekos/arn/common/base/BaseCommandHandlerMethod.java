@@ -25,12 +25,9 @@
 package dev.efekos.arn.common.base;
 
 import dev.efekos.arn.common.CommandAnnotationData;
-import dev.efekos.arn.common.annotation.BlockCommandBlock;
-import dev.efekos.arn.common.annotation.BlockConsole;
-import dev.efekos.arn.common.annotation.BlockPlayer;
 import dev.efekos.arn.common.annotation.Command;
-import dev.efekos.arn.common.exception.ArnCommandException;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -91,8 +88,7 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
     }
 
     /**
-     * Getter for {@link #blocksConsole}.
-     *
+     * Returns whether is this command blocked to the console or not.
      * @return Whether is this command blocked to the console.
      */
     public boolean isBlocksConsole() {
@@ -100,8 +96,7 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
     }
 
     /**
-     * Setter for {@link #blocksConsole}.
-     *
+     * Changes should this command block the console or no.
      * @param blocksConsole New value.
      */
     public void setBlocksConsole(boolean blocksConsole) {
@@ -109,8 +104,7 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
     }
 
     /**
-     * Getter for {@link #blocksCommandBlock}.
-     *
+     * Returns whether is this command blocked to command blocks or not.
      * @return Whether is this command blocked to command blocks.
      */
     public boolean isBlocksCommandBlock() {
@@ -118,8 +112,7 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
     }
 
     /**
-     * Setter for {@link #blocksCommandBlock}.
-     *
+     * Changes should this command be available on commands blocks or no.
      * @param blocksCommandBlock New value.
      */
     public void setBlocksCommandBlock(boolean blocksCommandBlock) {
@@ -127,8 +120,7 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
     }
 
     /**
-     * Getter for {@link #blocksPlayer}.
-     *
+     * Returns whether is this command blocked to players or not.
      * @return Whether is this command blocked to players.
      */
     public boolean isBlocksPlayer() {
@@ -136,8 +128,7 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
     }
 
     /**
-     * Setter for {@link #blocksPlayer}.
-     *
+     * Changes should this command be unavailable to players.
      * @param blocksPlayer New value.
      */
     public void setBlocksPlayer(boolean blocksPlayer) {
@@ -145,8 +136,8 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
     }
 
     /**
-     * Getter for {@link #command}.
-     *
+     * Returns unparsed literals of this command, which is exactly same with the value of the {@link Command} annotation
+     * that was applied to the method of this command.
      * @return {@link Command#value()} of {@link #method}.
      */
     public String getCommand() {
@@ -154,8 +145,9 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
     }
 
     /**
-     * Setter for {@link #command}.
-     *
+     * Changes unparsed literal string of this command. Note that literals are not parsed again when this method is
+     * called, and new literals of this command should be changed using {@link #getAnnotationData()} >
+     * {@link CommandAnnotationData#setLiterals(List)}.
      * @param command New value.
      */
     public void setCommand(String command) {
@@ -163,8 +155,7 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
     }
 
     /**
-     * Getter for {@link #method}.
-     *
+     * Returns the base method of this command.
      * @return Method from Java Reflection API associated with this CommandHandlerMethod.
      */
     public Method getMethod() {
@@ -172,8 +163,7 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
     }
 
     /**
-     * Setter for {@link #method}.
-     *
+     * Changes the base method of this command.
      * @param method New value.
      */
     public void setMethod(Method method) {
@@ -181,8 +171,8 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
     }
 
     /**
-     * Getter for {@link #annotationData}.
-     *
+     * Returns the data gathered from command-related annotations such as {@link Command},
+     * {@link dev.efekos.arn.common.annotation.Description} or {@link dev.efekos.arn.common.annotation.Permission}.
      * @return Changeable version of {@link Command} on {@link #method}.
      */
     public CommandAnnotationData getAnnotationData() {
@@ -190,8 +180,7 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
     }
 
     /**
-     * Setter for {@link #annotationData}.
-     *
+     * Changes data about the annotations applied to this command.
      * @param annotationData New value.
      */
     public void setAnnotationData(CommandAnnotationData annotationData) {
@@ -199,9 +188,8 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
     }
 
     /**
-     * Getter for {@link #parameters}.
-     *
-     * @return Parameter list of {@link #method}.
+     * Returns a list of parameters this command's base method has.
+     * @return Parameter list.
      */
     public List<Parameter> getParameters() {
         return parameters;
@@ -271,22 +259,47 @@ public abstract class BaseCommandHandlerMethod<Cmd extends BaseCmdResolver<?>, H
         this.signature = signature;
     }
 
+    /**
+     * Check if the given sender type is blocked.
+     * @param sender Class of a sender type.
+     * @return Whether sender is blocked by this command or not.
+     */
     public boolean doesBlockSenderType(Class<?> sender) {
         return blockedSenders.contains(sender);
     }
 
+    /**
+     * Checks if the given sender is blocked.
+     * @param sender Command sender.
+     * @return Whether the given sender is blocked by this commando r not.
+     */
     public boolean doesBlockSender(Object sender) {
         return sender != null && doesBlockSenderType(sender.getClass());
     }
 
+    /**
+     * Add given sender type to blocked command sender types which will not be able tu use this command.
+     * @param sender Sender type.
+     */
     public void addSenderBlock(Class<?> sender) {
         blockedSenders.add(sender);
     }
 
+    /**
+     * Returns the included sender of this command. When an included sender is present on a command, only that specific
+     * sender type should be able to use the command.
+     * @return Included sender type of this command
+     */
+    @Nullable
     public Class<?> getIncludedSender() {
         return includedSender;
     }
 
+    /**
+     * Changes the included sender type of this command. When an included command sender type is present on a command,
+     * only that specific command sender type should be able to use this command.
+     * @param includedSender New value.
+     */
     public void setIncludedSender(Class<?> includedSender) {
         this.includedSender = includedSender;
     }
