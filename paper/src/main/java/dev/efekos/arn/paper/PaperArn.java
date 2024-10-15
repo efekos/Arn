@@ -120,7 +120,7 @@ public final class PaperArn extends PaperMethodDump implements ArnInstance {
     }
 
     private void scanCustoms(Reflections reflections) {
-        for (Class<? extends CustomArnArgumentType<?>> aClass : reflections.getSubTypesOf(CustomArnArgumentType.class)) {
+        for (Class<? extends CustomArnArgumentType> aClass : reflections.getSubTypesOf(CustomArnArgumentType.class)) {
             if (exclusions.contains(aClass)) continue;
             CustomArnArgumentType<?> instance = instantiate(aClass);
             commandResolvers.add(new CmdCustomArg(instance));
