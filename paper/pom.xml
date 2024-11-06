@@ -17,8 +17,8 @@
 
     <repositories>
         <repository>
-            <id>local</id>
-            <url>file://C:\EfekosDev\Maven</url>
+            <id>efekosdev</id>
+            <url>https://efekos.dev/maven</url>
         </repository>
         <repository>
             <id>papermc-repo</id>

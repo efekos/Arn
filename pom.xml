@@ -24,7 +24,7 @@
 
     <distributionManagement>
         <repository>
-            <id>repo</id>
+            <id>efekosdev</id>
             <url>file://C:/EfekosDev/Maven</url>
         </repository>
     </distributionManagement>
