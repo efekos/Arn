@@ -1,4 +1,4 @@
-![](./assets/logo.svg)
+![](./assets/Arn.png)
 # Arn
 
 ![](https://badgen.net/github/license/efekos/Arn)
@@ -197,7 +197,7 @@ arguments, you can follow this syntax: `[ab]:[0-9]+:[a-z]+`. First group of a le
 or after the argument with the given index. Second group of a number is the index of an argument. Finally, last group of
 a lowercase word is the actual literal. Let me explain how it works more with this graph:
 
-![Advanced literal placement explained](assets/arnarnarn.png)
+![Advanced literal placement explained](assets/command-explanation.png)
 
 As you can see, the last literal 'makefloor' is placed after 0th argument. This is because the first letter is 'a' and
 the index is `0`. If the letter was 'b', the literal would be placed after second literal 'stuff'. If the index was `1`,
