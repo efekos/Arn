@@ -34,6 +34,8 @@ import dev.efekos.arn.paper.face.PaperHndResolver;
 import dev.efekos.arn.paper.handler.*;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.predicate.ItemStackPredicate;
+import io.papermc.paper.math.BlockPosition;
+import io.papermc.paper.math.FinePosition;
 import io.papermc.paper.registry.RegistryKey;
 import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
@@ -104,9 +106,9 @@ public final class PaperArnConfigurer implements PaperArnConfig {
                 new CmdFloatArg(), new CmdDoubleArg(), new CmdIntArg(), new CmdLongArg(), new CmdStringArg(),
                 new CmdOneMethodArg(Boolean.class, BoolArgumentType::bool), new CmdOneMethodArg(boolean.class, BoolArgumentType::bool),
                 new CmdOneMethodArg(UUID.class, ArgumentTypes::uuid), new CmdOneMethodArg(BlockState.class, ArgumentTypes::blockState),
-                new CmdOneMethodArg(Component.class, ArgumentTypes::component),
+                new CmdOneMethodArg(Component.class, ArgumentTypes::component), new CmdOneMethodArg(FinePosition.class, ArgumentTypes::finePosition),
                 new CmdOneMethodArg(Entity[].class, ArgumentTypes::entities), new CmdOneMethodArg(Entity.class, ArgumentTypes::entity),
-                new CmdOneMethodArg(GameMode.class, ArgumentTypes::gameMode),
+                new CmdOneMethodArg(GameMode.class, ArgumentTypes::gameMode), new CmdOneMethodArg(BlockPosition.class, ArgumentTypes::blockPosition),
                 new CmdOneMethodArg(ItemStack.class, ArgumentTypes::itemStack), new CmdOneMethodArg(ItemStackPredicate.class, ArgumentTypes::itemPredicate),
                 new CmdOneMethodArg(Player.class, ArgumentTypes::player), new CmdOneMethodArg(Player[].class, ArgumentTypes::players)
         ));

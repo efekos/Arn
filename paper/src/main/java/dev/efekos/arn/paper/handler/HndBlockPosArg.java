@@ -50,9 +50,9 @@ public final class HndBlockPosArg implements PaperHndResolver {
     }
 
     @Override
-    public Object resolve(Parameter parameter, PaperCommandMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
+    public Location resolve(Parameter parameter, PaperCommandMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
         try {
-            return context.getArgument(getName(parameter), BlockPositionResolver.class).resolve(context.getSource());
+            return context.getArgument(getName(parameter), BlockPositionResolver.class).resolve(context.getSource()).toLocation(context.getSource().getLocation().getWorld());
         } catch (CommandSyntaxException e) {
             throw new ArnSyntaxException(e.getMessage());
         }

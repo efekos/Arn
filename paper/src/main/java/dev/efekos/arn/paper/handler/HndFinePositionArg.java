@@ -27,21 +27,22 @@ package dev.efekos.arn.paper.handler;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.efekos.arn.common.annotation.CommandArgument;
-import dev.efekos.arn.common.annotation.Vector;
 import dev.efekos.arn.common.exception.ArnSyntaxException;
 import dev.efekos.arn.paper.PaperCommandMethod;
 import dev.efekos.arn.paper.face.PaperHndResolver;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.argument.resolvers.BlockPositionResolver;
 import io.papermc.paper.command.brigadier.argument.resolvers.FinePositionResolver;
-import org.bukkit.Location;
+import io.papermc.paper.math.BlockPosition;
+import io.papermc.paper.math.FinePosition;
 
 import java.lang.reflect.Parameter;
 
-public final class HndVectorArg implements PaperHndResolver {
+public class HndFinePositionArg implements PaperHndResolver {
 
     @Override
     public boolean isApplicable(Parameter parameter) {
-        return parameter.isAnnotationPresent(CommandArgument.class) && parameter.getType().equals(Location.class) && parameter.isAnnotationPresent(Vector.class);
+        return parameter.getType()== FinePosition.class && parameter.isAnnotationPresent(CommandArgument.class);
     }
 
     @Override
@@ -50,9 +51,10 @@ public final class HndVectorArg implements PaperHndResolver {
     }
 
     @Override
-    public Location resolve(Parameter parameter, PaperCommandMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
+    public FinePosition resolve(Parameter parameter, PaperCommandMethod method, CommandContext<CommandSourceStack> context) throws ArnSyntaxException {
+        FinePositionResolver resolver = context.getArgument(getName(parameter), FinePositionResolver.class);
         try {
-            return context.getArgument(getName(parameter), FinePositionResolver.class).resolve(context.getSource()).toLocation(context.getSource().getLocation().getWorld());
+            return resolver.resolve(context.getSource());
         } catch (CommandSyntaxException e) {
             throw new ArnSyntaxException(e.getMessage());
         }
